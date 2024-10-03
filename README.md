@@ -1,16 +1,13 @@
-# film_finder
+# Android app project
 
-A new Flutter project.
+Film Finder Mobile App Project
 
-## Getting Started
+## Important
 
-This project is a starting point for a Flutter application.
+This modules are needed for implementation
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Android Studio (Hedgehog) is needed for the proyect as well as some SDK modules specified in https://docs.flutter.dev/get-started/install/windows/mobile?tab=download
+- Flutter extension in Visual Studio for developing the app
+- Follow the steps providen in the previous URL to use flutter in VS
+- Dont locate the proyect in NON-ASCII routes
+- It is advisable to use GitHub Desktop for Windows development

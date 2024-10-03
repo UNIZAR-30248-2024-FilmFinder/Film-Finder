@@ -1,6 +1,20 @@
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'pages/pages/login_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Ensures the initialization of the widgets.
+
+  // It is set in vertical format
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]).then((_) {
+    runApp(
+      const MyApp(),
+    );
+  });
+
   runApp(const MyApp());
 }
 
@@ -10,38 +24,27 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Film Finder',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const RedirectPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class RedirectPage extends StatelessWidget {
+  const RedirectPage({super.key});
 
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: const Center(
-        child: Text(
-          'Center',
-        ),
-      ),
-    );
+    Future.delayed(Duration.zero, () {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const LogIn()),
+      );
+    });
+
+    return const Scaffold();
   }
 }
