@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'pages/pages/login_screen.dart';
+import 'pages/login_screen.dart';
 
 void main() {
   WidgetsFlutterBinding

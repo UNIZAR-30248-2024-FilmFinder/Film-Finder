@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:film_finder/pages/initial_screen.dart';
 
-class InitialScreen extends StatelessWidget {
-  const InitialScreen({super.key});
+class LogIn extends StatelessWidget {
+  const LogIn({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +25,19 @@ class InitialScreen extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          const Text(
-            'Inicio',
-            style: TextStyle(
-              fontSize: 50,
-              fontWeight: FontWeight.bold,
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const InitialScreen()),
+              );
+            },
+            child: const Text(
+              'Iniciar sesión',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           const Spacer(),

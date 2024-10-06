@@ -1,8 +1,8 @@
-import 'package:film_finder/pages/pages/initial_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:film_finder/pages/film_screen.dart';
 
-class LogIn extends StatelessWidget {
-  const LogIn({super.key});
+class InitialScreen extends StatelessWidget {
+  const InitialScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +29,12 @@ class LogIn extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const InitialScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const FilmInfo(film: "Interstellar")),
               );
             },
             child: const Text(
-              'Iniciar sesión',
+              'Estructura Películas',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
