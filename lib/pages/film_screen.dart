@@ -118,7 +118,7 @@ class FilmInfo extends StatelessWidget {
                               const Row(
                                 children: [
                                   Text(
-                                    'Género: ',
+                                    'Géneros: ',
                                     softWrap: true,
                                     style: TextStyle(
                                       fontSize: 13,
@@ -126,13 +126,15 @@ class FilmInfo extends StatelessWidget {
                                       color: Colors.white,
                                     ),
                                   ),
-                                  Text(
-                                    'Ciencia ficción - Aventura',
-                                    softWrap: true,
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.white,
+                                  Expanded(
+                                    child: Text(
+                                      'Ciencia ficción - Aventura',
+                                      softWrap: true,
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w300,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -149,13 +151,15 @@ class FilmInfo extends StatelessWidget {
                                       color: Colors.white,
                                     ),
                                   ),
-                                  Text(
-                                    '169 mins',
-                                    softWrap: true,
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.white,
+                                  Expanded(
+                                    child: Text(
+                                      '169 mins',
+                                      softWrap: true,
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w300,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -172,13 +176,15 @@ class FilmInfo extends StatelessWidget {
                                       color: Colors.white,
                                     ),
                                   ),
-                                  Text(
-                                    'Christopher Nolan',
-                                    softWrap: true,
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.white,
+                                  Expanded(
+                                    child: Text(
+                                      'Christopher Nolan',
+                                      softWrap: true,
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w300,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -212,7 +218,7 @@ class FilmInfo extends StatelessWidget {
                           child: const Row(
                             children: [
                               Text(
-                                'Release date: ',
+                                'Fecha de estreno: ',
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
@@ -239,7 +245,7 @@ class FilmInfo extends StatelessWidget {
                           child: const Row(
                             children: [
                               Text(
-                                'Rating: ',
+                                'Puntuación: ',
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
