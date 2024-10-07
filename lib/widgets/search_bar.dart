@@ -143,6 +143,11 @@ class _SearchingBarState extends State<SearchingBar> {
                                       builder: (context) =>
                                           const FilmInfo(film: "Interstellar")),
                                 );
+
+                                setState(() {
+                                  searchText.clear();
+                                  FocusManager.instance.primaryFocus?.unfocus();
+                                });
                               },
                               child: Container(
                                 margin:
@@ -150,7 +155,7 @@ class _SearchingBarState extends State<SearchingBar> {
                                 height: 180,
                                 width: MediaQuery.of(context).size.width,
                                 decoration: const BoxDecoration(
-                                  color: Colors.black,
+                                  color: Color.fromRGBO(21, 4, 29, 1),
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                 ),
