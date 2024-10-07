@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:film_finder/pages/film_screen.dart';
+import 'package:film_finder/widgets/search_bar.dart';
 
 class InitialScreen extends StatelessWidget {
   const InitialScreen({super.key});
@@ -10,39 +11,59 @@ class InitialScreen extends StatelessWidget {
     double statusBarHeight = MediaQuery.of(context).padding.top;
 
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          SizedBox(height: statusBarHeight + 20),
-          const Center(
-            child: Text(
-              'FilmFinder',
-              style: TextStyle(
-                fontSize: 50,
-                fontWeight: FontWeight.bold,
-                color: Colors.deepPurple,
+      backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(height: statusBarHeight + 20),
+            Center(
+              child: Stack(
+                children: [
+                  Text(
+                    'Film Finder',
+                    style: TextStyle(
+                      fontSize: 50,
+                      fontWeight: FontWeight.bold,
+                      foreground: Paint()
+                        ..style = PaintingStyle.stroke
+                        ..strokeWidth = 5
+                        ..color = const Color.fromRGBO(135, 35, 65, 1),
+                    ),
+                  ),
+                  const Text(
+                    'Film Finder',
+                    style: TextStyle(
+                      fontSize: 50,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromRGBO(240, 89, 65, 1),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-          const Spacer(),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const FilmInfo(film: "Interstellar")),
-              );
-            },
-            child: const Text(
-              'Estructura Películas',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+            const SizedBox(height: 10),
+            const SearchingBar(),
+            const SizedBox(height: 250),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          const FilmInfo(film: "Interstellar")),
+                );
+              },
+              child: const Text(
+                'Estructura Películas',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          const Spacer(),
-        ],
+          ],
+        ),
       ),
     );
   }
