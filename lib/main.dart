@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'pages/login_screen.dart';
 
 void main() {
-  WidgetsFlutterBinding
-      .ensureInitialized(); // Ensures the initialization of the widgets.
+  // Ensures the initialization of the widgets.
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky,
+      overlays: [SystemUiOverlay.top]);
 
   // It is set in vertical format
   SystemChrome.setPreferredOrientations([

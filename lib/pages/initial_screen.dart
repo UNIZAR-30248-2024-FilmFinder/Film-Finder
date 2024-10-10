@@ -27,8 +27,8 @@ class InitialScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       foreground: Paint()
                         ..style = PaintingStyle.stroke
-                        ..strokeWidth = 5
-                        ..color = const Color.fromRGBO(135, 35, 65, 1),
+                        ..strokeWidth = 1
+                        ..color = Colors.white,
                     ),
                   ),
                   const Text(
@@ -36,7 +36,7 @@ class InitialScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 50,
                       fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(240, 89, 65, 1),
+                      color: Color.fromRGBO(190, 49, 68, 1),
                     ),
                   ),
                 ],

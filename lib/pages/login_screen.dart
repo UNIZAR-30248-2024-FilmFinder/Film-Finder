@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:film_finder/pages/initial_screen.dart';
+import 'package:film_finder/pages/principal_screen.dart';
 
 class LogIn extends StatelessWidget {
   const LogIn({super.key});
@@ -29,7 +29,8 @@ class LogIn extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const InitialScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const PrincipalScreen()),
               );
             },
             child: const Text(

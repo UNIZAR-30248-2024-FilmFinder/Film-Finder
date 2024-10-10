@@ -48,6 +48,8 @@ dev_dependencies:
 
   fluttertoast: ^8.2.1
 
+  google_nav_bar: ^5.0.6
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
