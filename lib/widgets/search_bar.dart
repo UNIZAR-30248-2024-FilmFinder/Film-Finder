@@ -24,7 +24,7 @@ class _SearchingBarState extends State<SearchingBar> {
   var val1;
   List<Movie> movies = [];
   bool showList = false;
-
+  //
   //FUNCION CON LA QUE SE EXRTRAERAN LOS DATOS DE LA API
   Future<void> searchListFunction(String val) async {
     // Simulación de búsqueda
