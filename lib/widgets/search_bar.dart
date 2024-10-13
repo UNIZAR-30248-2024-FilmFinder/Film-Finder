@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:film_finder/pages/film_screen.dart';
 // ignore: depend_on_referenced_packages
 import 'package:fluttertoast/fluttertoast.dart';
+
+import '../movie.dart';
+import 'package:http/http.dart' as http;
 
 class SearchingBar extends StatefulWidget {
   const SearchingBar({super.key});
@@ -17,18 +22,27 @@ class _SearchingBarState extends State<SearchingBar> {
   final TextEditingController searchText = TextEditingController();
 
   var val1;
-
+  List<Movie> movies = [];
   bool showList = false;
 
   //FUNCION CON LA QUE SE EXRTRAERAN LOS DATOS DE LA API
   Future<void> searchListFunction(String val) async {
     // Simulación de búsqueda
-
-    for (var i = 0; i < 10; i++) {
+    String searchMovie = 'https://api.themoviedb.org/3/search/movie?query=$val&include_adult=false&language=en-US&page=1&api_key=c5147b4f6bccd1f46f693db2fb007b78';
+    final response = await http.get(Uri.parse(searchMovie));
+      if(response.statusCode == 200){
+        final decodedData = json.decode(response.body)['results'] as List;
+        movies = decodedData.map((movie) => Movie.fromJson(movie)).toList();
+      }
+      else{
+        throw Exception('Something happened');
+      }
+      print(movies.length);
+    for (var i = 0; i < movies.length; i++) {
       searchResult.add({
-        'id': 'id $i',
-        'poster_path': 'poster_path',
-        'rating': 'rating $i',
+        'title': movies[i].title,
+        'poster_path': movies[i].posterPath,
+        'rating': movies[i].voteAverage,
       });
     }
 
@@ -134,6 +148,7 @@ class _SearchingBarState extends State<SearchingBar> {
                           scrollDirection: Axis.vertical,
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
+                            String posterUrl = 'https://image.tmdb.org/t/p/w500${searchResult[index]['poster_path']}';
                             return GestureDetector(
                               //Envío a la descripción
                               onTap: () {
@@ -143,7 +158,6 @@ class _SearchingBarState extends State<SearchingBar> {
                                       builder: (context) =>
                                           const FilmInfo(film: "Interstellar")),
                                 );
-
                                 setState(() {
                                   searchText.clear();
                                   FocusManager.instance.primaryFocus?.unfocus();
@@ -152,7 +166,7 @@ class _SearchingBarState extends State<SearchingBar> {
                               child: Container(
                                 margin:
                                     const EdgeInsets.only(top: 4, bottom: 4),
-                                height: 180,
+                                height: 250,
                                 width: MediaQuery.of(context).size.width,
                                 decoration: const BoxDecoration(
                                   color: Color.fromRGBO(21, 4, 29, 1),
@@ -164,17 +178,17 @@ class _SearchingBarState extends State<SearchingBar> {
                                     Container(
                                       width: MediaQuery.of(context).size.width *
                                           0.4,
-                                      decoration: const BoxDecoration(
+                                      decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10)),
-
-                                        /*POSTER DE LA PELI
+                                        //POSTER DE LA PELI
                                           image: DecorationImage(
                                             image: NetworkImage(
-
+                                              posterUrl,
                                             ),
-                                            fit: BoxFit.fill,
-                                          ),*/
+                                            fit: BoxFit.cover
+                                            //fit: BoxFit.cover,
+                                          ),
                                       ),
                                     ),
                                   ],
