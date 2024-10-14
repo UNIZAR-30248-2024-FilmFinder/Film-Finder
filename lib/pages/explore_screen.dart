@@ -1,4 +1,5 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:film_finder/widgets/movie_slider.dart';
+import 'package:film_finder/widgets/trending_slider.dart';
 import 'package:flutter/material.dart';
 
 class ExploreScreen extends StatelessWidget {
@@ -11,7 +12,7 @@ class ExploreScreen extends StatelessWidget {
         backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
         elevation: 0,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'EXPLORAR',
           style: TextStyle(
             fontSize: 25,
@@ -21,45 +22,34 @@ class ExploreScreen extends StatelessWidget {
         ),
       ),
       backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
+      body: const SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Tendencias', style: TextStyle(
                 fontSize: 18, fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Colors.white
                 ),
               ),
-              SizedBox(height: 20,),
-              SizedBox(
-                width: double.infinity,
-                child: CarouselSlider.builder(
-                  itemCount: 10, 
-                  options: CarouselOptions(
-                    height: 300,
-                    autoPlay: true,
-                    viewportFraction: 0.55,
-                    enlargeCenterPage: true,
-                    pageSnapping: true,
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    autoPlayAnimationDuration: const Duration(seconds: 5),
-                  ),
-                  itemBuilder: (context, itemIndex, pageViewIndex) {  
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Container(
-                        height: 300,
-                        width: 200,
-                        color: Colors.blueAccent,
-                      ),
-                    );
-                  },
-                  
-                ),
-              )
+              SizedBox(height: 20),
+              TrendingSlider(),
+              SizedBox(height: 30),
+              Text('Mejor Valoradas', style: TextStyle(
+                fontSize: 18, fontWeight: FontWeight.bold,
+                color: Colors.white),
+              ),
+              SizedBox(height: 20),
+              MovieSlider(),
+              SizedBox(height: 30),
+              Text('Próximos Estrenos', style: TextStyle(
+                fontSize: 18, fontWeight: FontWeight.bold,
+                color: Colors.white),
+              ),
+              SizedBox(height: 20),
+              MovieSlider(),
             ],
           ),
         ),
@@ -67,3 +57,4 @@ class ExploreScreen extends StatelessWidget {
     );
   }
 }
+
