@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class ExploreScreen extends StatelessWidget {
@@ -5,36 +6,62 @@ class ExploreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color.fromRGBO(34, 9, 44, 1),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              'EXPLORAR',
-              style: TextStyle(
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          'EXPLORAR',
+          style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+      ),
+      backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Tendencias', style: TextStyle(
+                fontSize: 18, fontWeight: FontWeight.bold,
                 color: Colors.white,
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                'AUN ESTA SIN DEFINIR\n Pero se podría añadir una pantalla con diferentes recomendaciones (películas en tendencia, nuevos estrenos, etc)',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
                 ),
               ),
-            ),
-          ],
+              SizedBox(height: 20,),
+              SizedBox(
+                width: double.infinity,
+                child: CarouselSlider.builder(
+                  itemCount: 10, 
+                  options: CarouselOptions(
+                    height: 300,
+                    autoPlay: true,
+                    viewportFraction: 0.55,
+                    enlargeCenterPage: true,
+                    pageSnapping: true,
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    autoPlayAnimationDuration: const Duration(seconds: 5),
+                  ),
+                  itemBuilder: (context, itemIndex, pageViewIndex) {  
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        height: 300,
+                        width: 200,
+                        color: Colors.blueAccent,
+                      ),
+                    );
+                  },
+                  
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
