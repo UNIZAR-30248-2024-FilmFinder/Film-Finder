@@ -2,10 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:film_finder/pages/film_screen.dart';
+import 'package:film_finder/methods/constants.dart';
 // ignore: depend_on_referenced_packages
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../movie.dart';
+import '../methods/movie.dart';
 import 'package:http/http.dart' as http;
 
 class SearchingBar extends StatefulWidget {
@@ -28,7 +29,7 @@ class _SearchingBarState extends State<SearchingBar> {
   //FUNCION CON LA QUE SE EXRTRAERAN LOS DATOS DE LA API
   Future<void> searchListFunction(String val) async {
     String searchURL =
-        'https://api.themoviedb.org/3/search/multi?api_key=c5147b4f6bccd1f46f693db2fb007b78&query=$val';
+        'https://api.themoviedb.org/3/search/multi?api_key=${Constants.apiKey}&query=$val';
 
     var searchResponse = await http.get(Uri.parse(searchURL));
 
