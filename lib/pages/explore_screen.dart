@@ -12,6 +12,7 @@ class ExploreScreen extends StatelessWidget {
         backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
         elevation: 0,
         centerTitle: true,
+        automaticallyImplyLeading: false,
         title: const Text(
           'EXPLORAR',
           style: TextStyle(
@@ -29,24 +30,32 @@ class ExploreScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Tendencias', style: TextStyle(
-                fontSize: 18, fontWeight: FontWeight.bold,
-                color: Colors.white
-                ),
+              Text(
+                'Tendencias',
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
               SizedBox(height: 20),
               TrendingSlider(),
               SizedBox(height: 30),
-              Text('Mejor Valoradas', style: TextStyle(
-                fontSize: 18, fontWeight: FontWeight.bold,
-                color: Colors.white),
+              Text(
+                'Mejor Valoradas',
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
               SizedBox(height: 20),
               MovieSlider(),
               SizedBox(height: 30),
-              Text('Próximos Estrenos', style: TextStyle(
-                fontSize: 18, fontWeight: FontWeight.bold,
-                color: Colors.white),
+              Text(
+                'Próximos Estrenos',
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
               SizedBox(height: 20),
               MovieSlider(),
@@ -57,4 +66,3 @@ class ExploreScreen extends StatelessWidget {
     );
   }
 }
-

@@ -41,7 +41,7 @@ class FilmInfo extends StatelessWidget {
                   Text(
                     film,
                     style: TextStyle(
-                      fontSize: 19,
+                      fontSize: 17,
                       fontWeight: FontWeight.bold,
                       foreground: Paint()
                         ..style = PaintingStyle.stroke
@@ -52,7 +52,7 @@ class FilmInfo extends StatelessWidget {
                   Text(
                     film,
                     style: const TextStyle(
-                      fontSize: 19,
+                      fontSize: 17,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -96,7 +96,7 @@ class FilmInfo extends StatelessWidget {
                                   Text(
                                     film,
                                     style: TextStyle(
-                                      fontSize: 25,
+                                      fontSize: 21,
                                       fontWeight: FontWeight.bold,
                                       foreground: Paint()
                                         ..style = PaintingStyle.stroke
@@ -107,7 +107,7 @@ class FilmInfo extends StatelessWidget {
                                   Text(
                                     film,
                                     style: const TextStyle(
-                                      fontSize: 25,
+                                      fontSize: 21,
                                       fontWeight: FontWeight.w600,
                                       color: Colors.white,
                                     ),

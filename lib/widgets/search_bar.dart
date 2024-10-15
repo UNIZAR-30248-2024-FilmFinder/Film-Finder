@@ -24,30 +24,39 @@ class _SearchingBarState extends State<SearchingBar> {
   var val1;
   List<Movie> movies = [];
   bool showList = false;
-  //
+
   //FUNCION CON LA QUE SE EXRTRAERAN LOS DATOS DE LA API
   Future<void> searchListFunction(String val) async {
-    // Simulación de búsqueda
-    String searchMovie = 'https://api.themoviedb.org/3/search/movie?query=$val&include_adult=false&language=en-US&page=1&api_key=c5147b4f6bccd1f46f693db2fb007b78';
-    final response = await http.get(Uri.parse(searchMovie));
-      if(response.statusCode == 200){
-        final decodedData = json.decode(response.body)['results'] as List;
-        movies = decodedData.map((movie) => Movie.fromJson(movie)).toList();
-      }
-      else{
-        throw Exception('Something happened');
-      }
-      print(movies.length);
-    for (var i = 0; i < movies.length; i++) {
-      searchResult.add({
-        'title': movies[i].title,
-        'poster_path': movies[i].posterPath,
-        'rating': movies[i].voteAverage,
-      });
-    }
+    String searchURL =
+        'https://api.themoviedb.org/3/search/multi?api_key=c5147b4f6bccd1f46f693db2fb007b78&query=$val';
 
-    if (searchResult.length > 20) {
-      searchResult.removeRange(20, searchResult.length);
+    var searchResponse = await http.get(Uri.parse(searchURL));
+
+    if (searchResponse.statusCode == 200) {
+      var tempData = jsonDecode(searchResponse.body);
+      var searchJson = tempData['results'];
+
+      for (var i in searchJson) {
+        if (i['id'] != null &&
+            i['poster_path'] != null &&
+            i['vote_average'] != null &&
+            i['media_type'] != null) {
+          searchResult.add({
+            'title': i['id'],
+            'poster_path': i['poster_path'],
+            'vote_average': i['vote_average'],
+            'media_type': i['media_type'],
+            'popularity': i['popularity'],
+            'overview': i['overview'],
+          });
+
+          if (searchResult.length > 20) {
+            searchResult.removeRange(20, searchResult.length);
+          } else {
+            print('Error: null value');
+          }
+        }
+      }
     }
   }
 
@@ -148,7 +157,8 @@ class _SearchingBarState extends State<SearchingBar> {
                           scrollDirection: Axis.vertical,
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
-                            String posterUrl = 'https://image.tmdb.org/t/p/w500${searchResult[index]['poster_path']}';
+                            String posterUrl =
+                                'https://image.tmdb.org/t/p/w500${searchResult[index]['poster_path']}';
                             return GestureDetector(
                               //Envío a la descripción
                               onTap: () {
@@ -166,7 +176,7 @@ class _SearchingBarState extends State<SearchingBar> {
                               child: Container(
                                 margin:
                                     const EdgeInsets.only(top: 4, bottom: 4),
-                                height: 250,
+                                height: 190,
                                 width: MediaQuery.of(context).size.width,
                                 decoration: const BoxDecoration(
                                   color: Color.fromRGBO(21, 4, 29, 1),
@@ -177,18 +187,16 @@ class _SearchingBarState extends State<SearchingBar> {
                                   children: [
                                     Container(
                                       width: MediaQuery.of(context).size.width *
-                                          0.4,
+                                          0.35,
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
+                                        borderRadius: const BorderRadius.all(
                                             Radius.circular(10)),
-                                        //POSTER DE LA PELI
-                                          image: DecorationImage(
-                                            image: NetworkImage(
-                                              posterUrl,
-                                            ),
-                                            fit: BoxFit.cover
-                                            //fit: BoxFit.cover,
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                            posterUrl,
                                           ),
+                                          fit: BoxFit.fill,
+                                        ),
                                       ),
                                     ),
                                   ],
