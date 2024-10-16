@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:film_finder/methods/movie.dart';
 
 class FilmInfo extends StatelessWidget {
-  const FilmInfo({super.key, required this.filmTitle, required this.movie});
-
-  final String filmTitle;
+  const FilmInfo({super.key, required this.movie});
 
   final Movie movie;
 
@@ -41,7 +39,7 @@ class FilmInfo extends StatelessWidget {
               title: Stack(
                 children: [
                   Text(
-                    filmTitle,
+                    movie.title,
                     style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,
@@ -52,7 +50,7 @@ class FilmInfo extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    filmTitle,
+                    movie.title,
                     style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,
@@ -66,12 +64,12 @@ class FilmInfo extends StatelessWidget {
                   bottomLeft: Radius.circular(24),
                   bottomRight: Radius.circular(24),
                 ),
-                child: Image.asset(
-                  'assets/images/example.jpg',
-                  filterQuality: FilterQuality.high,
+                child: Image.network(
+                  'https://image.tmdb.org/t/p/original${movie.backDropPath}',
                   fit: BoxFit.cover,
+                  filterQuality: FilterQuality.high,
                 ),
-              ), //Image.network(src),
+              ),
             ),
           ),
           SliverToBoxAdapter(
@@ -96,7 +94,7 @@ class FilmInfo extends StatelessWidget {
                               Stack(
                                 children: [
                                   Text(
-                                    filmTitle,
+                                    movie.title,
                                     style: TextStyle(
                                       fontSize: 21,
                                       fontWeight: FontWeight.bold,
@@ -107,7 +105,7 @@ class FilmInfo extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    filmTitle,
+                                    movie.title,
                                     style: const TextStyle(
                                       fontSize: 21,
                                       fontWeight: FontWeight.w600,

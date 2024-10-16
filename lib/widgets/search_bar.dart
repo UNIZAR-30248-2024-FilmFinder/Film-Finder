@@ -44,7 +44,6 @@ class _SearchingBarState extends State<SearchingBar> {
             movies.add(Movie(
               title: i['title'] ?? 'No title',
               backDropPath: i['backdrop_path'] ?? '',
-              originalTitle: i['original_title'] ?? 'No original title',
               overview: i['overview'] ?? 'No overview available',
               posterPath: i['poster_path'] ?? '',
               releaseDay: i['release_date'] ?? 'Unknown',
@@ -163,7 +162,7 @@ class _SearchingBarState extends State<SearchingBar> {
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
                             String posterUrl =
-                                'https://image.tmdb.org/t/p/w500${movies[index].posterPath}';
+                                'https://image.tmdb.org/t/p/original${movies[index].posterPath}';
                             return GestureDetector(
                               //Envío a la descripción
                               onTap: () {
@@ -171,7 +170,6 @@ class _SearchingBarState extends State<SearchingBar> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => FilmInfo(
-                                      filmTitle: "Interstellar",
                                       movie: movies[index],
                                     ),
                                   ),

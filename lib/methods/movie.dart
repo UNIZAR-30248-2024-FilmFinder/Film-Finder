@@ -1,30 +1,27 @@
 class Movie {
-  String title;
-  String backDropPath;
-  String originalTitle;
+  String title; //titulo de la pelicula
+  String backDropPath; //Banner de la pelicula
   String overview;
   String posterPath;
   String releaseDay;
-  String mediaType;
+  String mediaType; //Serie o película
   double voteAverage;
 
   //DEFINIR QUE ES QUE Y AÑADIR NUEVO
   Movie({
     required this.title,
     required this.backDropPath,
-    required this.originalTitle,
     required this.overview,
     required this.posterPath,
     required this.releaseDay,
     required this.voteAverage,
-    required this.mediaType, //Serie o película
+    required this.mediaType,
   });
 
   factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(
       title: json["title"],
       backDropPath: json["backdrop_path"],
-      originalTitle: json["original_title"],
       overview: json["overview"],
       posterPath: json["poster_path"],
       releaseDay: json["release_date"],
