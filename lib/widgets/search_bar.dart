@@ -27,7 +27,7 @@ class _SearchingBarState extends State<SearchingBar> {
   // FUNCIÓN CON LA QUE SE EXTRAERÁN LOS DATOS DE LA API
   Future<void> searchListFunction(String val) async {
     String searchURL =
-        'https://api.themoviedb.org/3/search/multi?api_key=${Constants.apiKey}&query=$val';
+        'https://api.themoviedb.org/3/search/multi?api_key=${Constants.apiKey}&query=$val&language=es-ES';
 
     var searchResponse = await http.get(Uri.parse(searchURL));
 
@@ -39,7 +39,8 @@ class _SearchingBarState extends State<SearchingBar> {
         if (i['id'] != null &&
             i['poster_path'] != null &&
             i['vote_average'] != null &&
-            i['media_type'] != null) {
+            i['media_type'] != null &&
+            i['media_type'] == 'movie') {
           try {
             movies.add(Movie(
               title: i['title'] ?? 'No title',
@@ -193,7 +194,7 @@ class _SearchingBarState extends State<SearchingBar> {
                                   children: [
                                     Container(
                                       width: MediaQuery.of(context).size.width *
-                                          0.35,
+                                          0.33,
                                       decoration: BoxDecoration(
                                         borderRadius: const BorderRadius.all(
                                             Radius.circular(10)),

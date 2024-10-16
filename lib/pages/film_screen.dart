@@ -41,7 +41,7 @@ class FilmInfo extends StatelessWidget {
                   Text(
                     movie.title,
                     style: TextStyle(
-                      fontSize: 17,
+                      fontSize: 15,
                       fontWeight: FontWeight.bold,
                       foreground: Paint()
                         ..style = PaintingStyle.stroke
@@ -52,7 +52,7 @@ class FilmInfo extends StatelessWidget {
                   Text(
                     movie.title,
                     style: const TextStyle(
-                      fontSize: 17,
+                      fontSize: 15,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -81,11 +81,12 @@ class FilmInfo extends StatelessWidget {
                   SizedBox(
                     child: Row(
                       children: [
-                        Image.asset(
-                          'assets/images/example_poster.jpg',
+                        Image.network(
+                          'https://image.tmdb.org/t/p/original${movie.posterPath}',
+                          filterQuality: FilterQuality.high,
                           height: 165,
                           width: 165,
-                        ), //Image.network(src),
+                        ),
                         const SizedBox(width: 5),
                         Flexible(
                           child: Column(
@@ -96,7 +97,7 @@ class FilmInfo extends StatelessWidget {
                                   Text(
                                     movie.title,
                                     style: TextStyle(
-                                      fontSize: 21,
+                                      fontSize: 19,
                                       fontWeight: FontWeight.bold,
                                       foreground: Paint()
                                         ..style = PaintingStyle.stroke
@@ -107,7 +108,7 @@ class FilmInfo extends StatelessWidget {
                                   Text(
                                     movie.title,
                                     style: const TextStyle(
-                                      fontSize: 21,
+                                      fontSize: 19,
                                       fontWeight: FontWeight.w600,
                                       color: Colors.white,
                                     ),
@@ -153,7 +154,7 @@ class FilmInfo extends StatelessWidget {
                                   ),
                                   Expanded(
                                     child: Text(
-                                      '169 mins',
+                                      '100 mins',
                                       softWrap: true,
                                       style: TextStyle(
                                         fontSize: 13,
@@ -178,7 +179,7 @@ class FilmInfo extends StatelessWidget {
                                   ),
                                   Expanded(
                                     child: Text(
-                                      'Christopher Nolan',
+                                      'director',
                                       softWrap: true,
                                       style: TextStyle(
                                         fontSize: 13,
@@ -215,9 +216,9 @@ class FilmInfo extends StatelessWidget {
                             border: Border.all(color: Colors.grey),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: const Row(
+                          child: Row(
                             children: [
-                              Text(
+                              const Text(
                                 'Fecha de estreno: ',
                                 style: TextStyle(
                                   fontSize: 14,
@@ -226,8 +227,8 @@ class FilmInfo extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                'xx/xx/xxxx',
-                                style: TextStyle(
+                                movie.releaseDay,
+                                style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w300,
                                   color: Colors.white,
@@ -242,9 +243,9 @@ class FilmInfo extends StatelessWidget {
                             border: Border.all(color: Colors.grey),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: const Row(
+                          child: Row(
                             children: [
-                              Text(
+                              const Text(
                                 'Puntuación: ',
                                 style: TextStyle(
                                   fontSize: 14,
@@ -253,14 +254,14 @@ class FilmInfo extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                '9/10 ',
-                                style: TextStyle(
+                                movie.voteAverage.toString(),
+                                style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w300,
                                   color: Colors.white,
                                 ),
                               ),
-                              Icon(
+                              const Icon(
                                 Icons.star,
                                 color: Colors.yellow,
                               ),
@@ -271,9 +272,9 @@ class FilmInfo extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 25),
-                  const Text(
-                    'En un futuro cercano en el Medio Oeste de Estados Unidos, Cooper, un ex ingeniero científico y piloto, está atado a su tierra de cultivo con su hija Murph y su hijo Tom. Mientras devastadoras tormentas de arena arrasan los cultivos de la Tierra, la gente de la Tierra se da cuenta de que su vida aquí está llegando a su fin a medida que la comida comienza a escasear. Finalmente, al tropezar con una base de la NASA a 6 horas de la casa de Cooper, se le pide que participe en una audaz misión con otros científicos en un agujero de gusano debido al intelecto científico de Cooper y su capacidad para pilotear aviones a diferencia de los otros miembros de la tripulación. Para encontrar un nuevo hogar mientras la Tierra se desintegra, Cooper debe decidir si se queda o corre el riesgo de no volver a ver a sus hijos para salvar a la raza humana encontrando otro planeta habitable.',
-                    style: TextStyle(
+                  Text(
+                    movie.overview,
+                    style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w300,
                       color: Colors.white,

@@ -1,13 +1,12 @@
 class Movie {
-  String title; //titulo de la pelicula
-  String backDropPath; //Banner de la pelicula
-  String overview;
-  String posterPath;
-  String releaseDay;
-  String mediaType; //Serie o película
-  double voteAverage;
+  String title; // Título de la película
+  String backDropPath; // Ruta del banner
+  String overview; // Resumen
+  String posterPath; // Ruta del póster
+  String releaseDay; // Fecha de lanzamiento
+  String mediaType; // Tipo: Serie o Película
+  double voteAverage; // Promedio de votos
 
-  //DEFINIR QUE ES QUE Y AÑADIR NUEVO
   Movie({
     required this.title,
     required this.backDropPath,
@@ -18,15 +17,15 @@ class Movie {
     required this.mediaType,
   });
 
-  factory Movie.fromJson(Map<String, dynamic> json) {
+  factory Movie.fromJson(Map<String, dynamic> detailsJson) {
     return Movie(
-      title: json["title"],
-      backDropPath: json["backdrop_path"],
-      overview: json["overview"],
-      posterPath: json["poster_path"],
-      releaseDay: json["release_date"],
-      voteAverage: json["vote_average"],
-      mediaType: json["media_type"],
+      title: detailsJson["title"] ?? 'Unknown Title',
+      backDropPath: detailsJson["backdrop_path"] ?? '',
+      overview: detailsJson["overview"] ?? 'No overview available',
+      posterPath: detailsJson["poster_path"] ?? '',
+      releaseDay: detailsJson["release_date"] ?? 'Unknown Release Date',
+      voteAverage: detailsJson["vote_average"] ?? 0,
+      mediaType: detailsJson["media_type"] ?? 'Unknown Media Type',
     );
   }
 }
