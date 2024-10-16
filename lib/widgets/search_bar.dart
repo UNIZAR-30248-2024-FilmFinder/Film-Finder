@@ -18,15 +18,13 @@ class SearchingBar extends StatefulWidget {
 }
 
 class _SearchingBarState extends State<SearchingBar> {
-  List<Map<String, dynamic>> searchResult = [];
-
   final TextEditingController searchText = TextEditingController();
 
   var val1;
   List<Movie> movies = [];
   bool showList = false;
 
-  //FUNCION CON LA QUE SE EXRTRAERAN LOS DATOS DE LA API
+  // FUNCIÓN CON LA QUE SE EXTRAERÁN LOS DATOS DE LA API
   Future<void> searchListFunction(String val) async {
     String searchURL =
         'https://api.themoviedb.org/3/search/multi?api_key=${Constants.apiKey}&query=$val';
@@ -42,22 +40,28 @@ class _SearchingBarState extends State<SearchingBar> {
             i['poster_path'] != null &&
             i['vote_average'] != null &&
             i['media_type'] != null) {
-          searchResult.add({
-            'title': i['id'],
-            'poster_path': i['poster_path'],
-            'vote_average': i['vote_average'],
-            'media_type': i['media_type'],
-            'popularity': i['popularity'],
-            'overview': i['overview'],
-          });
+          try {
+            movies.add(Movie(
+              title: i['title'] ?? 'No title',
+              backDropPath: i['backdrop_path'] ?? '',
+              originalTitle: i['original_title'] ?? 'No original title',
+              overview: i['overview'] ?? 'No overview available',
+              posterPath: i['poster_path'] ?? '',
+              releaseDay: i['release_date'] ?? 'Unknown',
+              voteAverage: (i['vote_average'] as num).toDouble(),
+              mediaType: i['media_type'],
+            ));
+          } catch (e) {
+            print('Error al agregar película: $e');
+          }
 
-          if (searchResult.length > 20) {
-            searchResult.removeRange(20, searchResult.length);
-          } else {
-            print('Error: null value');
+          if (movies.length > 20) {
+            movies.removeRange(20, movies.length);
           }
         }
       }
+    } else {
+      print('Error: No se pudo obtener la información');
     }
   }
 
@@ -83,7 +87,7 @@ class _SearchingBarState extends State<SearchingBar> {
                 autofocus: false,
                 controller: searchText,
                 onSubmitted: (value) {
-                  searchResult.clear();
+                  movies.clear();
 
                   setState(
                     () {
@@ -94,7 +98,7 @@ class _SearchingBarState extends State<SearchingBar> {
                 onChanged: (value) {
                   setState(
                     () {
-                      searchResult.clear();
+                      movies.clear();
 
                       setState(
                         () {
@@ -154,20 +158,23 @@ class _SearchingBarState extends State<SearchingBar> {
                       return Container(
                         height: 400,
                         child: ListView.builder(
-                          itemCount: searchResult.length,
+                          itemCount: movies.length,
                           scrollDirection: Axis.vertical,
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
                             String posterUrl =
-                                'https://image.tmdb.org/t/p/w500${searchResult[index]['poster_path']}';
+                                'https://image.tmdb.org/t/p/w500${movies[index].posterPath}';
                             return GestureDetector(
                               //Envío a la descripción
                               onTap: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const FilmInfo(film: "Interstellar")),
+                                    builder: (context) => FilmInfo(
+                                      filmTitle: "Interstellar",
+                                      movie: movies[index],
+                                    ),
+                                  ),
                                 );
                                 setState(() {
                                   searchText.clear();

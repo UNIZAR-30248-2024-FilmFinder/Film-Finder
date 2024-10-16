@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:film_finder/methods/movie.dart';
 
 class FilmInfo extends StatelessWidget {
-  const FilmInfo({super.key, required this.film});
+  const FilmInfo({super.key, required this.filmTitle, required this.movie});
 
-  // Sustituir por un tipo de dato que almace los datos de las películas
-  final String film;
+  final String filmTitle;
+
+  final Movie movie;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class FilmInfo extends StatelessWidget {
               title: Stack(
                 children: [
                   Text(
-                    film,
+                    filmTitle,
                     style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,
@@ -50,7 +52,7 @@ class FilmInfo extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    film,
+                    filmTitle,
                     style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,
@@ -94,7 +96,7 @@ class FilmInfo extends StatelessWidget {
                               Stack(
                                 children: [
                                   Text(
-                                    film,
+                                    filmTitle,
                                     style: TextStyle(
                                       fontSize: 21,
                                       fontWeight: FontWeight.bold,
@@ -105,7 +107,7 @@ class FilmInfo extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    film,
+                                    filmTitle,
                                     style: const TextStyle(
                                       fontSize: 21,
                                       fontWeight: FontWeight.w600,

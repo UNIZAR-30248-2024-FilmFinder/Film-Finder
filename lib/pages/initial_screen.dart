@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:film_finder/pages/film_screen.dart';
 import 'package:film_finder/widgets/search_bar.dart';
 
 class InitialScreen extends StatelessWidget {
@@ -44,24 +43,6 @@ class InitialScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             const SearchingBar(),
-            const SizedBox(height: 250),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const FilmInfo(film: "Interstellar")),
-                );
-              },
-              child: const Text(
-                'Estructura Películas',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
           ],
         ),
       ),
