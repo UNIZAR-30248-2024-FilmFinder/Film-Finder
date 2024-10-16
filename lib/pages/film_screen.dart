@@ -141,9 +141,9 @@ class FilmInfo extends StatelessWidget {
                                 ],
                               ),
                               const SizedBox(height: 5),
-                              const Row(
+                              Row(
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Duración: ',
                                     softWrap: true,
                                     style: TextStyle(
@@ -154,9 +154,9 @@ class FilmInfo extends StatelessWidget {
                                   ),
                                   Expanded(
                                     child: Text(
-                                      '100 mins',
+                                      '${movie.duration} min',
                                       softWrap: true,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 13,
                                         fontWeight: FontWeight.w300,
                                         color: Colors.white,
@@ -166,9 +166,9 @@ class FilmInfo extends StatelessWidget {
                                 ],
                               ),
                               const SizedBox(height: 5),
-                              const Row(
+                               Row(
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Director: ',
                                     softWrap: true,
                                     style: TextStyle(
@@ -179,9 +179,9 @@ class FilmInfo extends StatelessWidget {
                                   ),
                                   Expanded(
                                     child: Text(
-                                      'director',
+                                      movie.director,
                                       softWrap: true,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 13,
                                         fontWeight: FontWeight.w300,
                                         color: Colors.white,

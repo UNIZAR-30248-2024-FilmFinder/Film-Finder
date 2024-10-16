@@ -1,4 +1,5 @@
 class Movie {
+  int id;
   String title; // Título de la película
   String backDropPath; // Ruta del banner
   String overview; // Resumen
@@ -6,8 +7,12 @@ class Movie {
   String releaseDay; // Fecha de lanzamiento
   String mediaType; // Tipo: Serie o Película
   double voteAverage; // Promedio de votos
+  String director; //Director de la película
+  int duration; //Duración de la película
+  //List<String> genres; //Géneros de la película
 
   Movie({
+    required this.id,
     required this.title,
     required this.backDropPath,
     required this.overview,
@@ -15,10 +20,14 @@ class Movie {
     required this.releaseDay,
     required this.voteAverage,
     required this.mediaType,
+    required this.director,
+    required this.duration,
+    //required this.genres,
   });
 
   factory Movie.fromJson(Map<String, dynamic> detailsJson) {
     return Movie(
+      id: detailsJson["id"] ?? 0,
       title: detailsJson["title"] ?? 'Unknown Title',
       backDropPath: detailsJson["backdrop_path"] ?? '',
       overview: detailsJson["overview"] ?? 'No overview available',
@@ -26,6 +35,9 @@ class Movie {
       releaseDay: detailsJson["release_date"] ?? 'Unknown Release Date',
       voteAverage: detailsJson["vote_average"] ?? 0,
       mediaType: detailsJson["media_type"] ?? 'Unknown Media Type',
+      director: detailsJson["job"] ?? 'Unknown Director',
+      duration: detailsJson["runtime"] ?? 0,
+      //genres: detailsJson[""]
     );
   }
 }

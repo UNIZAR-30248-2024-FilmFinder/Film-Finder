@@ -41,8 +41,41 @@ class _SearchingBarState extends State<SearchingBar> {
             i['vote_average'] != null &&
             i['media_type'] != null &&
             i['media_type'] == 'movie') {
+
+          int movieId = i['id'];
+
+          String creditsURL =
+              'https://api.themoviedb.org/3/movie/$movieId/credits?api_key=${Constants.apiKey}';
+
+          var creditsResponse = await http.get(Uri.parse(creditsURL));
+          String dir = 'Unknown Director';
+          if (creditsResponse.statusCode == 200) {
+            var creditsData = jsonDecode(creditsResponse.body);
+            var crewList = creditsData['crew'] as List<dynamic>;
+            
+            // Buscar al director en la lista de crew
+            for (var crewMember in crewList) {
+              if (crewMember['job'] == 'Director') {
+                dir = crewMember['name'];
+                break;
+              }
+            }
+          }
+
+          String detailsURL =
+            'https://api.themoviedb.org/3/movie/$movieId?api_key=${Constants.apiKey}&language=en-US';
+          var detailsResponse = await http.get(Uri.parse(detailsURL));
+
+          int runtime = 0; // Valor por defecto
+
+          if (detailsResponse.statusCode == 200) {
+            var detailsData = jsonDecode(detailsResponse.body);
+            runtime = detailsData['runtime'] ?? 0; // Duración de la película
+          }
+
           try {
             movies.add(Movie(
+              id: i['id'] ?? 0,
               title: i['title'] ?? 'No title',
               backDropPath: i['backdrop_path'] ?? '',
               overview: i['overview'] ?? 'No overview available',
@@ -50,6 +83,8 @@ class _SearchingBarState extends State<SearchingBar> {
               releaseDay: i['release_date'] ?? 'Unknown',
               voteAverage: (i['vote_average'] as num).toDouble(),
               mediaType: i['media_type'],
+              director: dir,
+              duration: runtime,
             ));
           } catch (e) {
             print('Error al agregar película: $e');
