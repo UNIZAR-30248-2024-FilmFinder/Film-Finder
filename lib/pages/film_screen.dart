@@ -116,9 +116,9 @@ class FilmInfo extends StatelessWidget {
                                 ],
                               ),
                               const SizedBox(height: 5),
-                              const Row(
+                              Row(
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Géneros: ',
                                     softWrap: true,
                                     style: TextStyle(
@@ -129,9 +129,9 @@ class FilmInfo extends StatelessWidget {
                                   ),
                                   Expanded(
                                     child: Text(
-                                      'Ciencia ficción - Aventura',
+                                      movie.genres.join(', '),
                                       softWrap: true,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 13,
                                         fontWeight: FontWeight.w300,
                                         color: Colors.white,

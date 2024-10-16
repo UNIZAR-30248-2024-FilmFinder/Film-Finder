@@ -9,7 +9,7 @@ class Movie {
   double voteAverage; // Promedio de votos
   String director; //Director de la película
   int duration; //Duración de la película
-  //List<String> genres; //Géneros de la película
+  List<String> genres; //Géneros de la película
 
   Movie({
     required this.id,
@@ -22,10 +22,17 @@ class Movie {
     required this.mediaType,
     required this.director,
     required this.duration,
-    //required this.genres,
+    required this.genres,
   });
 
   factory Movie.fromJson(Map<String, dynamic> detailsJson) {
+    List<String> genresList = [];
+    if (detailsJson['genres'] != null) {
+      genresList = (detailsJson['genres'] as List)
+          .map((genre) => genre['name'] as String)
+          .toList();
+    }
+
     return Movie(
       id: detailsJson["id"] ?? 0,
       title: detailsJson["title"] ?? 'Unknown Title',
@@ -37,7 +44,7 @@ class Movie {
       mediaType: detailsJson["media_type"] ?? 'Unknown Media Type',
       director: detailsJson["job"] ?? 'Unknown Director',
       duration: detailsJson["runtime"] ?? 0,
-      //genres: detailsJson[""]
+      genres: genresList,
     );
   }
 }

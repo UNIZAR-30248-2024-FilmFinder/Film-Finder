@@ -63,14 +63,20 @@ class _SearchingBarState extends State<SearchingBar> {
           }
 
           String detailsURL =
-            'https://api.themoviedb.org/3/movie/$movieId?api_key=${Constants.apiKey}&language=en-US';
+            'https://api.themoviedb.org/3/movie/$movieId?api_key=${Constants.apiKey}&language=es-ES';
           var detailsResponse = await http.get(Uri.parse(detailsURL));
 
           int runtime = 0; // Valor por defecto
+          List<String> genresList = [];
 
           if (detailsResponse.statusCode == 200) {
             var detailsData = jsonDecode(detailsResponse.body);
             runtime = detailsData['runtime'] ?? 0; // Duración de la película
+            if (detailsData['genres'] != null) {
+              genresList = (detailsData['genres'] as List)
+                .map((genre) => genre['name'] as String)
+                .toList(); // Convertimos la lista de géneros en una lista de Strings
+            }
           }
 
           try {
@@ -84,7 +90,8 @@ class _SearchingBarState extends State<SearchingBar> {
               voteAverage: (i['vote_average'] as num).toDouble(),
               mediaType: i['media_type'],
               director: dir,
-              duration: runtime,
+              duration: runtime, 
+              genres: genresList,
             ));
           } catch (e) {
             print('Error al agregar película: $e');
