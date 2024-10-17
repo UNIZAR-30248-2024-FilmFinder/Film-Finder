@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:film_finder/widgets/search_bar.dart';
+import 'package:film_finder/widgets/filters_widget.dart';
 
 class InitialScreen extends StatelessWidget {
   const InitialScreen({super.key});
@@ -44,6 +45,7 @@ class InitialScreen extends StatelessWidget {
             const SizedBox(height: 10),
             const SearchingBar(),
             const SizedBox(height: 25),
+            const Filters(),
           ],
         ),
       ),
