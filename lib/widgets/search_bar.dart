@@ -24,6 +24,7 @@ class _SearchingBarState extends State<SearchingBar> {
   List<Movie> movies = [];
   bool showList = false;
 
+  //FUNCIÓN QUE EXTRAE LA INFO NECESARIA PARA MOSTRAR EN EL BUSCADOR
   Future<void> searchListFunction(String val) async {
     String searchURL =
         'https://api.themoviedb.org/3/search/multi?api_key=${Constants.apiKey}&query=$val&language=es-ES';
@@ -34,33 +35,41 @@ class _SearchingBarState extends State<SearchingBar> {
       var tempData = jsonDecode(searchResponse.body);
       var searchJson = tempData['results'];
 
-      List<Future<void>> movieRequests = [];
+      movies
+          .clear(); // Limpiamos la lista de películas antes de llenarla nuevamente
 
       for (var i in searchJson) {
-        // Verificamos solo las películas y las que tienen la información necesaria
         if (i['id'] != null &&
             i['poster_path'] != null &&
             i['vote_average'] != null &&
             i['media_type'] == 'movie') {
-          int movieId = i['id'];
+          // Añadimos solo la información básica a la lista de películas
+          movies.add(Movie(
+            id: i['id'] ?? 0,
+            title: i['title'] ?? 'No title',
+            posterPath: i['poster_path'] ?? '',
+            releaseDay: i['release_date'] ?? 'Unknown',
+            voteAverage: (i['vote_average'] as num).toDouble(),
+            mediaType: i['media_type'],
+            // La información adicional la dejaremos en valores predeterminados
+            director: 'Unknown Director',
+            duration: 0,
+            genres: [],
+            backDropPath: '', // No lo cargamos aún
+            overview: 'No overview available', // No lo cargamos aún
+          ));
 
-          // Limitamos a 15 películas, si ya tenemos 15, detenemos el ciclo
+          // Limitamos a 15 películas
           if (movies.length >= 15) break;
-
-          // Ejecutamos las solicitudes de forma paralela
-          movieRequests.add(_fetchMovieDetails(movieId, i));
         }
       }
-
-      // Esperamos que todas las solicitudes paralelas terminen
-      await Future.wait(movieRequests);
     } else {
       print('Error: No se pudo obtener la información');
     }
   }
 
-  Future<void> _fetchMovieDetails(
-      int movieId, Map<String, dynamic> movieData) async {
+  //FUNCIÓN QUE EXTRAE EL RESTO DE INFORMACIÓN NECESARIA PARA CARGAR LA PÁGINA DE PELÍCULA
+  Future<void> _fetchMovieDetails(int movieId) async {
     try {
       // Definimos las URLs para obtener detalles y créditos
       String creditsURL =
@@ -93,9 +102,15 @@ class _SearchingBarState extends State<SearchingBar> {
       // Procesamos los detalles de la película
       int runtime = 0;
       List<String> genresList = [];
+      String overview = 'No overview available';
+      String backDropPath = '';
+
       if (detailsResponse.statusCode == 200) {
         var detailsData = jsonDecode(detailsResponse.body);
         runtime = detailsData['runtime'] ?? 0;
+        overview = detailsData['overview'] ?? overview;
+        backDropPath = detailsData['backdrop_path'] ?? backDropPath;
+
         if (detailsData['genres'] != null) {
           genresList = (detailsData['genres'] as List)
               .map((genre) => genre['name'] as String)
@@ -103,24 +118,16 @@ class _SearchingBarState extends State<SearchingBar> {
         }
       }
 
-      // Añadimos la película a la lista de resultados
-      movies.add(Movie(
-        id: movieData['id'] ?? 0,
-        title: movieData['title'] ?? 'No title',
-        backDropPath: movieData['backdrop_path'] ?? '',
-        overview: movieData['overview'] ?? 'No overview available',
-        posterPath: movieData['poster_path'] ?? '',
-        releaseDay: movieData['release_date'] ?? 'Unknown',
-        voteAverage: (movieData['vote_average'] as num).toDouble(),
-        mediaType: movieData['media_type'],
-        director: director,
-        duration: runtime,
-        genres: genresList,
-      ));
-
-      // Mantenemos el límite de 15 películas
-      if (movies.length > 15) {
-        movies.removeRange(15, movies.length);
+      // Buscamos la película por ID y actualizamos sus detalles
+      for (var movie in movies) {
+        if (movie.id == movieId) {
+          movie.director = director;
+          movie.duration = runtime;
+          movie.genres = genresList;
+          movie.overview = overview;
+          movie.backDropPath = backDropPath;
+          break;
+        }
       }
     } catch (e) {
       print('Error al obtener detalles de la película $movieId: $e');
@@ -227,8 +234,9 @@ class _SearchingBarState extends State<SearchingBar> {
                             String posterUrl =
                                 'https://image.tmdb.org/t/p/original${movies[index].posterPath}';
                             return GestureDetector(
-                              //Envío a la descripción
-                              onTap: () {
+                              onTap: () async {
+                                await _fetchMovieDetails(movies[index].id);
+
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -237,9 +245,14 @@ class _SearchingBarState extends State<SearchingBar> {
                                     ),
                                   ),
                                 );
-                                setState(() {
-                                  searchText.clear();
-                                  FocusManager.instance.primaryFocus?.unfocus();
+
+                                FocusManager.instance.primaryFocus?.unfocus();
+
+                                Future.delayed(
+                                    const Duration(milliseconds: 500), () {
+                                  setState(() {
+                                    searchText.clear();
+                                  });
                                 });
                               },
                               child: Container(
@@ -276,9 +289,12 @@ class _SearchingBarState extends State<SearchingBar> {
                         ),
                       );
                     } else {
-                      return const Center(
-                        child: CircularProgressIndicator(
-                          color: Color.fromRGBO(190, 49, 68, 1),
+                      return Container(
+                        height: 400,
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            color: Color.fromRGBO(190, 49, 68, 1),
+                          ),
                         ),
                       );
                     }

@@ -45,7 +45,7 @@ class FilmInfo extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       foreground: Paint()
                         ..style = PaintingStyle.stroke
-                        ..strokeWidth = 3
+                        ..strokeWidth = 2
                         ..color = Colors.black,
                     ),
                   ),
@@ -166,7 +166,7 @@ class FilmInfo extends StatelessWidget {
                                 ],
                               ),
                               const SizedBox(height: 5),
-                               Row(
+                              Row(
                                 children: [
                                   const Text(
                                     'Director: ',

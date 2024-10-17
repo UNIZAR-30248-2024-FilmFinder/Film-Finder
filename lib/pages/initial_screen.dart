@@ -16,7 +16,7 @@ class InitialScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(height: statusBarHeight + 20),
+            SizedBox(height: statusBarHeight + 40),
             Center(
               child: Stack(
                 children: [

@@ -57,7 +57,7 @@ class _FiltersState extends State<Filters> {
                             text: 'ACCION',
                           ),
                         ),
-                        const SizedBox(width: 20),
+                        const SizedBox(width: 15),
                         GestureDetector(
                           onTap: () {
                             // AÑADIR A LA LISTA EL GENERO INDICADO
@@ -67,7 +67,7 @@ class _FiltersState extends State<Filters> {
                             text: 'ANIMACION',
                           ),
                         ),
-                        const SizedBox(width: 20),
+                        const SizedBox(width: 15),
                         GestureDetector(
                           onTap: () {
                             // AÑADIR A LA LISTA EL GENERO INDICADO
@@ -77,7 +77,7 @@ class _FiltersState extends State<Filters> {
                             text: 'AVENTURA',
                           ),
                         ),
-                        const SizedBox(width: 20),
+                        const SizedBox(width: 15),
                         GestureDetector(
                           onTap: () {
                             // AÑADIR A LA LISTA EL GENERO INDICADO
@@ -87,7 +87,7 @@ class _FiltersState extends State<Filters> {
                             text: 'CIENCIA FICCIÓN',
                           ),
                         ),
-                        const SizedBox(width: 20),
+                        const SizedBox(width: 15),
                         GestureDetector(
                           onTap: () {
                             // AÑADIR A LA LISTA EL GENERO INDICADO
@@ -97,7 +97,7 @@ class _FiltersState extends State<Filters> {
                             text: 'COMEDIA',
                           ),
                         ),
-                        const SizedBox(width: 20),
+                        const SizedBox(width: 15),
                         GestureDetector(
                           onTap: () {
                             // AÑADIR A LA LISTA EL GENERO INDICADO
@@ -107,7 +107,7 @@ class _FiltersState extends State<Filters> {
                             text: 'CRIMEN',
                           ),
                         ),
-                        const SizedBox(width: 20),
+                        const SizedBox(width: 15),
                         GestureDetector(
                           onTap: () {
                             // AÑADIR A LA LISTA EL GENERO INDICADO
@@ -117,7 +117,7 @@ class _FiltersState extends State<Filters> {
                             text: 'DOCUMENTAL',
                           ),
                         ),
-                        const SizedBox(width: 20),
+                        const SizedBox(width: 15),
                         GestureDetector(
                           onTap: () {
                             // AÑADIR A LA LISTA EL GENERO INDICADO
@@ -127,7 +127,7 @@ class _FiltersState extends State<Filters> {
                             text: 'DRAMA',
                           ),
                         ),
-                        const SizedBox(width: 20),
+                        const SizedBox(width: 15),
                         GestureDetector(
                           onTap: () {
                             // AÑADIR A LA LISTA EL GENERO INDICADO
@@ -137,7 +137,7 @@ class _FiltersState extends State<Filters> {
                             text: 'FAMILIA',
                           ),
                         ),
-                        const SizedBox(width: 20),
+                        const SizedBox(width: 15),
                         GestureDetector(
                           onTap: () {
                             // AÑADIR A LA LISTA EL GENERO INDICADO
@@ -147,7 +147,7 @@ class _FiltersState extends State<Filters> {
                             text: 'FANTASIA',
                           ),
                         ),
-                        const SizedBox(width: 20),
+                        const SizedBox(width: 15),
                         GestureDetector(
                           onTap: () {
                             // AÑADIR A LA LISTA EL GENERO INDICADO
@@ -157,7 +157,7 @@ class _FiltersState extends State<Filters> {
                             text: 'GUERRA',
                           ),
                         ),
-                        const SizedBox(width: 20),
+                        const SizedBox(width: 15),
                         GestureDetector(
                           onTap: () {
                             // AÑADIR A LA LISTA EL GENERO INDICADO
@@ -167,7 +167,7 @@ class _FiltersState extends State<Filters> {
                             text: 'HISTORIA',
                           ),
                         ),
-                        const SizedBox(width: 20),
+                        const SizedBox(width: 15),
                         GestureDetector(
                           onTap: () {
                             // AÑADIR A LA LISTA EL GENERO INDICADO
@@ -177,7 +177,7 @@ class _FiltersState extends State<Filters> {
                             text: 'MISTERIO',
                           ),
                         ),
-                        const SizedBox(width: 20),
+                        const SizedBox(width: 15),
                         GestureDetector(
                           onTap: () {
                             // AÑADIR A LA LISTA EL GENERO INDICADO
@@ -187,7 +187,7 @@ class _FiltersState extends State<Filters> {
                             text: 'MUSICA',
                           ),
                         ),
-                        const SizedBox(width: 20),
+                        const SizedBox(width: 15),
                         GestureDetector(
                           onTap: () {
                             // AÑADIR A LA LISTA EL GENERO INDICADO
@@ -197,7 +197,7 @@ class _FiltersState extends State<Filters> {
                             text: 'PELICULA TV',
                           ),
                         ),
-                        const SizedBox(width: 20),
+                        const SizedBox(width: 15),
                         GestureDetector(
                           onTap: () {
                             // AÑADIR A LA LISTA EL GENERO INDICADO
@@ -207,7 +207,7 @@ class _FiltersState extends State<Filters> {
                             text: 'ROMANCE',
                           ),
                         ),
-                        const SizedBox(width: 20),
+                        const SizedBox(width: 15),
                         GestureDetector(
                           onTap: () {
                             // AÑADIR A LA LISTA EL GENERO INDICADO
@@ -217,7 +217,7 @@ class _FiltersState extends State<Filters> {
                             text: 'SUSPENSE',
                           ),
                         ),
-                        const SizedBox(width: 20),
+                        const SizedBox(width: 15),
                         GestureDetector(
                           onTap: () {
                             // AÑADIR A LA LISTA EL GENERO INDICADO
@@ -227,7 +227,7 @@ class _FiltersState extends State<Filters> {
                             text: 'TERROR',
                           ),
                         ),
-                        const SizedBox(width: 20),
+                        const SizedBox(width: 15),
                         GestureDetector(
                           onTap: () {
                             // AÑADIR A LA LISTA EL GENERO INDICADO
@@ -237,7 +237,7 @@ class _FiltersState extends State<Filters> {
                             text: 'WESTERN',
                           ),
                         ),
-                        const SizedBox(width: 20),
+                        const SizedBox(width: 15),
                       ],
                     ),
                   ),
@@ -310,6 +310,7 @@ class _FiltersState extends State<Filters> {
                       ElevatedButton(
                         onPressed: () {
                           setState(() {
+                            //REINICIAR VALORES
                             pasoDeFiltro++;
                           });
                         },
@@ -349,6 +350,7 @@ class _FiltersState extends State<Filters> {
                       ElevatedButton(
                         onPressed: () {
                           setState(() {
+                            //REINICIAR VALORES
                             pasoDeFiltro--;
                           });
                         },
