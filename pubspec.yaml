@@ -93,6 +93,9 @@ flutter:
     - assets/platform_icons/hbo.png
     - assets/platform_icons/netflix.png
     - assets/platform_icons/primeVideo.png
+    # Iconos para el tamaño del grupo
+    - assets/icons/grupal.png
+    - assets/icons/individual.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
