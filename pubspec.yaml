@@ -52,6 +52,8 @@ dev_dependencies:
 
   google_nav_bar: ^5.0.6
 
+  flip_card: ^0.6.0
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -65,6 +67,25 @@ flutter:
   assets:
     - assets/images/example.jpg
     - assets/images/example_poster.jpg
+    - assets/genres_icons/accion.png
+    - assets/genres_icons/animacion.png
+    - assets/genres_icons/aventura.png
+    - assets/genres_icons/cienciaFiccion.png
+    - assets/genres_icons/comedia.png
+    - assets/genres_icons/crimen.png
+    - assets/genres_icons/documental.png
+    - assets/genres_icons/drama.png
+    - assets/genres_icons/familia.png
+    - assets/genres_icons/fantasia.png
+    - assets/genres_icons/guerra.png
+    - assets/genres_icons/historia.png
+    - assets/genres_icons/misterio.png
+    - assets/genres_icons/musica.png
+    - assets/genres_icons/peliculaTV.png
+    - assets/genres_icons/romance.png
+    - assets/genres_icons/suspense.png
+    - assets/genres_icons/terror.png
+    - assets/genres_icons/western.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
