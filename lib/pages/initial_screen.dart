@@ -43,6 +43,7 @@ class InitialScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             const SearchingBar(),
+            const SizedBox(height: 25),
           ],
         ),
       ),

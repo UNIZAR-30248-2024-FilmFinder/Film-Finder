@@ -24,7 +24,6 @@ class _SearchingBarState extends State<SearchingBar> {
   List<Movie> movies = [];
   bool showList = false;
 
-  // FUNCIÓN CON LA QUE SE EXTRAERÁN LOS DATOS DE LA API
   Future<void> searchListFunction(String val) async {
     String searchURL =
         'https://api.themoviedb.org/3/search/multi?api_key=${Constants.apiKey}&query=$val&language=es-ES';
@@ -35,75 +34,96 @@ class _SearchingBarState extends State<SearchingBar> {
       var tempData = jsonDecode(searchResponse.body);
       var searchJson = tempData['results'];
 
+      List<Future<void>> movieRequests = [];
+
       for (var i in searchJson) {
+        // Verificamos solo las películas y las que tienen la información necesaria
         if (i['id'] != null &&
             i['poster_path'] != null &&
             i['vote_average'] != null &&
-            i['media_type'] != null &&
             i['media_type'] == 'movie') {
-
           int movieId = i['id'];
 
-          String creditsURL =
-              'https://api.themoviedb.org/3/movie/$movieId/credits?api_key=${Constants.apiKey}';
+          // Limitamos a 15 películas, si ya tenemos 15, detenemos el ciclo
+          if (movies.length >= 15) break;
 
-          var creditsResponse = await http.get(Uri.parse(creditsURL));
-          String dir = 'Unknown Director';
-          if (creditsResponse.statusCode == 200) {
-            var creditsData = jsonDecode(creditsResponse.body);
-            var crewList = creditsData['crew'] as List<dynamic>;
-            
-            // Buscar al director en la lista de crew
-            for (var crewMember in crewList) {
-              if (crewMember['job'] == 'Director') {
-                dir = crewMember['name'];
-                break;
-              }
-            }
-          }
+          // Ejecutamos las solicitudes de forma paralela
+          movieRequests.add(_fetchMovieDetails(movieId, i));
+        }
+      }
 
-          String detailsURL =
-            'https://api.themoviedb.org/3/movie/$movieId?api_key=${Constants.apiKey}&language=es-ES';
-          var detailsResponse = await http.get(Uri.parse(detailsURL));
+      // Esperamos que todas las solicitudes paralelas terminen
+      await Future.wait(movieRequests);
+    } else {
+      print('Error: No se pudo obtener la información');
+    }
+  }
 
-          int runtime = 0; // Valor por defecto
-          List<String> genresList = [];
+  Future<void> _fetchMovieDetails(
+      int movieId, Map<String, dynamic> movieData) async {
+    try {
+      // Definimos las URLs para obtener detalles y créditos
+      String creditsURL =
+          'https://api.themoviedb.org/3/movie/$movieId/credits?api_key=${Constants.apiKey}';
+      String detailsURL =
+          'https://api.themoviedb.org/3/movie/$movieId?api_key=${Constants.apiKey}&language=es-ES';
 
-          if (detailsResponse.statusCode == 200) {
-            var detailsData = jsonDecode(detailsResponse.body);
-            runtime = detailsData['runtime'] ?? 0; // Duración de la película
-            if (detailsData['genres'] != null) {
-              genresList = (detailsData['genres'] as List)
-                .map((genre) => genre['name'] as String)
-                .toList(); // Convertimos la lista de géneros en una lista de Strings
-            }
-          }
+      // Ejecutamos ambas solicitudes de forma paralela
+      var responses = await Future.wait([
+        http.get(Uri.parse(creditsURL)),
+        http.get(Uri.parse(detailsURL)),
+      ]);
 
-          try {
-            movies.add(Movie(
-              id: i['id'] ?? 0,
-              title: i['title'] ?? 'No title',
-              backDropPath: i['backdrop_path'] ?? '',
-              overview: i['overview'] ?? 'No overview available',
-              posterPath: i['poster_path'] ?? '',
-              releaseDay: i['release_date'] ?? 'Unknown',
-              voteAverage: (i['vote_average'] as num).toDouble(),
-              mediaType: i['media_type'],
-              director: dir,
-              duration: runtime, 
-              genres: genresList,
-            ));
-          } catch (e) {
-            print('Error al agregar película: $e');
-          }
+      var creditsResponse = responses[0];
+      var detailsResponse = responses[1];
 
-          if (movies.length > 20) {
-            movies.removeRange(20, movies.length);
+      // Procesamos la información de los créditos
+      String director = 'Unknown Director';
+      if (creditsResponse.statusCode == 200) {
+        var creditsData = jsonDecode(creditsResponse.body);
+        var crewList = creditsData['crew'] as List<dynamic>;
+        for (var crewMember in crewList) {
+          if (crewMember['job'] == 'Director') {
+            director = crewMember['name'];
+            break;
           }
         }
       }
-    } else {
-      print('Error: No se pudo obtener la información');
+
+      // Procesamos los detalles de la película
+      int runtime = 0;
+      List<String> genresList = [];
+      if (detailsResponse.statusCode == 200) {
+        var detailsData = jsonDecode(detailsResponse.body);
+        runtime = detailsData['runtime'] ?? 0;
+        if (detailsData['genres'] != null) {
+          genresList = (detailsData['genres'] as List)
+              .map((genre) => genre['name'] as String)
+              .toList();
+        }
+      }
+
+      // Añadimos la película a la lista de resultados
+      movies.add(Movie(
+        id: movieData['id'] ?? 0,
+        title: movieData['title'] ?? 'No title',
+        backDropPath: movieData['backdrop_path'] ?? '',
+        overview: movieData['overview'] ?? 'No overview available',
+        posterPath: movieData['poster_path'] ?? '',
+        releaseDay: movieData['release_date'] ?? 'Unknown',
+        voteAverage: (movieData['vote_average'] as num).toDouble(),
+        mediaType: movieData['media_type'],
+        director: director,
+        duration: runtime,
+        genres: genresList,
+      ));
+
+      // Mantenemos el límite de 15 películas
+      if (movies.length > 15) {
+        movies.removeRange(15, movies.length);
+      }
+    } catch (e) {
+      print('Error al obtener detalles de la película $movieId: $e');
     }
   }
 
