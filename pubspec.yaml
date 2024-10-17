@@ -67,6 +67,7 @@ flutter:
   assets:
     - assets/images/example.jpg
     - assets/images/example_poster.jpg
+    # Iconos de los diferentes géneros
     - assets/genres_icons/accion.png
     - assets/genres_icons/animacion.png
     - assets/genres_icons/aventura.png
@@ -86,6 +87,12 @@ flutter:
     - assets/genres_icons/suspense.png
     - assets/genres_icons/terror.png
     - assets/genres_icons/western.png
+    # Iconos de las diferentes plataformas
+    - assets/platform_icons/apple-tv.png
+    - assets/platform_icons/disneyPlus.png
+    - assets/platform_icons/hbo.png
+    - assets/platform_icons/netflix.png
+    - assets/platform_icons/primeVideo.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
