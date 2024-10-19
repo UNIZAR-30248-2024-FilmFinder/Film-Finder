@@ -16,33 +16,15 @@ class InitialScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(height: statusBarHeight + 40),
+            SizedBox(height: statusBarHeight + 25),
             Center(
-              child: Stack(
-                children: [
-                  Text(
-                    'Film Finder',
-                    style: TextStyle(
-                      fontSize: 50,
-                      fontWeight: FontWeight.bold,
-                      foreground: Paint()
-                        ..style = PaintingStyle.stroke
-                        ..strokeWidth = 1
-                        ..color = Colors.white,
-                    ),
-                  ),
-                  const Text(
-                    'Film Finder',
-                    style: TextStyle(
-                      fontSize: 50,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(190, 49, 68, 1),
-                    ),
-                  ),
-                ],
+              child: Image.asset(
+                'assets/images/titulo.png',
+                width: 325,
+                height: 75,
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
             const SearchingBar(),
             const SizedBox(height: 25),
             const Filters(),

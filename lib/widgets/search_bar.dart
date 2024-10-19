@@ -245,15 +245,6 @@ class _SearchingBarState extends State<SearchingBar> {
                                     ),
                                   ),
                                 );
-
-                                FocusManager.instance.primaryFocus?.unfocus();
-
-                                Future.delayed(
-                                    const Duration(milliseconds: 500), () {
-                                  setState(() {
-                                    searchText.clear();
-                                  });
-                                });
                               },
                               child: Container(
                                 margin:

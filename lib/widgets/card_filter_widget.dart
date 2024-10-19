@@ -17,7 +17,7 @@ class CardFilter extends StatelessWidget {
       width: 160,
       height: 240,
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 133, 46, 26),
+        color: Color.fromARGB(255, 141, 48, 28),
         border: Border.all(
           color: Colors.white,
           width: 1.25,

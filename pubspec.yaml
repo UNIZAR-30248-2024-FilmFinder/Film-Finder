@@ -67,6 +67,7 @@ flutter:
   assets:
     - assets/images/example.jpg
     - assets/images/example_poster.jpg
+    - assets/images/titulo.png
     # Iconos de los diferentes géneros
     - assets/genres_icons/accion.png
     - assets/genres_icons/animacion.png
