@@ -58,10 +58,16 @@ class _FiltersState extends State<Filters> {
                 ),
               ),
             ),
-            const SizedBox(height: 40),
-            if (pasoDeFiltro == 0) _buildGenreSelection(),
-            if (pasoDeFiltro == 1) _buildPlatformSelection(),
-            if (pasoDeFiltro == 2) _buildGroupSelection(),
+            const SizedBox(height: 30),
+            if (pasoDeFiltro == 0) ...[
+              _buildGenreSelection(),
+            ],
+            if (pasoDeFiltro == 1) ...[
+              _buildPlatformSelection(),
+            ],
+            if (pasoDeFiltro == 2) ...[
+              _buildGroupSelection(),
+            ],
           ],
         ),
       ),
@@ -71,6 +77,20 @@ class _FiltersState extends State<Filters> {
   Widget _buildGenreSelection() {
     return Column(
       children: [
+        const Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'Selecciona generos que te gusten',
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 15,
+        ),
         Scrollbar(
           controller: _genreScrollController,
           thumbVisibility: true,
@@ -314,6 +334,20 @@ class _FiltersState extends State<Filters> {
   Widget _buildPlatformSelection() {
     return Column(
       children: [
+        const Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'Selecciona las plataformas que tengas',
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 15,
+        ),
         Scrollbar(
           controller: _platformScrollController,
           thumbVisibility: true,
@@ -450,6 +484,20 @@ class _FiltersState extends State<Filters> {
   Widget _buildGroupSelection() {
     return Column(
       children: [
+        const Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'Selecciona como vas a hacer la búsqueda',
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 15,
+        ),
         Padding(
           padding: const EdgeInsets.only(bottom: 25.0),
           child: Row(
