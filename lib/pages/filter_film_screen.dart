@@ -1,30 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:film_finder/widgets/swiper.dart';
 
-class FilterFilmScreen extends StatelessWidget {
+class FilterFilmScreen extends StatefulWidget {
   const FilterFilmScreen({super.key});
 
   @override
+  State<FilterFilmScreen> createState() => _FilterFilmScreenState();
+}
+
+class _FilterFilmScreenState extends State<FilterFilmScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color.fromRGBO(34, 9, 44, 1),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                'Aqui iran las tarjetas con las peliculas que correspondan a los filtros',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                ),
-              ),
-            ),
-          ],
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
+        elevation: 0,
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        title: const Text(
+          'EXPLORAR',
+          style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
+      ),
+      backgroundColor:  const Color.fromRGBO(34, 9, 44, 1),
+      body: const SafeArea(
+        child: Swiper(),
       ),
     );
   }
