@@ -10,6 +10,7 @@ import '../methods/movie.dart';
 import 'package:http/http.dart' as http;
 
 class SearchingBar extends StatefulWidget {
+
   const SearchingBar({super.key});
 
   @override
@@ -23,6 +24,10 @@ class _SearchingBarState extends State<SearchingBar> {
   var val1;
   List<Movie> movies = [];
   bool showList = false;
+
+  Future<void> onTapMovie(Movie movie) async {
+    await _fetchMovieDetails(movie.id);
+  }
 
   //FUNCIÓN QUE EXTRAE LA INFO NECESARIA PARA MOSTRAR EN EL BUSCADOR
   Future<void> searchListFunction(String val) async {
@@ -237,6 +242,7 @@ class _SearchingBarState extends State<SearchingBar> {
                               onTap: () async {
                                 await _fetchMovieDetails(movies[index].id);
 
+
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -259,6 +265,7 @@ class _SearchingBarState extends State<SearchingBar> {
                                 child: Row(
                                   children: [
                                     Container(
+                                      key: ValueKey('movieImage_${movies[index].id}'),
                                       width: MediaQuery.of(context).size.width *
                                           0.33,
                                       decoration: BoxDecoration(
