@@ -54,6 +54,8 @@ dev_dependencies:
 
   flip_card: ^0.6.0
 
+  image_picker: ^0.8.5
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -68,6 +70,7 @@ flutter:
     - assets/images/example.jpg
     - assets/images/example_poster.jpg
     - assets/images/titulo.png
+    - assets/images/user.avif
     # Iconos de los diferentes géneros
     - assets/genres_icons/accion.png
     - assets/genres_icons/animacion.png

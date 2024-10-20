@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
 
 class ProfileWidget extends StatelessWidget {
   final String imagePath;
   final VoidCallback onClicked;
+  final bool isEdit;
 
   const ProfileWidget({
     super.key,
     required this.imagePath,
     required this.onClicked,
+    this.isEdit = false,
   });
 
   @override
@@ -16,22 +19,28 @@ class ProfileWidget extends StatelessWidget {
       child: Stack(
         children: [
           ClipOval(
-            child: Container(
-              color: const Color.fromRGBO(190, 49, 68, 1),
-              padding: const EdgeInsets.all(2),
-              child: ClipOval(
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: onClicked,
-                    child: Image.asset(
-                      imagePath,
-                      fit: BoxFit.cover,
-                      width: 128,
-                      height: 128,
-                    ),
-                  ),
-                ),
+            child: ClipOval(
+              child: Material(
+                color: Colors.transparent,
+                child: imagePath.isNotEmpty
+                    ? Ink.image(
+                        image: FileImage(File(imagePath)),
+                        fit: BoxFit.cover,
+                        width: 128,
+                        height: 128,
+                        child: InkWell(
+                          onTap: onClicked,
+                        ),
+                      )
+                    : Ink.image(
+                        image: const AssetImage('assets/images/user.avif'),
+                        fit: BoxFit.cover,
+                        width: 128,
+                        height: 128,
+                        child: InkWell(
+                          onTap: onClicked,
+                        ),
+                      ),
               ),
             ),
           ),
@@ -46,8 +55,8 @@ class ProfileWidget extends StatelessWidget {
                   child: Container(
                     color: const Color.fromRGBO(21, 4, 29, 1),
                     padding: const EdgeInsets.all(8),
-                    child: const Icon(
-                      Icons.edit,
+                    child: Icon(
+                      isEdit ? Icons.add_a_photo : Icons.edit,
                       color: Colors.white,
                       size: 20,
                     ),

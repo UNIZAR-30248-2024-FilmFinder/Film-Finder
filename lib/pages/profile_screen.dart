@@ -1,18 +1,22 @@
 import 'package:film_finder/methods/user.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import '../widgets/profile_widget.dart';
+import 'edit_profile_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    //ESTO TENDRA QUE SACARSE DE LA BASE DE DATOS
     const myUser = User(
-        imagePath: 'assets/images/example_poster.jpg',
+        imagePath: '',
         name: 'Jorge',
         email: '845647@unizar.es',
-        about: 'about',
+        about:
+            'Aqui irá la descripción que se quiera añadir el usuario a su perfil.',
         location: 'España, Zaragoza');
 
     return Scaffold(
@@ -31,7 +35,15 @@ class ProfileScreen extends StatelessWidget {
               ),
               ProfileWidget(
                 imagePath: myUser.imagePath,
-                onClicked: () async {},
+                onClicked: () async {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const EditProfileScreen(
+                              user: myUser,
+                            )),
+                  );
+                },
               ),
               const SizedBox(
                 width: 30,
@@ -71,7 +83,7 @@ class ProfileScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(
-            height: 35,
+            height: 25,
           ),
           const Center(
             child: Text(
@@ -79,108 +91,269 @@ class ProfileScreen extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
-                fontSize: 27,
+                fontSize: 25,
               ),
             ),
           ),
           const SizedBox(
             height: 15,
           ),
-          const IntrinsicHeight(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Text(
-                          'XXXX',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 29,
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            margin: const EdgeInsets.symmetric(horizontal: 25),
+            decoration: BoxDecoration(
+              color: const Color.fromRGBO(21, 4, 29, 1),
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(
+                color: const Color.fromRGBO(190, 49, 68, 1),
+                width: 2,
+              ),
+            ),
+            child: const IntrinsicHeight(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Text(
+                            'XXXX',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 26,
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 2,
-                        ),
-                        Text(
-                          'Vistas',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
+                          SizedBox(
+                            height: 2,
                           ),
-                        ),
-                      ],
+                          Text(
+                            'Vistas',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 35,
-                    width: 50,
-                    child: VerticalDivider(
-                      thickness: 1.5,
-                      color: Color.fromRGBO(190, 49, 68, 1),
+                    SizedBox(
+                      height: 35,
+                      width: 25,
+                      child: VerticalDivider(
+                        thickness: 1.5,
+                        color: Color.fromRGBO(190, 49, 68, 1),
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Text(
-                          'XXXX',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 29,
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Text(
+                            'XXXX',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 26,
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 2,
-                        ),
-                        Text(
-                          'Favoritas',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
+                          SizedBox(
+                            height: 2,
                           ),
-                        ),
-                      ],
+                          Text(
+                            'Favoritas',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 35,
-                    width: 50,
-                    child: VerticalDivider(
-                      thickness: 1.5,
-                      color: Color.fromRGBO(190, 49, 68, 1),
+                    SizedBox(
+                      height: 35,
+                      width: 25,
+                      child: VerticalDivider(
+                        thickness: 1.5,
+                        color: Color.fromRGBO(190, 49, 68, 1),
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Text(
-                          'XXXX',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 29,
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Text(
+                            'XXXX',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 26,
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 2,
-                        ),
-                        Text(
-                          '5 Estrellas',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
+                          SizedBox(
+                            height: 2,
                           ),
-                        ),
-                      ],
+                          Text(
+                            '5 Estrellas',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 25,
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 35),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Sobre mi:',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 21),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  myUser.about,
+                  style: const TextStyle(
+                      height: 1.4, color: Colors.white, fontSize: 14),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 25,
+          ),
+          ListTile(
+            onTap: () {},
+            contentPadding: const EdgeInsets.symmetric(horizontal: 35),
+            leading: Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Colors.white.withOpacity(0.2),
+              ),
+              child: const Icon(
+                Icons.book_outlined,
+                size: 32,
+                color: Color.fromRGBO(21, 4, 29, 1),
+              ),
+            ),
+            title: const Text(
+              'Ver diario',
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                  fontSize: 16),
+            ),
+            trailing: Container(
+              width: 35,
+              height: 35,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Colors.grey.withOpacity(0.2),
+              ),
+              child: const Icon(
+                Icons.arrow_forward_ios_rounded,
+                color: Colors.grey,
+                size: 18,
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          ListTile(
+            onTap: () {},
+            contentPadding: const EdgeInsets.symmetric(horizontal: 35),
+            leading: Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Colors.white.withOpacity(0.2),
+              ),
+              child: const Icon(
+                Icons.star,
+                color: Color.fromRGBO(21, 4, 29, 1),
+                size: 32,
+              ),
+            ),
+            title: const Text(
+              'Ver lista de favoritos',
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                  fontSize: 16),
+            ),
+            trailing: Container(
+              width: 35,
+              height: 35,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Colors.grey.withOpacity(0.2),
+              ),
+              child: const Icon(
+                Icons.arrow_forward_ios_rounded,
+                color: Colors.grey,
+                size: 18,
+              ),
+            ),
+          ),
+          const Divider(
+            height: 35,
+            indent: 75,
+            endIndent: 75,
+            color: Color.fromRGBO(190, 49, 68, 1),
+          ),
+          ListTile(
+            onTap: () {},
+            contentPadding: const EdgeInsets.symmetric(horizontal: 35),
+            leading: Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Colors.white.withOpacity(0.2),
+              ),
+              child: const Icon(
+                Icons.exit_to_app,
+                color: Color.fromRGBO(21, 4, 29, 1),
+                size: 32,
+              ),
+            ),
+            title: const Text(
+              'Cerrar sesión',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromRGBO(190, 49, 68, 1),
+                  fontSize: 16),
+            ),
+            trailing: Container(
+              width: 35,
+              height: 35,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Colors.grey.withOpacity(0.2),
+              ),
+              child: const Icon(
+                Icons.arrow_forward_ios_rounded,
+                color: Colors.grey,
+                size: 18,
               ),
             ),
           ),
