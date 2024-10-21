@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:palette_generator/palette_generator.dart';
+import 'package:flip_card/flip_card.dart';
+import 'package:film_finder/methods/movie.dart';
 
 class Swiper extends StatefulWidget {
   const Swiper({super.key});
@@ -11,72 +12,108 @@ class Swiper extends StatefulWidget {
 }
 
 class _SwiperState extends State<Swiper> {
+  int currentindex = 0;
 
-  int currentindex=0;
-
-  List images=[
-    'assets/genres_icons/accion.png','assets/genres_icons/animacion.png',
-    'assets/genres_icons/aventura.png','assets/genres_icons/comedia.png',
-    'assets/genres_icons/crimen.png','assets/genres_icons/documental.png',
-    'assets/genres_icons/drama.png','assets/genres_icons/familia.png',
+  List images = [
+    'assets/genres_icons/accion.png', 'assets/genres_icons/animacion.png',
+    'assets/genres_icons/aventura.png', 'assets/genres_icons/comedia.png',
+    'assets/genres_icons/crimen.png', 'assets/genres_icons/documental.png',
+    'assets/genres_icons/drama.png', 'assets/genres_icons/familia.png',
   ];
-
-  PaletteGenerator? paletteGenerator;
-
-
 
   @override
   void initState() {
     super.initState();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-      backgroundColor:Color.fromRGBO(34, 9, 44, 1),
-      
-      body: Container(
-        margin: EdgeInsets.symmetric(horizontal: 10),
-        height: 300,
-        child: CardSwiper(
-          
-          cardsCount: 8,
-
-          cardBuilder: (context,index,x,y){
-            return ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.asset(images[index],fit: BoxFit.cover,),
-            );
-          }, 
-          
-          
-          allowedSwipeDirection: AllowedSwipeDirection.only(left: true, right: true),
-          
-          numberOfCardsDisplayed: 2,
-          
-          isLoop: true,
-
-          backCardOffset: Offset(0,0),
-
-          onSwipe: (prevoius,current,direction){
-
-            currentindex=current!;
-            if(direction==CardSwiperDirection.right){
-              Fluttertoast.showToast(msg: 'Te ha gustado',backgroundColor: Colors.white,fontSize: 28);
-            }
-            else if (direction==CardSwiperDirection.left){
-              Fluttertoast.showToast(msg: 'No te ha gustado',backgroundColor: Colors.white,fontSize: 28);
-            }
-            return true;
-
-          },
-
+      backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
+      body: Center(
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 10),
+          height: MediaQuery.of(context).size.height * 0.5,
+          child: CardSwiper(
+            cardsCount: images.length,
+            cardBuilder: (context, index, x, y) {
+              return CardFilter(
+                image: images[index],
+                text: 'Imagen eliminada',
+              );
+            },
+            allowedSwipeDirection: const AllowedSwipeDirection.only(left: true, right: true),
+            numberOfCardsDisplayed: 2,
+            isLoop: true,
+            backCardOffset: const Offset(0, 0),
+            onSwipe: (previous, current, direction) {
+              currentindex = current!;
+              if (direction == CardSwiperDirection.right) {
+                Fluttertoast.showToast(msg: 'Te ha gustado', backgroundColor: Colors.black, fontSize: 28);
+              } else if (direction == CardSwiperDirection.left) {
+                Fluttertoast.showToast(msg: 'No te ha gustado', backgroundColor: Colors.black, fontSize: 28);
+              }
+              return true;
+            },
           ),
+        ),
       ),
     );
   }
 }
 
+class CardFilter extends StatelessWidget {
+  final String text;
+  final String image;
+
+  const CardFilter({
+    super.key,
+    required this.text,
+    required this.image,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // Obtén la imagen en tamaño original
+    return FlipCard(
+      front: Container(
+        padding: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 133, 46, 26),
+          border: Border.all(
+            color: Colors.white,
+            width: 1.25,
+          ),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: Center(
+          child: Image.asset(
+            image,
+            fit: BoxFit.contain, // Ajustar la imagen sin distorsionarla
+          ),
+        ),
+      ),
+      back: Container(
+        padding: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 133, 46, 26),
+          border: Border.all(
+            color: Colors.white,
+            width: 1.25,
+          ),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: const Center(
+          child: Text(
+            'Imagen eliminada',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

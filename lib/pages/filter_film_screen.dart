@@ -24,7 +24,7 @@ class _FilterFilmScreenState extends State<FilterFilmScreen> {
         centerTitle: true,
         automaticallyImplyLeading: false,
         title: const Text(
-          'EXPLORAR',
+          'ELIGE PELICULAS',
           style: TextStyle(
             fontSize: 25,
             fontWeight: FontWeight.bold,
