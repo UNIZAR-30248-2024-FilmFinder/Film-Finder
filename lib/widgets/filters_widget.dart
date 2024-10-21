@@ -81,6 +81,7 @@ class _FiltersState extends State<Filters> {
 
   Widget _buildGenreSelection() {
     return Column(
+      key: const Key('genre_selection'),
       children: [
         const Align(
           alignment: Alignment.centerLeft,
@@ -338,6 +339,7 @@ class _FiltersState extends State<Filters> {
 
   Widget _buildPlatformSelection() {
     return Column(
+      key: const Key('platform_selection'),
       children: [
         const Align(
           alignment: Alignment.centerLeft,
@@ -488,6 +490,7 @@ class _FiltersState extends State<Filters> {
 
   Widget _buildGroupSelection() {
     return Column(
+      key: const Key('group_selection'),
       children: [
         const Align(
           alignment: Alignment.centerLeft,

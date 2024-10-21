@@ -50,18 +50,22 @@ class _PrincipalScreenState extends State<PrincipalScreen> {
               GButton(
                 icon: Icons.home,
                 text: 'Inicio',
+                key: Key('init_button'),
               ),
               GButton(
                 icon: Icons.search,
                 text: 'Explorar',
+                key: Key('explore_button'),
               ),
               GButton(
                 icon: Icons.add_reaction,
                 text: 'Amigos',
+                key: Key('friends_button'),
               ),
               GButton(
                 icon: Icons.person,
                 text: 'Perfil',
+                key: Key('profile_button'),
               ),
             ],
           ),
