@@ -50,8 +50,10 @@ class _SwiperState extends State<Swiper> {
               currentindex = current!;
               if (direction == CardSwiperDirection.right) {
                 Fluttertoast.showToast(msg: 'Te ha gustado', backgroundColor: Colors.black, fontSize: 28);
+                Future.delayed(const Duration(seconds: 1), () {Fluttertoast.cancel();});
               } else if (direction == CardSwiperDirection.left) {
                 Fluttertoast.showToast(msg: 'No te ha gustado', backgroundColor: Colors.black, fontSize: 28);
+                Future.delayed(const Duration(seconds: 1), () {Fluttertoast.cancel();});
               }
               return true;
             },
@@ -74,7 +76,6 @@ class CardFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Obtén la imagen en tamaño original
     return FlipCard(
       front: Container(
         padding: const EdgeInsets.all(8.0),
@@ -89,7 +90,7 @@ class CardFilter extends StatelessWidget {
         child: Center(
           child: Image.asset(
             image,
-            fit: BoxFit.contain, // Ajustar la imagen sin distorsionarla
+            fit: BoxFit.contain,
           ),
         ),
       ),

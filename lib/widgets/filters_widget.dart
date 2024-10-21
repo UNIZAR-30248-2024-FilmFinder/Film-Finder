@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:film_finder/widgets/card_filter_widget.dart';
 import 'package:film_finder/pages/filter_film_screen.dart';
+import 'package:film_finder/methods/movie.dart';
+import 'package:film_finder/methods/constants.dart';
+import 'package:http/http.dart' as http;
 
 class Filters extends StatefulWidget {
   const Filters({super.key});
@@ -505,6 +510,7 @@ class _FiltersState extends State<Filters> {
               Expanded(
                 child: GestureDetector(
                   onTap: () {
+                    fetchTopRatedMovies();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -625,5 +631,45 @@ class _FiltersState extends State<Filters> {
         ),
       ],
     );
+  }
+
+  final List<Movie> movies = [];
+
+
+  Future<void> fetchTopRatedMovies() async {
+    String url = 'https://api.themoviedb.org/3/movie/top_rated?api_key=${Constants.apiKey}&language=es-ES&page=1';
+
+    var response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      var tempData = jsonDecode(response.body);
+      var movieJson = tempData['results'];
+
+      movies.clear(); // Limpiamos la lista de películas antes de llenarla nuevamente
+
+      for (var movie in movieJson) {
+        if (movie['id'] != null &&
+            movie['poster_path'] != null &&
+            movie['vote_average'] != null &&
+            movie['media_type'] == 'movie') {
+          movies.add(Movie(
+            id: movie['id'] ?? 0,
+            title: movie['title'] ?? 'No title',
+            posterPath: movie['poster_path'] ?? '',
+            releaseDay: movie['release_date'] ?? 'Unknown',
+            voteAverage: (movie['vote_average'] as num).toDouble(),
+            mediaType: movie['media_type'],
+            // La información adicional la dejaremos en valores predeterminados
+            director: 'Unknown Director',
+            duration: 0,
+            genres: [],
+            backDropPath: '',
+            overview: 'No overview available',
+          ));
+        }
+      }
+    } else {
+      print('Error: No se pudo obtener la información');
+    }
   }
 }
