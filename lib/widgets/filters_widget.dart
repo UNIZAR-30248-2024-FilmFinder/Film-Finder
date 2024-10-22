@@ -1,11 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:film_finder/widgets/card_filter_widget.dart';
 import 'package:film_finder/pages/filter_film_screen.dart';
 import 'package:film_finder/methods/movie.dart';
 import 'package:film_finder/methods/constants.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Filters extends StatefulWidget {
   const Filters({super.key});
@@ -709,12 +708,20 @@ class _FiltersState extends State<Filters> {
             children: [
               Expanded(
                 child: GestureDetector(
-                  onTap: () {
-                    fetchTopRatedMovies();
+                  onTap: () async {
+                    await fetchTopRatedMovies();
+                    print('Películas cargadas: ${movies.length}'); // Agrega este log
+                    if (movies.isEmpty) {
+                      print('No se encontraron películas.');
+                    } else {
+                      print('Se encontraron ${movies.length} películas.');
+  }
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const FilterFilmScreen()),
+                          builder: (context) => FilterFilmScreen(
+                            movies:movies,
+                          )),
                     );
                   },
                   child: Container(
@@ -833,7 +840,7 @@ class _FiltersState extends State<Filters> {
     );
   }
 
-  final List<Movie> movies = [];
+  List<Movie> movies = [];
 
   Future<void> fetchTopRatedMovies() async {
     String url;
@@ -855,6 +862,7 @@ class _FiltersState extends State<Filters> {
     }
 
     var response = await http.get(Uri.parse(url));
+    print('Código de estado: ${response.statusCode}');
 
     if (response.statusCode == 200) {
       var tempData = jsonDecode(response.body);
@@ -865,8 +873,7 @@ class _FiltersState extends State<Filters> {
       for (var movie in movieJson) {
         if (movie['id'] != null &&
             movie['poster_path'] != null &&
-            movie['vote_average'] != null &&
-            movie['media_type'] == 'movie') {
+            movie['vote_average'] != null) {
           movies.add(Movie(
             id: movie['id'] ?? 0,
             title: movie['title'] ?? 'No title',

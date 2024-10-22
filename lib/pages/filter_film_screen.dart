@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:film_finder/widgets/swiper.dart';
+import 'package:film_finder/methods/movie.dart';
 
 class FilterFilmScreen extends StatefulWidget {
-  const FilterFilmScreen({super.key});
+  final List<Movie> movies;
+
+  const FilterFilmScreen({
+    super.key,
+    required this.movies,
+  });
 
   @override
   State<FilterFilmScreen> createState() => _FilterFilmScreenState();
@@ -33,8 +39,10 @@ class _FilterFilmScreenState extends State<FilterFilmScreen> {
         ),
       ),
       backgroundColor:  const Color.fromRGBO(34, 9, 44, 1),
-      body: const SafeArea(
-        child: Swiper(),
+      body: SafeArea(
+        child: Swiper(
+          movies: widget.movies,
+        ),
       ),
     );
   }
