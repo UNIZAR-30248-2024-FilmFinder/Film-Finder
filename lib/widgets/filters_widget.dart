@@ -18,8 +18,8 @@ class Filters extends StatefulWidget {
 class _FiltersState extends State<Filters> {
   int pasoDeFiltro = 0;
 
-  List<String> filterGenres = [];
-  List<String> filterProviders = [];
+  List<int> filterGenres = [];
+  List<int> filterProviders = [];
   List<int> arrayGenres = List.filled(18, 0);
   List<int> arrayProviders = List.filled(4, 0);
 
@@ -118,11 +118,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
                       if(arrayGenres[0] == 0){
-                        filterGenres.add('Acción');
+                        filterGenres.add(28);
                         arrayGenres[0] = arrayGenres[0] + 1;
                       }
                       else{
-                        filterGenres.remove('Acción');
+                        filterGenres.remove(28);
                         arrayGenres[0] = arrayGenres[0] - 1;
                       }
                     },
@@ -136,11 +136,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
                       if(arrayGenres[1] == 0){
-                        filterGenres.add('Animación');
+                        filterGenres.add(16);
                         arrayGenres[1] = arrayGenres[1] + 1;
                       }
                       else{
-                        filterGenres.remove('Animación');
+                        filterGenres.remove(16);
                         arrayGenres[1] = arrayGenres[1] - 1;
                       }
                     },
@@ -154,11 +154,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
                       if(arrayGenres[2] == 0){
-                        filterGenres.add('Aventura');
+                        filterGenres.add(12);
                         arrayGenres[2] = arrayGenres[2] + 1;
                       }
                       else{
-                        filterGenres.remove('Aventura');
+                        filterGenres.remove(12);
                         arrayGenres[2] = arrayGenres[2] - 1;
                       }
                     },
@@ -172,11 +172,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
                       if(arrayGenres[3] == 0){
-                        filterGenres.add('Ciencia ficción');
+                        filterGenres.add(878);
                         arrayGenres[3] = arrayGenres[3] + 1;
                       }
                       else{
-                        filterGenres.remove('Ciencia ficción');
+                        filterGenres.remove(878);
                         arrayGenres[3] = arrayGenres[3] - 1;
                       }
                     },
@@ -190,11 +190,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
                       if(arrayGenres[4] == 0){
-                        filterGenres.add('Comedia');
+                        filterGenres.add(35);
                         arrayGenres[4] = arrayGenres[4] + 1;
                       }
                       else{
-                        filterGenres.remove('Comedia');
+                        filterGenres.remove(35);
                         arrayGenres[4] = arrayGenres[4] - 1;
                       }
                     },
@@ -208,11 +208,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
                       if(arrayGenres[5] == 0){
-                        filterGenres.add('Crimen');
+                        filterGenres.add(80);
                         arrayGenres[5] = arrayGenres[5] + 1;
                       }
                       else{
-                        filterGenres.remove('Crimen');
+                        filterGenres.remove(80);
                         arrayGenres[5] = arrayGenres[5] - 1;
                       }
                     },
@@ -226,11 +226,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
                       if(arrayGenres[6] == 0){
-                        filterGenres.add('Documental');
+                        filterGenres.add(99);
                         arrayGenres[6] = arrayGenres[6] + 1;
                       }
                       else{
-                        filterGenres.remove('Documental');
+                        filterGenres.remove(99);
                         arrayGenres[6] = arrayGenres[6] - 1;
                       }
                     },
@@ -244,11 +244,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
                       if(arrayGenres[7] == 0){
-                        filterGenres.add('Drama');
+                        filterGenres.add(18);
                         arrayGenres[7] = arrayGenres[7] + 1;
                       }
                       else{
-                        filterGenres.remove('Drama');
+                        filterGenres.remove(18);
                         arrayGenres[7] = arrayGenres[7] - 1;
                       }
                     },
@@ -262,11 +262,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
                       if(arrayGenres[8] == 0){
-                        filterGenres.add('Familia');
+                        filterGenres.add(10751);
                         arrayGenres[8] = arrayGenres[8] + 1;
                       }
                       else{
-                        filterGenres.remove('Familia');
+                        filterGenres.remove(10751);
                         arrayGenres[8] = arrayGenres[8] - 1;
                       }
                     },
@@ -280,11 +280,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
                       if(arrayGenres[9] == 0){
-                        filterGenres.add('Fantasía');
+                        filterGenres.add(14);
                         arrayGenres[9] = arrayGenres[9] + 1;
                       }
                       else{
-                        filterGenres.remove('Fantasía');
+                        filterGenres.remove(14);
                         arrayGenres[9] = arrayGenres[9] - 1;
                       }
                     },
@@ -298,11 +298,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
                       if(arrayGenres[10] == 0){
-                        filterGenres.add('Bélica');
+                        filterGenres.add(10752);
                         arrayGenres[10] = arrayGenres[10] + 1;
                       }
                       else{
-                        filterGenres.remove('Bélica');
+                        filterGenres.remove(10752);
                         arrayGenres[10] = arrayGenres[10] - 1;
                       }
                     },
@@ -316,11 +316,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
                       if(arrayGenres[11] == 0){
-                        filterGenres.add('Historia');
+                        filterGenres.add(36);
                         arrayGenres[11] = arrayGenres[11] + 1;
                       }
                       else{
-                        filterGenres.remove('Historia');
+                        filterGenres.remove(36);
                         arrayGenres[11] = arrayGenres[11] - 1;
                       }
                     },
@@ -334,11 +334,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
                       if(arrayGenres[12] == 0){
-                        filterGenres.add('Misterio');
+                        filterGenres.add(9648);
                         arrayGenres[12] = arrayGenres[12] + 1;
                       }
                       else{
-                        filterGenres.remove('Misterio');
+                        filterGenres.remove(9648);
                         arrayGenres[12] = arrayGenres[12] - 1;
                       }
                     },
@@ -352,11 +352,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
                       if(arrayGenres[13] == 0){
-                        filterGenres.add('Música');
+                        filterGenres.add(10402);
                         arrayGenres[13] = arrayGenres[13] + 1;
                       }
                       else{
-                        filterGenres.remove('Música');
+                        filterGenres.remove(10402);
                         arrayGenres[13] = arrayGenres[13] - 1;
                       }
                     },
@@ -370,11 +370,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
                       if(arrayGenres[14] == 0){
-                        filterGenres.add('Película de TV');
+                        filterGenres.add(10770);
                         arrayGenres[14] = arrayGenres[14] + 1;
                       }
                       else{
-                        filterGenres.remove('Película de TV');
+                        filterGenres.remove(10770);
                         arrayGenres[14] = arrayGenres[14] - 1;
                       }
                     },
@@ -388,11 +388,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
                       if(arrayGenres[15] == 0){
-                        filterGenres.add('Romance');
+                        filterGenres.add(10749);
                         arrayGenres[15] = arrayGenres[15] + 1;
                       }
                       else{
-                        filterGenres.remove('Romance');
+                        filterGenres.remove(10749);
                         arrayGenres[15] = arrayGenres[15] - 1;
                       }
                     },
@@ -406,11 +406,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
                       if(arrayGenres[16] == 0){
-                        filterGenres.add('Suspense');
+                        filterGenres.add(53);
                         arrayGenres[16] = arrayGenres[16] + 1;
                       }
                       else{
-                        filterGenres.remove('Suspense');
+                        filterGenres.remove(53);
                         arrayGenres[16] = arrayGenres[16] - 1;
                       }
                     },
@@ -424,11 +424,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
                       if(arrayGenres[17] == 0){
-                        filterGenres.add('Terror');
+                        filterGenres.add(27);
                         arrayGenres[17] = arrayGenres[17] + 1;
                       }
                       else{
-                        filterGenres.remove('Terror');
+                        filterGenres.remove(27);
                         arrayGenres[17] = arrayGenres[17] - 1;
                       }
                     },
@@ -442,11 +442,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
                       if(arrayGenres[18] == 0){
-                        filterGenres.add('Western');
+                        filterGenres.add(37);
                         arrayGenres[18] = arrayGenres[18] + 1;
                       }
                       else{
-                        filterGenres.remove('Western');
+                        filterGenres.remove(37);
                         arrayGenres[18] = arrayGenres[18] - 1;
                       }
                     },
@@ -528,11 +528,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA LA PLATAFORMA INDICADO
                       if(arrayProviders[0] == 0){
-                        filterProviders.add('Apple TV');
+                        filterProviders.add(2);
                         arrayProviders[0] = arrayProviders[0] + 1;
                       }
                       else{
-                        filterProviders.remove('Apple TV');
+                        filterProviders.remove(2);
                         arrayProviders[0] = arrayProviders[0] - 1;
                       }
                     },
@@ -546,11 +546,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA LA PLATAFORMA INDICADO
                       if(arrayProviders[1] == 0){
-                        filterProviders.add('Disney Plus');
+                        filterProviders.add(337);
                         arrayProviders[1] = arrayProviders[1] + 1;
                       }
                       else{
-                        filterProviders.remove('Disney Plus');
+                        filterProviders.remove(337);
                         arrayProviders[1] = arrayProviders[1] - 1;
                       }
                     },
@@ -564,11 +564,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA LA PLATAFORMA INDICADO
                       if(arrayProviders[2] == 0){
-                        filterProviders.add('Max');
+                        filterProviders.add(1899);
                         arrayProviders[2] = arrayProviders[2] + 1;
                       }
                       else{
-                        filterProviders.remove('Max');
+                        filterProviders.remove(1899);
                         arrayProviders[2] = arrayProviders[2] - 1;
                       }
                     },
@@ -582,11 +582,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA LA PLATAFORMA INDICADO
                       if(arrayProviders[3] == 0){
-                        filterProviders.add('Netflix');
+                        filterProviders.add(8);
                         arrayProviders[3] = arrayProviders[3] + 1;
                       }
                       else{
-                        filterProviders.remove('Netflix');
+                        filterProviders.remove(8);
                         arrayProviders[3] = arrayProviders[3] - 1;
                       }
                     },
@@ -600,11 +600,11 @@ class _FiltersState extends State<Filters> {
                     onTap: () {
                       // AÑADIR A LA LISTA LA PLATAFORMA INDICADO
                       if(arrayProviders[4] == 0){
-                        filterProviders.add('Amazon Prime Video');
+                        filterProviders.add(119);
                         arrayProviders[4] = arrayProviders[4] + 1;
                       }
                       else{
-                        filterProviders.remove('Amazon Prime Video');
+                        filterProviders.remove(119);
                         arrayProviders[4] = arrayProviders[4] - 1;
                       }
                     },
