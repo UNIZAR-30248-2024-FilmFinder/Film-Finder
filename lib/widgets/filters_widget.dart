@@ -18,6 +18,11 @@ class Filters extends StatefulWidget {
 class _FiltersState extends State<Filters> {
   int pasoDeFiltro = 0;
 
+  List<String> filterGenres = [];
+  List<String> filterProviders = [];
+  List<int> arrayGenres = List.filled(18, 0);
+  List<int> arrayProviders = List.filled(4, 0);
+
   ScrollController _genreScrollController = ScrollController();
   ScrollController _platformScrollController = ScrollController();
 
@@ -112,8 +117,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
+                      if(arrayGenres[0] == 0){
+                        filterGenres.add('Acción');
+                        arrayGenres[0] = arrayGenres[0] + 1;
+                      }
+                      else{
+                        filterGenres.remove('Acción');
+                        arrayGenres[0] = arrayGenres[0] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/genres_icons/accion.png',
                       text: 'ACCION',
                     ),
@@ -122,8 +135,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
+                      if(arrayGenres[1] == 0){
+                        filterGenres.add('Animación');
+                        arrayGenres[1] = arrayGenres[1] + 1;
+                      }
+                      else{
+                        filterGenres.remove('Animación');
+                        arrayGenres[1] = arrayGenres[1] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/genres_icons/animacion.png',
                       text: 'ANIMACION',
                     ),
@@ -132,8 +153,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
+                      if(arrayGenres[2] == 0){
+                        filterGenres.add('Aventura');
+                        arrayGenres[2] = arrayGenres[2] + 1;
+                      }
+                      else{
+                        filterGenres.remove('Aventura');
+                        arrayGenres[2] = arrayGenres[2] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/genres_icons/aventura.png',
                       text: 'AVENTURA',
                     ),
@@ -142,8 +171,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
+                      if(arrayGenres[3] == 0){
+                        filterGenres.add('Ciencia ficción');
+                        arrayGenres[3] = arrayGenres[3] + 1;
+                      }
+                      else{
+                        filterGenres.remove('Ciencia ficción');
+                        arrayGenres[3] = arrayGenres[3] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/genres_icons/cienciaFiccion.png',
                       text: 'CIENCIA FICCIÓN',
                     ),
@@ -152,8 +189,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
+                      if(arrayGenres[4] == 0){
+                        filterGenres.add('Comedia');
+                        arrayGenres[4] = arrayGenres[4] + 1;
+                      }
+                      else{
+                        filterGenres.remove('Comedia');
+                        arrayGenres[4] = arrayGenres[4] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/genres_icons/comedia.png',
                       text: 'COMEDIA',
                     ),
@@ -162,8 +207,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
+                      if(arrayGenres[5] == 0){
+                        filterGenres.add('Crimen');
+                        arrayGenres[5] = arrayGenres[5] + 1;
+                      }
+                      else{
+                        filterGenres.remove('Crimen');
+                        arrayGenres[5] = arrayGenres[5] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/genres_icons/crimen.png',
                       text: 'CRIMEN',
                     ),
@@ -172,8 +225,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
+                      if(arrayGenres[6] == 0){
+                        filterGenres.add('Documental');
+                        arrayGenres[6] = arrayGenres[6] + 1;
+                      }
+                      else{
+                        filterGenres.remove('Documental');
+                        arrayGenres[6] = arrayGenres[6] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/genres_icons/documental.png',
                       text: 'DOCUMENTAL',
                     ),
@@ -182,8 +243,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
+                      if(arrayGenres[7] == 0){
+                        filterGenres.add('Drama');
+                        arrayGenres[7] = arrayGenres[7] + 1;
+                      }
+                      else{
+                        filterGenres.remove('Drama');
+                        arrayGenres[7] = arrayGenres[7] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/genres_icons/drama.png',
                       text: 'DRAMA',
                     ),
@@ -192,8 +261,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
+                      if(arrayGenres[8] == 0){
+                        filterGenres.add('Familia');
+                        arrayGenres[8] = arrayGenres[8] + 1;
+                      }
+                      else{
+                        filterGenres.remove('Familia');
+                        arrayGenres[8] = arrayGenres[8] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/genres_icons/familia.png',
                       text: 'FAMILIA',
                     ),
@@ -202,8 +279,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
+                      if(arrayGenres[9] == 0){
+                        filterGenres.add('Fantasía');
+                        arrayGenres[9] = arrayGenres[9] + 1;
+                      }
+                      else{
+                        filterGenres.remove('Fantasía');
+                        arrayGenres[9] = arrayGenres[9] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/genres_icons/fantasia.png',
                       text: 'FANTASIA',
                     ),
@@ -212,8 +297,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
+                      if(arrayGenres[10] == 0){
+                        filterGenres.add('Bélica');
+                        arrayGenres[10] = arrayGenres[10] + 1;
+                      }
+                      else{
+                        filterGenres.remove('Bélica');
+                        arrayGenres[10] = arrayGenres[10] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/genres_icons/guerra.png',
                       text: 'GUERRA',
                     ),
@@ -222,8 +315,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
+                      if(arrayGenres[11] == 0){
+                        filterGenres.add('Historia');
+                        arrayGenres[11] = arrayGenres[11] + 1;
+                      }
+                      else{
+                        filterGenres.remove('Historia');
+                        arrayGenres[11] = arrayGenres[11] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/genres_icons/historia.png',
                       text: 'HISTORIA',
                     ),
@@ -232,8 +333,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
+                      if(arrayGenres[12] == 0){
+                        filterGenres.add('Misterio');
+                        arrayGenres[12] = arrayGenres[12] + 1;
+                      }
+                      else{
+                        filterGenres.remove('Misterio');
+                        arrayGenres[12] = arrayGenres[12] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/genres_icons/misterio.png',
                       text: 'MISTERIO',
                     ),
@@ -242,8 +351,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
+                      if(arrayGenres[13] == 0){
+                        filterGenres.add('Música');
+                        arrayGenres[13] = arrayGenres[13] + 1;
+                      }
+                      else{
+                        filterGenres.remove('Música');
+                        arrayGenres[13] = arrayGenres[13] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/genres_icons/musica.png',
                       text: 'MUSICA',
                     ),
@@ -252,8 +369,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
+                      if(arrayGenres[14] == 0){
+                        filterGenres.add('Película de TV');
+                        arrayGenres[14] = arrayGenres[14] + 1;
+                      }
+                      else{
+                        filterGenres.remove('Película de TV');
+                        arrayGenres[14] = arrayGenres[14] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/genres_icons/peliculaTV.png',
                       text: 'PELICULA TV',
                     ),
@@ -262,8 +387,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
+                      if(arrayGenres[15] == 0){
+                        filterGenres.add('Romance');
+                        arrayGenres[15] = arrayGenres[15] + 1;
+                      }
+                      else{
+                        filterGenres.remove('Romance');
+                        arrayGenres[15] = arrayGenres[15] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/genres_icons/romance.png',
                       text: 'ROMANCE',
                     ),
@@ -272,8 +405,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
+                      if(arrayGenres[16] == 0){
+                        filterGenres.add('Suspense');
+                        arrayGenres[16] = arrayGenres[16] + 1;
+                      }
+                      else{
+                        filterGenres.remove('Suspense');
+                        arrayGenres[16] = arrayGenres[16] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/genres_icons/suspense.png',
                       text: 'SUSPENSE',
                     ),
@@ -282,8 +423,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
+                      if(arrayGenres[17] == 0){
+                        filterGenres.add('Terror');
+                        arrayGenres[17] = arrayGenres[17] + 1;
+                      }
+                      else{
+                        filterGenres.remove('Terror');
+                        arrayGenres[17] = arrayGenres[17] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/genres_icons/terror.png',
                       text: 'TERROR',
                     ),
@@ -292,8 +441,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA EL GENERO INDICADO
+                      if(arrayGenres[18] == 0){
+                        filterGenres.add('Western');
+                        arrayGenres[18] = arrayGenres[18] + 1;
+                      }
+                      else{
+                        filterGenres.remove('Western');
+                        arrayGenres[18] = arrayGenres[18] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/genres_icons/western.png',
                       text: 'WESTERN',
                     ),
@@ -370,8 +527,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA LA PLATAFORMA INDICADO
+                      if(arrayProviders[0] == 0){
+                        filterProviders.add('Apple TV');
+                        arrayProviders[0] = arrayProviders[0] + 1;
+                      }
+                      else{
+                        filterProviders.remove('Apple TV');
+                        arrayProviders[0] = arrayProviders[0] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/platform_icons/apple-tv.png',
                       text: 'APPLE TV',
                     ),
@@ -380,8 +545,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA LA PLATAFORMA INDICADO
+                      if(arrayProviders[1] == 0){
+                        filterProviders.add('Disney Plus');
+                        arrayProviders[1] = arrayProviders[1] + 1;
+                      }
+                      else{
+                        filterProviders.remove('Disney Plus');
+                        arrayProviders[1] = arrayProviders[1] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/platform_icons/disneyPlus.png',
                       text: 'DISNEY +',
                     ),
@@ -390,8 +563,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA LA PLATAFORMA INDICADO
+                      if(arrayProviders[2] == 0){
+                        filterProviders.add('Max');
+                        arrayProviders[2] = arrayProviders[2] + 1;
+                      }
+                      else{
+                        filterProviders.remove('Max');
+                        arrayProviders[2] = arrayProviders[2] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/platform_icons/hbo.png',
                       text: 'HBO MAX',
                     ),
@@ -400,8 +581,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA LA PLATAFORMA INDICADO
+                      if(arrayProviders[3] == 0){
+                        filterProviders.add('Netflix');
+                        arrayProviders[3] = arrayProviders[3] + 1;
+                      }
+                      else{
+                        filterProviders.remove('Netflix');
+                        arrayProviders[3] = arrayProviders[3] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/platform_icons/netflix.png',
                       text: 'NETFLIX',
                     ),
@@ -410,8 +599,16 @@ class _FiltersState extends State<Filters> {
                   GestureDetector(
                     onTap: () {
                       // AÑADIR A LA LISTA LA PLATAFORMA INDICADO
+                      if(arrayProviders[4] == 0){
+                        filterProviders.add('Amazon Prime Video');
+                        arrayProviders[4] = arrayProviders[4] + 1;
+                      }
+                      else{
+                        filterProviders.remove('Amazon Prime Video');
+                        arrayProviders[4] = arrayProviders[4] - 1;
+                      }
                     },
-                    child: CardFilter(
+                    child: const CardFilter(
                       image: 'assets/platform_icons/primeVideo.png',
                       text: 'PRIME VIDEO',
                     ),
