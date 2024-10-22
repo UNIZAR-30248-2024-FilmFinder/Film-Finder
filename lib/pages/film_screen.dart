@@ -254,7 +254,7 @@ class FilmInfo extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                movie.voteAverage.toString(),
+                                movie.voteAverage.toStringAsFixed(1),
                                 style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w300,

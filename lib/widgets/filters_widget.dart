@@ -638,9 +638,9 @@ class _FiltersState extends State<Filters> {
 
   final List<Movie> movies = [];
 
-
   Future<void> fetchTopRatedMovies() async {
-    String url = 'https://api.themoviedb.org/3/movie/top_rated?api_key=${Constants.apiKey}&language=es-ES&page=1';
+    String url =
+        'https://api.themoviedb.org/3/movie/top_rated?api_key=${Constants.apiKey}&language=es-ES&page=1';
 
     var response = await http.get(Uri.parse(url));
 
@@ -648,7 +648,8 @@ class _FiltersState extends State<Filters> {
       var tempData = jsonDecode(response.body);
       var movieJson = tempData['results'];
 
-      movies.clear(); // Limpiamos la lista de películas antes de llenarla nuevamente
+      movies
+          .clear(); // Limpiamos la lista de películas antes de llenarla nuevamente
 
       for (var movie in movieJson) {
         if (movie['id'] != null &&

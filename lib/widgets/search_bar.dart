@@ -10,7 +10,6 @@ import '../methods/movie.dart';
 import 'package:http/http.dart' as http;
 
 class SearchingBar extends StatefulWidget {
-
   const SearchingBar({super.key});
 
   @override
@@ -40,8 +39,8 @@ class _SearchingBarState extends State<SearchingBar> {
       var tempData = jsonDecode(searchResponse.body);
       var searchJson = tempData['results'];
 
-      movies
-          .clear(); // Limpiamos la lista de películas antes de llenarla nuevamente
+      // Limpiamos la lista de películas antes de llenarla nuevamente
+      movies.clear();
 
       for (var i in searchJson) {
         if (i['id'] != null &&
@@ -60,8 +59,8 @@ class _SearchingBarState extends State<SearchingBar> {
             director: 'Unknown Director',
             duration: 0,
             genres: [],
-            backDropPath: '', // No lo cargamos aún
-            overview: 'No overview available', // No lo cargamos aún
+            backDropPath: '',
+            overview: 'No overview available',
           ));
 
           // Limitamos a 15 películas
@@ -242,7 +241,6 @@ class _SearchingBarState extends State<SearchingBar> {
                               onTap: () async {
                                 await _fetchMovieDetails(movies[index].id);
 
-
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -253,9 +251,10 @@ class _SearchingBarState extends State<SearchingBar> {
                                 );
                               },
                               child: Container(
+                                padding: const EdgeInsets.only(left: 5),
                                 margin:
                                     const EdgeInsets.only(top: 4, bottom: 4),
-                                height: 190,
+                                height: 125,
                                 width: MediaQuery.of(context).size.width,
                                 decoration: const BoxDecoration(
                                   color: Color.fromRGBO(21, 4, 29, 1),
@@ -265,9 +264,10 @@ class _SearchingBarState extends State<SearchingBar> {
                                 child: Row(
                                   children: [
                                     Container(
-                                      key: ValueKey('movieImage_${movies[index].id}'),
+                                      key: ValueKey(
+                                          'movieImage_${movies[index].id}'),
                                       width: MediaQuery.of(context).size.width *
-                                          0.33,
+                                          0.22,
                                       decoration: BoxDecoration(
                                         borderRadius: const BorderRadius.all(
                                             Radius.circular(10)),
@@ -277,6 +277,80 @@ class _SearchingBarState extends State<SearchingBar> {
                                           ),
                                           fit: BoxFit.fill,
                                         ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            movies[index].title,
+                                            softWrap: true,
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Año de estreno: ${DateTime.parse(movies[index].releaseDay).year}',
+                                                softWrap: true,
+                                                style: const TextStyle(
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w300,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              const Spacer(),
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 2,
+                                                        horizontal: 10),
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: Colors.grey),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      movies[index]
+                                                          .voteAverage
+                                                          .toStringAsFixed(1),
+                                                      style: const TextStyle(
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w300,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    const Icon(
+                                                      Icons.star,
+                                                      color: Colors.yellow,
+                                                      size: 15,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 25,
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],

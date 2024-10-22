@@ -194,7 +194,7 @@ class ProfileScreen extends StatelessWidget {
                             height: 2,
                           ),
                           Text(
-                            '5 Estrellas',
+                            '10 Estrellas',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               color: Colors.white,
