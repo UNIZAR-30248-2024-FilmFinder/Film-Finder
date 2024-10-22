@@ -27,7 +27,8 @@ void main() {
             'la autodestrucción es lo único que hace que realmente la vida merezca la pena. Ambos '
             'deciden entonces formar un club secreto de lucha donde descargar sus frustaciones y su '
             'ira que tendrá un éxito arrollador.',  // Descripción conocida
-        backDropPath: '/hZkgoQYus5vegHoetLkCJzb17zJ.jpg',  // Backdrop conocido         // Esto podría actualizarse después
+        backDropPath: '/hZkgoQYus5vegHoetLkCJzb17zJ.jpg',  // Backdrop conocido
+        trailerUrl: ''// Esto podría actualizarse después
       );
 
       // Ejecutar la búsqueda
