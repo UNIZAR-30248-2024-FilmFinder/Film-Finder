@@ -669,6 +669,7 @@ class _FiltersState extends State<Filters> {
             genres: [],
             backDropPath: '',
             overview: 'No overview available',
+            trailerUrl: '',
           ));
         }
       }
