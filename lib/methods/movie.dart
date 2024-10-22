@@ -10,6 +10,7 @@ class Movie {
   String director; //Director de la película
   int duration; //Duración de la película
   List<String> genres; //Géneros de la película
+  String trailerUrl; // Enlace del tráiler
 
   Movie({
     required this.id,
@@ -23,6 +24,7 @@ class Movie {
     required this.director,
     required this.duration,
     required this.genres,
+    required this.trailerUrl,
   });
 
   factory Movie.fromJson(Map<String, dynamic> detailsJson) {
@@ -45,6 +47,7 @@ class Movie {
       director: detailsJson["job"] ?? 'Unknown Director',
       duration: detailsJson["runtime"] ?? 0,
       genres: genresList,
+      trailerUrl: '',
     );
   }
 }

@@ -61,6 +61,7 @@ class _SearchingBarState extends State<SearchingBar> {
             genres: [],
             backDropPath: '',
             overview: 'No overview available',
+            trailerUrl: '',
           ));
 
           // Limitamos a 15 películas
@@ -72,7 +73,7 @@ class _SearchingBarState extends State<SearchingBar> {
     }
   }
 
-  //FUNCIÓN QUE EXTRAE EL RESTO DE INFORMACIÓN NECESARIA PARA CARGAR LA PÁGINA DE PELÍCULA
+// FUNCIÓN QUE EXTRAE EL RESTO DE INFORMACIÓN NECESARIA PARA CARGAR LA PÁGINA DE PELÍCULA
   Future<void> _fetchMovieDetails(int movieId) async {
     try {
       // Definimos las URLs para obtener detalles y créditos
@@ -80,15 +81,19 @@ class _SearchingBarState extends State<SearchingBar> {
           'https://api.themoviedb.org/3/movie/$movieId/credits?api_key=${Constants.apiKey}';
       String detailsURL =
           'https://api.themoviedb.org/3/movie/$movieId?api_key=${Constants.apiKey}&language=es-ES';
+      String videosURL =
+          'https://api.themoviedb.org/3/movie/$movieId/videos?api_key=${Constants.apiKey}&language=es-ES';
 
-      // Ejecutamos ambas solicitudes de forma paralela
+      // Ejecutamos las solicitudes de forma paralela
       var responses = await Future.wait([
         http.get(Uri.parse(creditsURL)),
         http.get(Uri.parse(detailsURL)),
+        http.get(Uri.parse(videosURL)), // Añadido para obtener los videos
       ]);
 
       var creditsResponse = responses[0];
       var detailsResponse = responses[1];
+      var videosResponse = responses[2]; // Respuesta para los videos
 
       // Procesamos la información de los créditos
       String director = 'Unknown Director';
@@ -108,6 +113,7 @@ class _SearchingBarState extends State<SearchingBar> {
       List<String> genresList = [];
       String overview = 'No overview available';
       String backDropPath = '';
+      String trailerUrl = '';
 
       if (detailsResponse.statusCode == 200) {
         var detailsData = jsonDecode(detailsResponse.body);
@@ -122,6 +128,18 @@ class _SearchingBarState extends State<SearchingBar> {
         }
       }
 
+      // Procesamos la respuesta de los videos para obtener el tráiler
+      if (videosResponse.statusCode == 200) {
+        var videosData = jsonDecode(videosResponse.body);
+        var videosList = videosData['results'] as List<dynamic>;
+        for (var video in videosList) {
+          if (video['site'] == 'YouTube' && video['type'] == 'Trailer') {
+            trailerUrl = 'https://www.youtube.com/watch?v=${video['key']}';
+            break;
+          }
+        }
+      }
+
       // Buscamos la película por ID y actualizamos sus detalles
       for (var movie in movies) {
         if (movie.id == movieId) {
@@ -130,6 +148,7 @@ class _SearchingBarState extends State<SearchingBar> {
           movie.genres = genresList;
           movie.overview = overview;
           movie.backDropPath = backDropPath;
+          movie.trailerUrl = trailerUrl; // Asigna la URL del tráiler
           break;
         }
       }
@@ -292,6 +311,8 @@ class _SearchingBarState extends State<SearchingBar> {
                                           Text(
                                             movies[index].title,
                                             softWrap: true,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 3,
                                             style: const TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
