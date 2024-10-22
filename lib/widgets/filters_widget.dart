@@ -840,18 +840,18 @@ class _FiltersState extends State<Filters> {
     if (filterGenres.isNotEmpty && filterProviders.isNotEmpty){
       String genreString = filterGenres.join('%2C');
       String providerString = filterProviders.join('%7C');
-      url = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_genres=$genreString&with_watch_providers=$providerString';
+      url = 'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&include_adult=false&include_video=false&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_genres=$genreString&with_watch_providers=$providerString';
     }
     else if(filterGenres.isNotEmpty && filterProviders.isEmpty){
       String genreString = filterGenres.join('%2C');
-      url = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_genres=$genreString';
+      url = 'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&include_adult=false&include_video=false&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_genres=$genreString';
     }
     else if(filterGenres.isEmpty && filterProviders.isNotEmpty){
       String providerString = filterProviders.join('%7C');
-      url = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_watch_providers=$providerString';
+      url = 'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&include_adult=false&include_video=false&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_watch_providers=$providerString';
     }
     else{
-      url = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=es-ES&page=1&region=ES&sort_by=popularity.desc';
+      url = 'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&include_adult=false&include_video=false&language=es-ES&page=1&region=ES&sort_by=popularity.desc';
     }
 
     var response = await http.get(Uri.parse(url));
