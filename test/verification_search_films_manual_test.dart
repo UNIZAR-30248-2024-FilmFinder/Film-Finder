@@ -11,9 +11,9 @@ void main() {
 
       // Crear una lista de películas originales
       final List<Movie> originalMovies = [
-        Movie(id: 550, title: "El club de la lucha", posterPath: "/sgTAWJFaB2kBvdQxRGabYFiQqEK.jpg", voteAverage: 8.4, mediaType: "movie", backDropPath: '', overview: '', releaseDay: '', director: '', duration: 0, genres: []),
-        Movie(id: 1159565, title: "Tiburón blanco: el club de la lucha", posterPath: "/4gbp125YYBOTfNAGP7K81vFW792.jpg", voteAverage: 8.3, mediaType: "movie", backDropPath: '', overview: '', releaseDay: '', director: '', duration: 0, genres: []),
-        Movie(id: 814776, title: "El club de las luchadoras", posterPath: "/zAPPIeqB4cjXiS5qPFgeifndunG.jpg", voteAverage: 6.7, mediaType: "movie", backDropPath: '', overview: '', releaseDay: '', director: '', duration: 0, genres: []),
+        Movie(id: 550, title: "El club de la lucha", posterPath: "/sgTAWJFaB2kBvdQxRGabYFiQqEK.jpg", voteAverage: 8.4, mediaType: "movie", backDropPath: '', overview: '', releaseDay: '', director: '', duration: 0, genres: [],trailerUrl: ''),
+        Movie(id: 1159565, title: "Tiburón blanco: el club de la lucha", posterPath: "/4gbp125YYBOTfNAGP7K81vFW792.jpg", voteAverage: 8.3, mediaType: "movie", backDropPath: '', overview: '', releaseDay: '', director: '', duration: 0, genres: [],trailerUrl: ''),
+        Movie(id: 814776, title: "El club de las luchadoras", posterPath: "/zAPPIeqB4cjXiS5qPFgeifndunG.jpg", voteAverage: 6.7, mediaType: "movie", backDropPath: '', overview: '', releaseDay: '', director: '', duration: 0, genres: [],trailerUrl: ''),
         // Agregar más películas originales según sea necesario
       ];
 
