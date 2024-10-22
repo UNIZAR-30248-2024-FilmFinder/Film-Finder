@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:image_picker/image_picker.dart';
 
+import '../widgets/change_password_widget.dart';
+import '../widgets/delete_account_widget.dart';
 import '../widgets/text_field_widget.dart';
+import 'profile_screen.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final User user;
@@ -69,7 +72,7 @@ class _EditProfileScreen extends State<EditProfileScreen> {
             onChanged: (name) {},
           ),
           const SizedBox(
-            height: 20,
+            height: 15,
           ),
           TextFieldWidget(
             label: 'Ubicación',
@@ -77,13 +80,113 @@ class _EditProfileScreen extends State<EditProfileScreen> {
             onChanged: (location) {},
           ),
           const SizedBox(
-            height: 20,
+            height: 15,
           ),
           TextFieldWidget(
             label: 'Sobre mi',
             text: user.about,
             maxLines: 5,
             onChanged: (about) {},
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ChangePasswordDialog();
+                      },
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: const Color.fromRGBO(21, 4, 29, 1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      side: const BorderSide(
+                        color: Color.fromRGBO(190, 49, 68, 1),
+                        width: 1.0,
+                      ),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                  ),
+                  child: const Text(
+                    'Cambiar contraseña',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 25,
+              ),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    showDeleteAccountDialog(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: const Color.fromRGBO(190, 49, 68, 1),
+                    backgroundColor: const Color.fromRGBO(21, 4, 29, 1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      side: const BorderSide(
+                        color: Color.fromRGBO(190, 49, 68, 1),
+                        width: 1.0,
+                      ),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                  ),
+                  child: const Text(
+                    'Borrar cuenta',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 50,
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfileScreen()),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: const Color.fromRGBO(21, 4, 29, 1),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                side: const BorderSide(
+                  color: Color.fromRGBO(190, 49, 68, 1),
+                  width: 1.0,
+                ),
+              ),
+              padding: const EdgeInsets.symmetric(
+                vertical: 10,
+              ),
+            ),
+            child: const Text(
+              'CONFIRMAR',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ),
         ],
       ),
