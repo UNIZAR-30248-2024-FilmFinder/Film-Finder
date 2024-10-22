@@ -836,8 +836,23 @@ class _FiltersState extends State<Filters> {
   final List<Movie> movies = [];
 
   Future<void> fetchTopRatedMovies() async {
-    String url =
-        'https://api.themoviedb.org/3/movie/top_rated?api_key=${Constants.apiKey}&language=es-ES&page=1';
+    String url;
+    if (filterGenres.isNotEmpty && filterProviders.isNotEmpty){
+      String genreString = filterGenres.join('%2C');
+      String providerString = filterProviders.join('%7C');
+      url = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_genres=$genreString&with_watch_providers=$providerString';
+    }
+    else if(filterGenres.isNotEmpty && filterProviders.isEmpty){
+      String genreString = filterGenres.join('%2C');
+      url = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_genres=$genreString';
+    }
+    else if(filterGenres.isEmpty && filterProviders.isNotEmpty){
+      String providerString = filterProviders.join('%7C');
+      url = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_watch_providers=$providerString';
+    }
+    else{
+      url = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=es-ES&page=1&region=ES&sort_by=popularity.desc';
+    }
 
     var response = await http.get(Uri.parse(url));
 
@@ -845,8 +860,7 @@ class _FiltersState extends State<Filters> {
       var tempData = jsonDecode(response.body);
       var movieJson = tempData['results'];
 
-      movies
-          .clear(); // Limpiamos la lista de películas antes de llenarla nuevamente
+      movies.clear(); // Limpiamos la lista de películas antes de llenarla nuevamente
 
       for (var movie in movieJson) {
         if (movie['id'] != null &&
@@ -859,8 +873,8 @@ class _FiltersState extends State<Filters> {
             posterPath: movie['poster_path'] ?? '',
             releaseDay: movie['release_date'] ?? 'Unknown',
             voteAverage: (movie['vote_average'] as num).toDouble(),
-            mediaType: movie['media_type'],
             // La información adicional la dejaremos en valores predeterminados
+            mediaType: 'Movie',
             director: 'Unknown Director',
             duration: 0,
             genres: [],
