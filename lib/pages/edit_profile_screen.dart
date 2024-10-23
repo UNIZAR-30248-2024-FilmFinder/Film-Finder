@@ -7,7 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import '../widgets/change_password_widget.dart';
 import '../widgets/delete_account_widget.dart';
 import '../widgets/text_field_widget.dart';
-import 'profile_screen.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final User user;
@@ -161,10 +160,7 @@ class _EditProfileScreen extends State<EditProfileScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ProfileScreen()),
-              );
+              Navigator.pop(context);
             },
             style: ElevatedButton.styleFrom(
               foregroundColor: Colors.white,
