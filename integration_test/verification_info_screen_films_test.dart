@@ -8,8 +8,10 @@ import 'package:film_finder/methods/movie.dart'; // Importa la clase Movie
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Test de integración de FilmInfo con una película', (WidgetTester tester) async {
-    final searchBar = SearchingBar().createState();
+  testWidgets('Test de integración de FilmInfo con una película',
+      (WidgetTester tester) async {
+    final searchBar =
+        SearchingBar(onSearchToggled: (bool isActive) {}).createState();
     // Ejecutar la búsqueda
     await searchBar.searchListFunction('El club de la lucha');
 
@@ -29,7 +31,8 @@ void main() {
     expect(find.text(foundMovie.title), findsAny);
 
     // Verificar que el género se muestra
-    expect(find.text('Géneros: ' + foundMovie.genres.join(', ')), findsOneWidget);
+    expect(
+        find.text('Géneros: ' + foundMovie.genres.join(', ')), findsOneWidget);
 
     // Verificar que la duración se muestra
     expect(find.textContaining(foundMovie.duration.toString()), findsAny);
@@ -41,7 +44,8 @@ void main() {
     expect(find.textContaining(foundMovie.releaseDay), findsOneWidget);
 
     // Verificar que la puntuación se muestra
-    expect(find.textContaining(foundMovie.voteAverage.toStringAsFixed(1)), findsOneWidget);
+    expect(find.textContaining(foundMovie.voteAverage.toStringAsFixed(1)),
+        findsOneWidget);
 
     // Verificar que la sinopsis está presente
     expect(find.textContaining(foundMovie.overview), findsOneWidget);

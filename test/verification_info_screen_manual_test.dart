@@ -3,33 +3,34 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:film_finder/methods/movie.dart'; // Importamos la clase Movie
 
 void main() {
-
   group('Movie Information Verification', () {
-
-    test('Verificar que la búsqueda devuelve los datos correctos comparando con movieOriginal', () async {
-      final searchBar = SearchingBar().createState();
+    test(
+        'Verificar que la búsqueda devuelve los datos correctos comparando con movieOriginal',
+        () async {
+      final searchBar =
+          SearchingBar(onSearchToggled: (bool isActive) {}).createState();
 
       // Crear una variable movieOriginal con todos los datos manualmente
       Movie movieOriginal = Movie(
-        id: 550,
-        title: 'El club de la lucha',
-        posterPath: '/sgTAWJFaB2kBvdQxRGabYFiQqEK.jpg',
-        releaseDay: '1999-10-15',
-        voteAverage: 8.439,
-        mediaType: 'movie',
-        director: 'David Fincher',  // Director conocido para esta película
-        duration: 139,              // Duración conocida
-        genres: ['Drama'],          // Género conocido
-        overview: 'Un joven sin ilusiones lucha contra su insomnio, '
-            'consecuencia quizás de su hastío por su gris y rutinaria vida. En un viaje '
-            'en avión conoce a Tyler Durden, un carismático vendedor de jabón que sostiene '
-            'una filosofía muy particular: el perfeccionismo es cosa de gentes débiles; en cambio, '
-            'la autodestrucción es lo único que hace que realmente la vida merezca la pena. Ambos '
-            'deciden entonces formar un club secreto de lucha donde descargar sus frustaciones y su '
-            'ira que tendrá un éxito arrollador.',  // Descripción conocida
-        backDropPath: '/hZkgoQYus5vegHoetLkCJzb17zJ.jpg',  // Backdrop conocido
-        trailerUrl: ''// Esto podría actualizarse después
-      );
+          id: 550,
+          title: 'El club de la lucha',
+          posterPath: '/sgTAWJFaB2kBvdQxRGabYFiQqEK.jpg',
+          releaseDay: '1999-10-15',
+          voteAverage: 8.439,
+          mediaType: 'movie',
+          director: 'David Fincher', // Director conocido para esta película
+          duration: 139, // Duración conocida
+          genres: ['Drama'], // Género conocido
+          overview: 'Un joven sin ilusiones lucha contra su insomnio, '
+              'consecuencia quizás de su hastío por su gris y rutinaria vida. En un viaje '
+              'en avión conoce a Tyler Durden, un carismático vendedor de jabón que sostiene '
+              'una filosofía muy particular: el perfeccionismo es cosa de gentes débiles; en cambio, '
+              'la autodestrucción es lo único que hace que realmente la vida merezca la pena. Ambos '
+              'deciden entonces formar un club secreto de lucha donde descargar sus frustaciones y su '
+              'ira que tendrá un éxito arrollador.', // Descripción conocida
+          backDropPath: '/hZkgoQYus5vegHoetLkCJzb17zJ.jpg', // Backdrop conocido
+          trailerUrl: '' // Esto podría actualizarse después
+          );
 
       // Ejecutar la búsqueda
       await searchBar.searchListFunction('El club de la lucha');
@@ -46,7 +47,8 @@ void main() {
       expect(foundMovie.posterPath, movieOriginal.posterPath);
       expect(foundMovie.releaseDay, movieOriginal.releaseDay);
       const double tolerance = 0.1; // Ajusta la tolerancia según sea necesario
-      expect((foundMovie.voteAverage - movieOriginal.voteAverage).abs(), lessThanOrEqualTo(tolerance));
+      expect((foundMovie.voteAverage - movieOriginal.voteAverage).abs(),
+          lessThanOrEqualTo(tolerance));
       expect(foundMovie.mediaType, movieOriginal.mediaType);
 
       // Ahora simulamos obtener los detalles adicionales de la película

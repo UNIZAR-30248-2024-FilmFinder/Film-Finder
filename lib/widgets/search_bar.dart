@@ -10,7 +10,9 @@ import '../methods/movie.dart';
 import 'package:http/http.dart' as http;
 
 class SearchingBar extends StatefulWidget {
-  const SearchingBar({super.key});
+  final Function(bool) onSearchToggled;
+
+  const SearchingBar({super.key, required this.onSearchToggled});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -186,6 +188,11 @@ class _SearchingBarState extends State<SearchingBar> {
                       val1 = value;
                     },
                   );
+                  if (searchText.text.isEmpty) {
+                    setState(() {
+                      widget.onSearchToggled(false);
+                    });
+                  }
                 },
                 onChanged: (value) {
                   setState(
@@ -197,6 +204,15 @@ class _SearchingBarState extends State<SearchingBar> {
                           val1 = value;
                         },
                       );
+                      if (searchText.text.isEmpty) {
+                        setState(() {
+                          widget.onSearchToggled(false);
+                        });
+                      } else {
+                        setState(() {
+                          widget.onSearchToggled(true);
+                        });
+                      }
                     },
                   );
                 },
@@ -218,6 +234,7 @@ class _SearchingBarState extends State<SearchingBar> {
                       setState(() {
                         searchText.clear();
                         FocusManager.instance.primaryFocus?.unfocus();
+                        widget.onSearchToggled(false);
                       });
                     },
                     icon: Icon(

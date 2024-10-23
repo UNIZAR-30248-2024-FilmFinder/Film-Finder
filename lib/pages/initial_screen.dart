@@ -2,8 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:film_finder/widgets/search_bar.dart';
 import 'package:film_finder/widgets/filters_widget.dart';
 
-class InitialScreen extends StatelessWidget {
+class InitialScreen extends StatefulWidget {
   const InitialScreen({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _InitialScreenState createState() => _InitialScreenState();
+}
+
+class _InitialScreenState extends State<InitialScreen> {
+  bool isSearchActive = false;
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +33,15 @@ class InitialScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 5),
-            const SearchingBar(),
+            SearchingBar(
+              onSearchToggled: (bool isActive) {
+                setState(() {
+                  isSearchActive = isActive;
+                });
+              },
+            ),
             const SizedBox(height: 25),
-            const Filters(),
+            if (!isSearchActive) const Filters(),
             const SizedBox(height: 50),
           ],
         ),

@@ -22,63 +22,63 @@ class FilmInfo extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar.large(
-            leading: Container(
-              height: 70,
-              width: 70,
-              margin: const EdgeInsets.only(top: 2, left: 16),
-              decoration: BoxDecoration(
-                color: const Color.fromRGBO(34, 9, 44, 1),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(
-                  Icons.arrow_back_rounded,
-                  color: Colors.white,
-                ),
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(
+                Icons.arrow_back_rounded,
+                color: Colors.white,
+                size: 30,
               ),
             ),
             backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
             expandedHeight: 275,
             pinned: true,
             floating: true,
-            flexibleSpace: FlexibleSpaceBar(
-              title: Stack(
-                children: [
-                  Text(
-                    movie.title,
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      foreground: Paint()
-                        ..style = PaintingStyle.stroke
-                        ..strokeWidth = 2
-                        ..color = Colors.black,
+            flexibleSpace: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                var top = constraints.biggest.height;
+
+                return FlexibleSpaceBar(
+                  title: top < 100
+                      ? Stack(
+                          children: [
+                            Text(
+                              movie.title,
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                                foreground: Paint()
+                                  ..style = PaintingStyle.stroke
+                                  ..strokeWidth = 2
+                                  ..color = Colors.black,
+                              ),
+                            ),
+                            Text(
+                              movie.title,
+                              style: const TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        )
+                      : null,
+                  background: ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(24),
+                      bottomRight: Radius.circular(24),
+                    ),
+                    child: Image.network(
+                      'https://image.tmdb.org/t/p/original${movie.backDropPath}',
+                      fit: BoxFit.cover,
+                      filterQuality: FilterQuality.high,
                     ),
                   ),
-                  Text(
-                    movie.title,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-              background: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(24),
-                  bottomRight: Radius.circular(24),
-                ),
-                child: Image.network(
-                  'https://image.tmdb.org/t/p/original${movie.backDropPath}',
-                  fit: BoxFit.cover,
-                  filterQuality: FilterQuality.high,
-                ),
-              ),
+                );
+              },
             ),
           ),
           SliverToBoxAdapter(

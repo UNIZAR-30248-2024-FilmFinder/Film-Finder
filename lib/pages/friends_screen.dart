@@ -26,7 +26,7 @@ class FriendsScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Text(
-                'AUN ESTA SIN DEFINIR\n Pero se podría añadir el apartado de buscar perfiles y se nos hacen falta maás funcionalidades añadir amigos',
+                'AUN ESTA SIN DEFINIR\n Pero se podría añadir el apartado de buscar perfiles y si nos hacen falta más funcionalidades: añadir amigos',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
