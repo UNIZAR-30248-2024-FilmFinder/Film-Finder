@@ -39,7 +39,6 @@ class FilmInfo extends StatelessWidget {
             flexibleSpace: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
                 var top = constraints.biggest.height;
-
                 return FlexibleSpaceBar(
                   title: top < 100
                       ? Stack(

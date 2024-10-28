@@ -42,7 +42,7 @@ class Movie {
       overview: detailsJson["overview"] ?? 'No overview available',
       posterPath: detailsJson["poster_path"] ?? '',
       releaseDay: detailsJson["release_date"] ?? 'Unknown Release Date',
-      voteAverage: detailsJson["vote_average"] ?? 0,
+      voteAverage: detailsJson["vote_average"].toDouble() ?? 0,
       mediaType: detailsJson["media_type"] ?? 'Unknown Media Type',
       director: detailsJson["job"] ?? 'Unknown Director',
       duration: detailsJson["runtime"] ?? 0,
