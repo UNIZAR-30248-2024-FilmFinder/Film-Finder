@@ -17,10 +17,10 @@ class Filters extends StatefulWidget {
 class _FiltersState extends State<Filters> {
   int pasoDeFiltro = 0;
 
-  List<int> filterGenres = [];
-  List<int> filterProviders = [];
-  List<int> arrayGenres = List.filled(18, 0);
-  List<int> arrayProviders = List.filled(4, 0);
+  List<String> filterGenres = [];
+  List<String> filterProviders = ['337'];
+  List<int> arrayGenres = List.filled(19, 0);
+  List<int> arrayProviders = List.filled(5, 0);
 
   ScrollController _genreScrollController = ScrollController();
   ScrollController _platformScrollController = ScrollController();
@@ -115,15 +115,17 @@ class _FiltersState extends State<Filters> {
                 children: <Widget>[
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA EL GENERO INDICADO
-                      if(arrayGenres[0] == 0){
-                        filterGenres.add(28);
-                        arrayGenres[0] = arrayGenres[0] + 1;
-                      }
-                      else{
-                        filterGenres.remove(28);
-                        arrayGenres[0] = arrayGenres[0] - 1;
-                      }
+                      
+                        // AÑADIR A LA LISTA EL GENERO INDICADO
+                        if(arrayGenres[0] == 0){
+                          filterGenres.add('28');
+                          arrayGenres[0] = arrayGenres[0] + 1;
+                        }
+                        else{
+                          filterGenres.remove('28');
+                          arrayGenres[0] = arrayGenres[0] - 1;
+                        }
+                      setState(() {});
                     },
                     child: const CardFilter(
                       image: 'assets/genres_icons/accion.png',
@@ -133,15 +135,17 @@ class _FiltersState extends State<Filters> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA EL GENERO INDICADO
-                      if(arrayGenres[1] == 0){
-                        filterGenres.add(16);
-                        arrayGenres[1] = arrayGenres[1] + 1;
-                      }
-                      else{
-                        filterGenres.remove(16);
-                        arrayGenres[1] = arrayGenres[1] - 1;
-                      }
+                      setState(() {
+                        // AÑADIR A LA LISTA EL GENERO INDICADO
+                        if(arrayGenres[1] == 0){
+                          filterGenres.add('16');
+                          arrayGenres[1] = arrayGenres[1] + 1;
+                        }
+                        else{
+                          filterGenres.remove('16');
+                          arrayGenres[1] = arrayGenres[1] - 1;
+                        }
+                      });
                     },
                     child: const CardFilter(
                       image: 'assets/genres_icons/animacion.png',
@@ -151,15 +155,16 @@ class _FiltersState extends State<Filters> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA EL GENERO INDICADO
-                      if(arrayGenres[2] == 0){
-                        filterGenres.add(12);
-                        arrayGenres[2] = arrayGenres[2] + 1;
-                      }
-                      else{
-                        filterGenres.remove(12);
-                        arrayGenres[2] = arrayGenres[2] - 1;
-                      }
+                        // AÑADIR A LA LISTA EL GENERO INDICADO
+                        if(arrayGenres[2] == 0){
+                          filterGenres.add('12');
+                          arrayGenres[2] = arrayGenres[2] + 1;
+                        }
+                        else{
+                          filterGenres.remove('12');
+                          arrayGenres[2] = arrayGenres[2] - 1;
+                        }
+                      setState(() {});
                     },
                     child: const CardFilter(
                       image: 'assets/genres_icons/aventura.png',
@@ -169,15 +174,17 @@ class _FiltersState extends State<Filters> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA EL GENERO INDICADO
-                      if(arrayGenres[3] == 0){
-                        filterGenres.add(878);
-                        arrayGenres[3] = arrayGenres[3] + 1;
-                      }
-                      else{
-                        filterGenres.remove(878);
-                        arrayGenres[3] = arrayGenres[3] - 1;
-                      }
+                      setState(() {
+                        // AÑADIR A LA LISTA EL GENERO INDICADO
+                        if(arrayGenres[3] == 0){
+                          filterGenres.add('878');
+                          arrayGenres[3] = arrayGenres[3] + 1;
+                        }
+                        else{
+                          filterGenres.remove('878');
+                          arrayGenres[3] = arrayGenres[3] - 1;
+                        }
+                      });
                     },
                     child: const CardFilter(
                       image: 'assets/genres_icons/cienciaFiccion.png',
@@ -187,15 +194,17 @@ class _FiltersState extends State<Filters> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA EL GENERO INDICADO
-                      if(arrayGenres[4] == 0){
-                        filterGenres.add(35);
-                        arrayGenres[4] = arrayGenres[4] + 1;
-                      }
-                      else{
-                        filterGenres.remove(35);
-                        arrayGenres[4] = arrayGenres[4] - 1;
-                      }
+                      setState(() {
+                        // AÑADIR A LA LISTA EL GENERO INDICADO
+                        if(arrayGenres[4] == 0){
+                          filterGenres.add('35');
+                          arrayGenres[4] = arrayGenres[4] + 1;
+                        }
+                        else{
+                          filterGenres.remove('35');
+                          arrayGenres[4] = arrayGenres[4] - 1;
+                        }
+                      });
                     },
                     child: const CardFilter(
                       image: 'assets/genres_icons/comedia.png',
@@ -205,15 +214,17 @@ class _FiltersState extends State<Filters> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA EL GENERO INDICADO
-                      if(arrayGenres[5] == 0){
-                        filterGenres.add(80);
-                        arrayGenres[5] = arrayGenres[5] + 1;
-                      }
-                      else{
-                        filterGenres.remove(80);
-                        arrayGenres[5] = arrayGenres[5] - 1;
-                      }
+                      setState(() {
+                        // AÑADIR A LA LISTA EL GENERO INDICADO
+                        if(arrayGenres[5] == 0){
+                          filterGenres.add('80');
+                          arrayGenres[5] = arrayGenres[5] + 1;
+                        }
+                        else{
+                          filterGenres.remove('80');
+                          arrayGenres[5] = arrayGenres[5] - 1;
+                        }
+                      });
                     },
                     child: const CardFilter(
                       image: 'assets/genres_icons/crimen.png',
@@ -223,15 +234,17 @@ class _FiltersState extends State<Filters> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA EL GENERO INDICADO
-                      if(arrayGenres[6] == 0){
-                        filterGenres.add(99);
-                        arrayGenres[6] = arrayGenres[6] + 1;
-                      }
-                      else{
-                        filterGenres.remove(99);
-                        arrayGenres[6] = arrayGenres[6] - 1;
-                      }
+                      setState(() {
+                        // AÑADIR A LA LISTA EL GENERO INDICADO
+                        if(arrayGenres[6] == 0){
+                          filterGenres.add('99');
+                          arrayGenres[6] = arrayGenres[6] + 1;
+                        }
+                        else{
+                          filterGenres.remove('99');
+                          arrayGenres[6] = arrayGenres[6] - 1;
+                        }
+                      });
                     },
                     child: const CardFilter(
                       image: 'assets/genres_icons/documental.png',
@@ -241,15 +254,17 @@ class _FiltersState extends State<Filters> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA EL GENERO INDICADO
-                      if(arrayGenres[7] == 0){
-                        filterGenres.add(18);
-                        arrayGenres[7] = arrayGenres[7] + 1;
-                      }
-                      else{
-                        filterGenres.remove(18);
-                        arrayGenres[7] = arrayGenres[7] - 1;
-                      }
+                      setState(() {
+                        // AÑADIR A LA LISTA EL GENERO INDICADO
+                        if(arrayGenres[7] == 0){
+                          filterGenres.add('18');
+                          arrayGenres[7] = arrayGenres[7] + 1;
+                        }
+                        else{
+                          filterGenres.remove('18');
+                          arrayGenres[7] = arrayGenres[7] - 1;
+                        }
+                      });
                     },
                     child: const CardFilter(
                       image: 'assets/genres_icons/drama.png',
@@ -259,15 +274,17 @@ class _FiltersState extends State<Filters> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA EL GENERO INDICADO
-                      if(arrayGenres[8] == 0){
-                        filterGenres.add(10751);
-                        arrayGenres[8] = arrayGenres[8] + 1;
-                      }
-                      else{
-                        filterGenres.remove(10751);
-                        arrayGenres[8] = arrayGenres[8] - 1;
-                      }
+                      setState(() {
+                        // AÑADIR A LA LISTA EL GENERO INDICADO
+                        if(arrayGenres[8] == 0){
+                          filterGenres.add('10751');
+                          arrayGenres[8] = arrayGenres[8] + 1;
+                        }
+                        else{
+                          filterGenres.remove('10751');
+                          arrayGenres[8] = arrayGenres[8] - 1;
+                        }
+                      });
                     },
                     child: const CardFilter(
                       image: 'assets/genres_icons/familia.png',
@@ -277,15 +294,17 @@ class _FiltersState extends State<Filters> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA EL GENERO INDICADO
-                      if(arrayGenres[9] == 0){
-                        filterGenres.add(14);
-                        arrayGenres[9] = arrayGenres[9] + 1;
-                      }
-                      else{
-                        filterGenres.remove(14);
-                        arrayGenres[9] = arrayGenres[9] - 1;
-                      }
+                      setState(() {
+                        // AÑADIR A LA LISTA EL GENERO INDICADO
+                        if(arrayGenres[9] == 0){
+                          filterGenres.add('14');
+                          arrayGenres[9] = arrayGenres[9] + 1;
+                        }
+                        else{
+                          filterGenres.remove('14');
+                          arrayGenres[9] = arrayGenres[9] - 1;
+                        }
+                      });
                     },
                     child: const CardFilter(
                       image: 'assets/genres_icons/fantasia.png',
@@ -295,15 +314,17 @@ class _FiltersState extends State<Filters> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA EL GENERO INDICADO
-                      if(arrayGenres[10] == 0){
-                        filterGenres.add(10752);
-                        arrayGenres[10] = arrayGenres[10] + 1;
-                      }
-                      else{
-                        filterGenres.remove(10752);
-                        arrayGenres[10] = arrayGenres[10] - 1;
-                      }
+                      setState(() {
+                        // AÑADIR A LA LISTA EL GENERO INDICADO
+                        if(arrayGenres[10] == 0){
+                          filterGenres.add('10752');
+                          arrayGenres[10] = arrayGenres[10] + 1;
+                        }
+                        else{
+                          filterGenres.remove('10752');
+                          arrayGenres[10] = arrayGenres[10] - 1;
+                        }
+                      });
                     },
                     child: const CardFilter(
                       image: 'assets/genres_icons/guerra.png',
@@ -313,15 +334,17 @@ class _FiltersState extends State<Filters> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA EL GENERO INDICADO
-                      if(arrayGenres[11] == 0){
-                        filterGenres.add(36);
-                        arrayGenres[11] = arrayGenres[11] + 1;
-                      }
-                      else{
-                        filterGenres.remove(36);
-                        arrayGenres[11] = arrayGenres[11] - 1;
-                      }
+                      setState(() {
+                        // AÑADIR A LA LISTA EL GENERO INDICADO
+                        if(arrayGenres[11] == 0){
+                          filterGenres.add('36');
+                          arrayGenres[11] = arrayGenres[11] + 1;
+                        }
+                        else{
+                          filterGenres.remove('36');
+                          arrayGenres[11] = arrayGenres[11] - 1;
+                        }
+                      });
                     },
                     child: const CardFilter(
                       image: 'assets/genres_icons/historia.png',
@@ -331,15 +354,17 @@ class _FiltersState extends State<Filters> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA EL GENERO INDICADO
-                      if(arrayGenres[12] == 0){
-                        filterGenres.add(9648);
-                        arrayGenres[12] = arrayGenres[12] + 1;
-                      }
-                      else{
-                        filterGenres.remove(9648);
-                        arrayGenres[12] = arrayGenres[12] - 1;
-                      }
+                      setState(() {
+                        // AÑADIR A LA LISTA EL GENERO INDICADO
+                        if(arrayGenres[12] == 0){
+                          filterGenres.add('9648');
+                          arrayGenres[12] = arrayGenres[12] + 1;
+                        }
+                        else{
+                          filterGenres.remove('9648');
+                          arrayGenres[12] = arrayGenres[12] - 1;
+                        }
+                      });
                     },
                     child: const CardFilter(
                       image: 'assets/genres_icons/misterio.png',
@@ -349,15 +374,17 @@ class _FiltersState extends State<Filters> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA EL GENERO INDICADO
-                      if(arrayGenres[13] == 0){
-                        filterGenres.add(10402);
-                        arrayGenres[13] = arrayGenres[13] + 1;
-                      }
-                      else{
-                        filterGenres.remove(10402);
-                        arrayGenres[13] = arrayGenres[13] - 1;
-                      }
+                      setState(() {
+                        // AÑADIR A LA LISTA EL GENERO INDICADO
+                        if(arrayGenres[13] == 0){
+                          filterGenres.add('10402');
+                          arrayGenres[13] = arrayGenres[13] + 1;
+                        }
+                        else{
+                          filterGenres.remove('10402');
+                          arrayGenres[13] = arrayGenres[13] - 1;
+                        }
+                      });
                     },
                     child: const CardFilter(
                       image: 'assets/genres_icons/musica.png',
@@ -367,15 +394,17 @@ class _FiltersState extends State<Filters> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA EL GENERO INDICADO
-                      if(arrayGenres[14] == 0){
-                        filterGenres.add(10770);
-                        arrayGenres[14] = arrayGenres[14] + 1;
-                      }
-                      else{
-                        filterGenres.remove(10770);
-                        arrayGenres[14] = arrayGenres[14] - 1;
-                      }
+                      setState(() {
+                        // AÑADIR A LA LISTA EL GENERO INDICADO
+                        if(arrayGenres[14] == 0){
+                          filterGenres.add('10770');
+                          arrayGenres[14] = arrayGenres[14] + 1;
+                        }
+                        else{
+                          filterGenres.remove('10770');
+                          arrayGenres[14] = arrayGenres[14] - 1;
+                        }
+                      });
                     },
                     child: const CardFilter(
                       image: 'assets/genres_icons/peliculaTV.png',
@@ -385,15 +414,17 @@ class _FiltersState extends State<Filters> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA EL GENERO INDICADO
-                      if(arrayGenres[15] == 0){
-                        filterGenres.add(10749);
-                        arrayGenres[15] = arrayGenres[15] + 1;
-                      }
-                      else{
-                        filterGenres.remove(10749);
-                        arrayGenres[15] = arrayGenres[15] - 1;
-                      }
+                      setState(() {
+                        // AÑADIR A LA LISTA EL GENERO INDICADO
+                        if(arrayGenres[15] == 0){
+                          filterGenres.add('10749');
+                          arrayGenres[15] = arrayGenres[15] + 1;
+                        }
+                        else{
+                          filterGenres.remove('10749');
+                          arrayGenres[15] = arrayGenres[15] - 1;
+                        }
+                      });
                     },
                     child: const CardFilter(
                       image: 'assets/genres_icons/romance.png',
@@ -403,15 +434,17 @@ class _FiltersState extends State<Filters> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA EL GENERO INDICADO
-                      if(arrayGenres[16] == 0){
-                        filterGenres.add(53);
-                        arrayGenres[16] = arrayGenres[16] + 1;
-                      }
-                      else{
-                        filterGenres.remove(53);
-                        arrayGenres[16] = arrayGenres[16] - 1;
-                      }
+                      setState(() {
+                        // AÑADIR A LA LISTA EL GENERO INDICADO
+                        if(arrayGenres[16] == 0){
+                          filterGenres.add('53');
+                          arrayGenres[16] = arrayGenres[16] + 1;
+                        }
+                        else{
+                          filterGenres.remove('53');
+                          arrayGenres[16] = arrayGenres[16] - 1;
+                        }
+                      });
                     },
                     child: const CardFilter(
                       image: 'assets/genres_icons/suspense.png',
@@ -421,15 +454,17 @@ class _FiltersState extends State<Filters> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA EL GENERO INDICADO
-                      if(arrayGenres[17] == 0){
-                        filterGenres.add(27);
-                        arrayGenres[17] = arrayGenres[17] + 1;
-                      }
-                      else{
-                        filterGenres.remove(27);
-                        arrayGenres[17] = arrayGenres[17] - 1;
-                      }
+                      setState(() {
+                        // AÑADIR A LA LISTA EL GENERO INDICADO
+                        if(arrayGenres[17] == 0){
+                          filterGenres.add('27');
+                          arrayGenres[17] = arrayGenres[17] + 1;
+                        }
+                        else{
+                          filterGenres.remove('27');
+                          arrayGenres[17] = arrayGenres[17] - 1;
+                        }
+                      });
                     },
                     child: const CardFilter(
                       image: 'assets/genres_icons/terror.png',
@@ -439,15 +474,17 @@ class _FiltersState extends State<Filters> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA EL GENERO INDICADO
-                      if(arrayGenres[18] == 0){
-                        filterGenres.add(37);
-                        arrayGenres[18] = arrayGenres[18] + 1;
-                      }
-                      else{
-                        filterGenres.remove(37);
-                        arrayGenres[18] = arrayGenres[18] - 1;
-                      }
+                      setState(() {
+                        // AÑADIR A LA LISTA EL GENERO INDICADO
+                        if(arrayGenres[18] == 0){
+                          filterGenres.add('37');
+                          arrayGenres[18] = arrayGenres[18] + 1;
+                        }
+                        else{
+                          filterGenres.remove('37');
+                          arrayGenres[18] = arrayGenres[18] - 1;
+                        }
+                      });
                     },
                     child: const CardFilter(
                       image: 'assets/genres_icons/western.png',
@@ -525,15 +562,17 @@ class _FiltersState extends State<Filters> {
                 children: <Widget>[
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA LA PLATAFORMA INDICADO
-                      if(arrayProviders[0] == 0){
-                        filterProviders.add(2);
-                        arrayProviders[0] = arrayProviders[0] + 1;
-                      }
-                      else{
-                        filterProviders.remove(2);
-                        arrayProviders[0] = arrayProviders[0] - 1;
-                      }
+                      setState(() {
+                        // AÑADIR A LA LISTA LA PLATAFORMA INDICADO
+                        if(arrayProviders[0] == 0){
+                          filterProviders.add('2');
+                          arrayProviders[0] = arrayProviders[0] + 1;
+                        }
+                        else{
+                          filterProviders.remove('2');
+                          arrayProviders[0] = arrayProviders[0] - 1;
+                        }
+                      });
                     },
                     child: const CardFilter(
                       image: 'assets/platform_icons/apple-tv.png',
@@ -543,15 +582,16 @@ class _FiltersState extends State<Filters> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA LA PLATAFORMA INDICADO
-                      if(arrayProviders[1] == 0){
-                        filterProviders.add(337);
-                        arrayProviders[1] = arrayProviders[1] + 1;
-                      }
-                      else{
-                        filterProviders.remove(337);
-                        arrayProviders[1] = arrayProviders[1] - 1;
-                      }
+                        // AÑADIR A LA LISTA LA PLATAFORMA INDICADO
+                        if(arrayProviders[1] == 0){
+                          filterProviders.add('337');
+                          arrayProviders[1] = arrayProviders[1] + 1;
+                        }
+                        else{
+                          filterProviders.remove('337');
+                          arrayProviders[1] = arrayProviders[1] - 1;
+                        }
+                        setState(() {});
                     },
                     child: const CardFilter(
                       image: 'assets/platform_icons/disneyPlus.png',
@@ -561,15 +601,16 @@ class _FiltersState extends State<Filters> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA LA PLATAFORMA INDICADO
-                      if(arrayProviders[2] == 0){
-                        filterProviders.add(1899);
-                        arrayProviders[2] = arrayProviders[2] + 1;
-                      }
-                      else{
-                        filterProviders.remove(1899);
-                        arrayProviders[2] = arrayProviders[2] - 1;
-                      }
+                        // AÑADIR A LA LISTA LA PLATAFORMA INDICADO
+                        if(arrayProviders[2] == 0){
+                          filterProviders.add('1899');
+                          arrayProviders[2] = arrayProviders[2] + 1;
+                        }
+                        else{
+                          filterProviders.remove('1899');
+                          arrayProviders[2] = arrayProviders[2] - 1;
+                        }
+                        setState(() {});
                     },
                     child: const CardFilter(
                       image: 'assets/platform_icons/hbo.png',
@@ -579,15 +620,17 @@ class _FiltersState extends State<Filters> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA LA PLATAFORMA INDICADO
-                      if(arrayProviders[3] == 0){
-                        filterProviders.add(8);
-                        arrayProviders[3] = arrayProviders[3] + 1;
-                      }
-                      else{
-                        filterProviders.remove(8);
-                        arrayProviders[3] = arrayProviders[3] - 1;
-                      }
+                      setState(() {
+                        // AÑADIR A LA LISTA LA PLATAFORMA INDICADO
+                        if(arrayProviders[3] == 0){
+                          filterProviders.add('8');
+                          arrayProviders[3] = arrayProviders[3] + 1;
+                        }
+                        else{
+                          filterProviders.remove('8');
+                          arrayProviders[3] = arrayProviders[3] - 1;
+                        }
+                      });
                     },
                     child: const CardFilter(
                       image: 'assets/platform_icons/netflix.png',
@@ -597,15 +640,17 @@ class _FiltersState extends State<Filters> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      // AÑADIR A LA LISTA LA PLATAFORMA INDICADO
-                      if(arrayProviders[4] == 0){
-                        filterProviders.add(119);
-                        arrayProviders[4] = arrayProviders[4] + 1;
-                      }
-                      else{
-                        filterProviders.remove(119);
-                        arrayProviders[4] = arrayProviders[4] - 1;
-                      }
+                      setState(() {
+                        // AÑADIR A LA LISTA LA PLATAFORMA INDICADO
+                        if(arrayProviders[4] == 0){
+                          filterProviders.add('119');
+                          arrayProviders[4] = arrayProviders[4] + 1;
+                        }
+                        else{
+                          filterProviders.remove('119');
+                          arrayProviders[4] = arrayProviders[4] - 1;
+                        }
+                      });
                     },
                     child: const CardFilter(
                       image: 'assets/platform_icons/primeVideo.png',
@@ -710,12 +755,11 @@ class _FiltersState extends State<Filters> {
                 child: GestureDetector(
                   onTap: () async {
                     await fetchTopRatedMovies();
-                    print('Películas cargadas: ${movies.length}'); // Agrega este log
                     if (movies.isEmpty) {
                       print('No se encontraron películas.');
                     } else {
                       print('Se encontraron ${movies.length} películas.');
-  }
+                    }
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -843,26 +887,34 @@ class _FiltersState extends State<Filters> {
   List<Movie> movies = [];
 
   Future<void> fetchTopRatedMovies() async {
+
+    print('filterGenres: $filterGenres');
+    print('filterProviders: $filterProviders');
+
     String url;
     if (filterGenres.isNotEmpty && filterProviders.isNotEmpty){
       String genreString = filterGenres.join('%2C');
       String providerString = filterProviders.join('%7C');
       url = 'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&include_adult=false&include_video=false&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_genres=$genreString&with_watch_providers=$providerString';
+      print('llamada 1');
     }
     else if(filterGenres.isNotEmpty && filterProviders.isEmpty){
       String genreString = filterGenres.join('%2C');
       url = 'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&include_adult=false&include_video=false&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_genres=$genreString';
+            print('llamada 2');
     }
     else if(filterGenres.isEmpty && filterProviders.isNotEmpty){
+      
       String providerString = filterProviders.join('%7C');
       url = 'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&include_adult=false&include_video=false&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_watch_providers=$providerString';
+            print('llamada 3');
     }
     else{
       url = 'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&include_adult=false&include_video=false&language=es-ES&page=1&region=ES&sort_by=popularity.desc';
+      print('llamada 4');
     }
 
     var response = await http.get(Uri.parse(url));
-    print('Código de estado: ${response.statusCode}');
 
     if (response.statusCode == 200) {
       var tempData = jsonDecode(response.body);
