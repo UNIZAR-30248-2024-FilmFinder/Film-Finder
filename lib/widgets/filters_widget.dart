@@ -938,7 +938,7 @@ class _FiltersState extends State<Filters> {
             duration: 0,
             genres: [],
             backDropPath: '',
-            overview: 'No overview available',
+            overview: movie['overview'] ?? 'No overview available',
             trailerUrl: '',
           ));
         }
