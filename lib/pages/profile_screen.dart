@@ -1,7 +1,6 @@
 import 'package:film_finder/methods/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
 import '../widgets/profile_widget.dart';
 import 'edit_profile_screen.dart';
 
@@ -321,7 +320,7 @@ class ProfileScreen extends StatelessWidget {
             color: Color.fromRGBO(190, 49, 68, 1),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () async {},
             contentPadding: const EdgeInsets.symmetric(horizontal: 35),
             leading: Container(
               width: 50,
