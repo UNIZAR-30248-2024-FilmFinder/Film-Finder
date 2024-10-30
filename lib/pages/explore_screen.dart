@@ -15,13 +15,17 @@ class _ExploreScreenState extends State<ExploreScreen>{
   late Future<List<Movie>> trendingmovies;
   late Future<List<Movie>> topratedmovies;
   late Future<List<Movie>> upcomingmovies;
+  bool moviesLoaded = false;
 
   @override
   void initState(){
     super.initState();
-    trendingmovies = Api().getTrendingMovies();
-    topratedmovies = Api().getTopRatedMovies();
-    upcomingmovies = Api().getUpcomingMovies();
+    if (!moviesLoaded) {
+      trendingmovies = Api().getTrendingMovies();
+      topratedmovies = Api().getTopRatedMovies();
+      upcomingmovies = Api().getUpcomingMovies();
+      moviesLoaded = true;
+    }
   }
 
   @override
