@@ -1,7 +1,8 @@
+import 'package:film_finder/pages/principal_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:film_finder/pages/principal_screen.dart';
+import 'package:film_finder/pages/initial_screen.dart';
 
 class Register extends StatelessWidget {
   Register({Key? key}) : super(key: key);
@@ -12,13 +13,13 @@ class Register extends StatelessWidget {
   final TextEditingController locationController = TextEditingController();
   final TextEditingController aboutController = TextEditingController();
 
-  void registerUser(BuildContext context) async {
-    String email = emailController.text; // Supongo que usernameController es el email
-    String password = passwordController.text; // Y passwordController es la contraseña
-    String name = nameController.text; // Supongamos que tienes un controlador para el nombre
-    String imagePath = 'path/to/image'; // Añade la lógica para obtener el imagePath
-    String about = aboutController.text; // Añade un controlador para el campo "acerca de"
-    String location = locationController.text; // Añade un controlador para la ubicación
+  Future<void> registerUser(BuildContext context) async {
+    String email = emailController.text;
+    String password = passwordController.text;
+    String name = nameController.text;
+    String imagePath = 'path/to/image'; // Añadir lógica para obtener el path de la imagen
+    String about = aboutController.text;
+    String location = locationController.text;
 
     try {
       UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -35,20 +36,18 @@ class Register extends StatelessWidget {
       });
 
       // Redirigir a la pantalla principal después del registro
-      Navigator.pushReplacement(
+      await Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => PrincipalScreen()),
       );
-
     } catch (e) {
-      // Muestra un mensaje de error
+      // Mostrar un mensaje de error
       print("Error durante el registro: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error durante el registro: $e")),
       );
     }
   }
-
 
   @override
   Widget build(BuildContext context) {

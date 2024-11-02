@@ -1,89 +1,100 @@
-import 'package:film_finder/methods/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import '../widgets/profile_widget.dart';
 import 'edit_profile_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  late User user;
+  Map<String, dynamic>? userData;
+
+  @override
+  void initState() {
+    super.initState();
+    user = FirebaseAuth.instance.currentUser!;
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      DocumentSnapshot doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      setState(() {
+        userData = doc.data() as Map<String, dynamic>?;
+      });
+    } catch (e) {
+      print("Error al cargar los datos del usuario: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    //ESTO TENDRA QUE SACARSE DE LA BASE DE DATOS
-    const myUser = User(
-        imagePath: '',
-        name: 'Jorge',
-        email: '845647@unizar.es',
-        about:
-            'Aqui irá la descripción que se quiera añadir el usuario a su perfil.',
-        location: 'España, Zaragoza');
+    if (userData == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
       body: ListView(
         physics: const BouncingScrollPhysics(),
         children: [
-          const SizedBox(
-            height: 35,
-          ),
+          const SizedBox(height: 35),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const SizedBox(
-                width: 35,
-              ),
+              const SizedBox(width: 35),
               ProfileWidget(
-                imagePath: myUser.imagePath,
+                imagePath: userData!['imagePath'] ?? '', // Path de la imagen
                 onClicked: () async {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const EditProfileScreen(
-                              user: myUser,
-                            )),
+                      builder: (context) => EditProfileScreen(user: userData!),
+                    ),
                   );
                 },
               ),
-              const SizedBox(
-                width: 30,
-              ),
+              const SizedBox(width: 30),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    myUser.name,
+                    userData!['name'] ?? 'Nombre no disponible',
                     style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 26),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 26,
+                    ),
                   ),
-                  const SizedBox(
-                    height: 2,
-                  ),
+                  const SizedBox(height: 2),
                   Text(
-                    myUser.location,
+                    userData!['location'] ?? 'Ubicación no disponible',
                     style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                        fontSize: 16),
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   Text(
-                    myUser.email,
+                    user.email ?? 'Correo no disponible',
                     style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        color: Color.fromARGB(255, 179, 178, 178),
-                        fontSize: 15),
+                      fontWeight: FontWeight.w400,
+                      color: Color.fromARGB(255, 179, 178, 178),
+                      fontSize: 15,
+                    ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
-          const SizedBox(
-            height: 25,
-          ),
+          const SizedBox(height: 25),
           const Center(
             child: Text(
               'Peliculas',
@@ -94,9 +105,8 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(
-            height: 15,
-          ),
+          const SizedBox(height: 15),
+          // Contenedor de estadísticas de películas
           Container(
             padding: const EdgeInsets.symmetric(vertical: 20),
             margin: const EdgeInsets.symmetric(horizontal: 25),
@@ -114,102 +124,17 @@ class ProfileScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Text(
-                            'XXXX',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: 26,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 2,
-                          ),
-                          Text(
-                            'Vistas',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 35,
-                      width: 25,
-                      child: VerticalDivider(
-                        thickness: 1.5,
-                        color: Color.fromRGBO(190, 49, 68, 1),
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Text(
-                            'XXXX',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: 26,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 2,
-                          ),
-                          Text(
-                            'Favoritas',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 35,
-                      width: 25,
-                      child: VerticalDivider(
-                        thickness: 1.5,
-                        color: Color.fromRGBO(190, 49, 68, 1),
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Text(
-                            'XXXX',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: 26,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 2,
-                          ),
-                          Text(
-                            '10 Estrellas',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    _MovieStatColumn(label: 'Vistas', count: 'XXXX'),
+                    _MovieDivider(),
+                    _MovieStatColumn(label: 'Favoritas', count: 'XXXX'),
+                    _MovieDivider(),
+                    _MovieStatColumn(label: '10 Estrellas', count: 'XXXX'),
                   ],
                 ),
               ),
             ),
           ),
-          const SizedBox(
-            height: 25,
-          ),
+          const SizedBox(height: 25),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 35),
             child: Column(
@@ -222,96 +147,25 @@ class ProfileScreen extends StatelessWidget {
                       color: Colors.white,
                       fontSize: 21),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 10),
                 Text(
-                  myUser.about,
+                  userData!['about'] ?? 'Sin descripción',
                   style: const TextStyle(
                       height: 1.4, color: Colors.white, fontSize: 14),
                 ),
               ],
             ),
           ),
-          const SizedBox(
-            height: 25,
-          ),
-          ListTile(
+          const SizedBox(height: 25),
+          _ProfileOptionTile(
+            icon: Icons.book_outlined,
+            label: 'Ver diario',
             onTap: () {},
-            contentPadding: const EdgeInsets.symmetric(horizontal: 35),
-            leading: Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                color: Colors.white.withOpacity(0.2),
-              ),
-              child: const Icon(
-                Icons.book_outlined,
-                size: 32,
-                color: Color.fromRGBO(21, 4, 29, 1),
-              ),
-            ),
-            title: const Text(
-              'Ver diario',
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                  fontSize: 16),
-            ),
-            trailing: Container(
-              width: 35,
-              height: 35,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                color: Colors.grey.withOpacity(0.2),
-              ),
-              child: const Icon(
-                Icons.arrow_forward_ios_rounded,
-                color: Colors.grey,
-                size: 18,
-              ),
-            ),
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          ListTile(
+          _ProfileOptionTile(
+            icon: Icons.star,
+            label: 'Ver lista de favoritos',
             onTap: () {},
-            contentPadding: const EdgeInsets.symmetric(horizontal: 35),
-            leading: Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                color: Colors.white.withOpacity(0.2),
-              ),
-              child: const Icon(
-                Icons.star,
-                color: Color.fromRGBO(21, 4, 29, 1),
-                size: 32,
-              ),
-            ),
-            title: const Text(
-              'Ver lista de favoritos',
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                  fontSize: 16),
-            ),
-            trailing: Container(
-              width: 35,
-              height: 35,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                color: Colors.grey.withOpacity(0.2),
-              ),
-              child: const Icon(
-                Icons.arrow_forward_ios_rounded,
-                color: Colors.grey,
-                size: 18,
-              ),
-            ),
           ),
           const Divider(
             height: 35,
@@ -319,44 +173,119 @@ class ProfileScreen extends StatelessWidget {
             endIndent: 75,
             color: Color.fromRGBO(190, 49, 68, 1),
           ),
-          ListTile(
-            onTap: () async {},
-            contentPadding: const EdgeInsets.symmetric(horizontal: 35),
-            leading: Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                color: Colors.white.withOpacity(0.2),
-              ),
-              child: const Icon(
-                Icons.exit_to_app,
-                color: Color.fromRGBO(21, 4, 29, 1),
-                size: 32,
-              ),
+          _ProfileOptionTile(
+            icon: Icons.exit_to_app,
+            label: 'Cerrar sesión',
+            color: const Color.fromRGBO(190, 49, 68, 1),
+            onTap: () async {
+              await FirebaseAuth.instance.signOut();
+              Navigator.of(context).pushReplacementNamed('/');
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MovieStatColumn extends StatelessWidget {
+  final String label;
+  final String count;
+
+  const _MovieStatColumn({
+    Key? key,
+    required this.label,
+    required this.count,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        children: [
+          Text(
+            count,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              fontSize: 26,
             ),
-            title: const Text(
-              'Cerrar sesión',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromRGBO(190, 49, 68, 1),
-                  fontSize: 16),
-            ),
-            trailing: Container(
-              width: 35,
-              height: 35,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                color: Colors.grey.withOpacity(0.2),
-              ),
-              child: const Icon(
-                Icons.arrow_forward_ios_rounded,
-                color: Colors.grey,
-                size: 18,
-              ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            label,
+            style: const TextStyle(
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _MovieDivider extends StatelessWidget {
+  const _MovieDivider({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox(
+      height: 35,
+      width: 25,
+      child: VerticalDivider(
+        thickness: 1.5,
+        color: Color.fromRGBO(190, 49, 68, 1),
+      ),
+    );
+  }
+}
+
+class _ProfileOptionTile extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _ProfileOptionTile({
+    Key? key,
+    required this.icon,
+    required this.label,
+    required this.onTap,
+    this.color = Colors.white,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      onTap: onTap,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 35),
+      leading: Container(
+        width: 50,
+        height: 50,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100),
+          color: color.withOpacity(0.2),
+        ),
+        child: Icon(icon, size: 32, color: color),
+      ),
+      title: Text(
+        label,
+        style: TextStyle(
+            fontWeight: FontWeight.w500, color: Colors.white, fontSize: 16),
+      ),
+      trailing: Container(
+        width: 35,
+        height: 35,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100),
+          color: Colors.grey.withOpacity(0.2),
+        ),
+        child: const Icon(
+          Icons.arrow_forward_ios_rounded,
+          color: Colors.grey,
+          size: 18,
+        ),
       ),
     );
   }
