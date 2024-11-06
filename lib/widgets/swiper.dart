@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:film_finder/methods/movie.dart';
 import 'dart:math';
+import 'package:film_finder/pages/film_screen.dart';
 
 class Swiper extends StatefulWidget {
   final List<Movie> movies;
@@ -48,13 +49,20 @@ class _SwiperState extends State<Swiper> {
             },
             allowedSwipeDirection: const AllowedSwipeDirection.only(left: true, right: true),
             numberOfCardsDisplayed: 4,
-            isLoop: true,
             backCardOffset: const Offset(0, 0),
             onSwipe: (previous, current, direction) {
               currentindex = current!;
               if (direction == CardSwiperDirection.right) {
                 Fluttertoast.showToast(msg: 'Te ha gustado', backgroundColor: Colors.black, fontSize: 28);
                 Future.delayed(const Duration(milliseconds: 750), () {Fluttertoast.cancel();});
+                Navigator.push(
+                context, 
+                MaterialPageRoute(
+                  builder: (context) => FilmInfo(
+                  movie: widget.movies[previous],
+                  ),
+                ),
+              );
               } else if (direction == CardSwiperDirection.left) {
                 Fluttertoast.showToast(msg: 'No te ha gustado', backgroundColor: Colors.black, fontSize: 28);
                 Future.delayed(const Duration(milliseconds: 750), () {Fluttertoast.cancel();});
