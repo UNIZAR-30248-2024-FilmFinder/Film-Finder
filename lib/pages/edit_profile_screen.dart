@@ -1,7 +1,8 @@
-import 'package:film_finder/methods/user.dart';
 import 'package:film_finder/widgets/profile_widget.dart';
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart';
+// ignore: depend_on_referenced_packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 // ignore: depend_on_referenced_packages
 import 'package:image_picker/image_picker.dart';
@@ -45,7 +46,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       setState(() {
         imagePath = pickedFile.path;
       });
-
     }
   }
 

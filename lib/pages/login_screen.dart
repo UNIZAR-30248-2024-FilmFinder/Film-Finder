@@ -9,11 +9,9 @@ class LogIn extends StatelessWidget {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void signUser() async{
+  void signUser() async {
     await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: usernameController.text,
-        password: passwordController.text
-    );
+        email: usernameController.text, password: passwordController.text);
   }
 
   @override
@@ -26,40 +24,43 @@ class LogIn extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(height: statusBarHeight + 20),
-          const Center(
-            child: Text(
-              'FilmFinder',
-              style: TextStyle(
-                fontSize: 50,
-                fontWeight: FontWeight.bold,
-                color: Colors.deepPurple,
+          SizedBox(height: statusBarHeight + 50),
+          SizedBox(
+            width: 150.0,
+            height: 150.0,
+            child: ColorFiltered(
+              colorFilter: const ColorFilter.mode(
+                Colors.white,
+                BlendMode.srcATop,
+              ),
+              child: Image.asset(
+                'assets/images/app_icon.png',
+                fit: BoxFit.contain,
               ),
             ),
           ),
-          const Spacer(),
+          const SizedBox(height: 50),
+          const Text(
+            'INICIAR SESIÓN',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 22.0,
+            ),
+          ),
+          const SizedBox(height: 20),
           MyTextField(
             controller: usernameController,
-            hintText: 'Nombre de usuario',
+            hintText: 'Correo electrónico',
             obscureText: false,
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 15),
           MyTextField(
             controller: passwordController,
             hintText: 'Contraseña',
             obscureText: true,
           ),
-          const SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: signUser,
-            child: const Text(
-              'Iniciar sesión',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
+          const SizedBox(height: 5),
           TextButton(
             onPressed: () {
               Navigator.push(
@@ -67,13 +68,112 @@ class LogIn extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => Register()),
               );
             },
-            child: const Text(
-              '¿No tienes una cuenta? Regístrate aquí',
-              style: TextStyle(color: Colors.white),
+            child: RichText(
+              text: const TextSpan(
+                text: '¿No tienes una cuenta? ',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+                children: [
+                  TextSpan(
+                    text: 'Regístrate aquí',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-
-          const Spacer(),
+          const SizedBox(height: 25),
+          ElevatedButton(
+            onPressed: signUser,
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: const Color.fromRGBO(21, 4, 29, 1),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25.0),
+                side: const BorderSide(
+                  color: Color.fromRGBO(190, 49, 68, 1),
+                  width: 1.0,
+                ),
+              ),
+              fixedSize: const Size(190, 50),
+            ),
+            child: const Text(
+              'Iniciar sesión',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const SizedBox(height: 50),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Divider(
+                    thickness: 0.5,
+                    color: Colors.grey[400],
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    'O continuar con',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                Expanded(
+                  child: Divider(
+                    thickness: 0.5,
+                    color: Colors.grey[400],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 25),
+          GestureDetector(
+            onTap: () {},
+            child: Container(
+              decoration: BoxDecoration(
+                color: const Color.fromRGBO(21, 4, 29, 1),
+                borderRadius: BorderRadius.circular(25.0),
+                border: Border.all(
+                  color: const Color.fromRGBO(190, 49, 68, 1),
+                  width: 1.0,
+                ),
+              ),
+              width: 250,
+              height: 50,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Image.asset(
+                      'assets/images/google_icon.png',
+                      width: 30.0,
+                      height: 30.0,
+                    ),
+                  ),
+                  const Text(
+                    'Continuar con Google',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

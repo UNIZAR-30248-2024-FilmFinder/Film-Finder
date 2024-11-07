@@ -47,11 +47,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   integration_test:
-      sdk: flutter
+    sdk: flutter
   firebase_core: ^3.4.0
   firebase_auth: ^5.1.0
   cloud_firestore: ^5.4.0
-
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -81,6 +80,8 @@ flutter:
     - assets/images/example_poster.jpg
     - assets/images/titulo.png
     - assets/images/user.avif
+    - assets/images/google_icon.png
+    - assets/images/app_icon.png
     # Iconos de los diferentes géneros
     - assets/genres_icons/accion.png
     - assets/genres_icons/animacion.png

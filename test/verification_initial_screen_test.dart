@@ -1,4 +1,3 @@
-import 'package:film_finder/pages/explore_screen.dart';
 import 'package:film_finder/pages/principal_screen.dart';
 import 'package:film_finder/widgets/filters_widget.dart';
 import 'package:film_finder/widgets/search_bar.dart';
@@ -7,11 +6,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:film_finder/pages/initial_screen.dart';
 
 void main() {
-  testWidgets('InitialScreen displays title, search bar, and filters', (WidgetTester tester) async {
+  testWidgets('InitialScreen displays title, search bar, and filters',
+      (WidgetTester tester) async {
     // Cargar el widget
     await tester.pumpWidget(const MaterialApp(home: InitialScreen()));
 
-    final titleImageFinder = find.byType(Image).first; // Buscamos el primer widget de tipo Image
+    final titleImageFinder =
+        find.byType(Image).first; // Buscamos el primer widget de tipo Image
     expect(titleImageFinder, findsOneWidget);
 
     // Verificar que el tamaño de la imagen del título es correcto
@@ -25,7 +26,8 @@ void main() {
     expect(find.byType(Filters), findsOneWidget);
   });
 
-  testWidgets('PrincipalScreen bottom navigation bar icons are visible', (WidgetTester tester) async {
+  testWidgets('PrincipalScreen bottom navigation bar icons are visible',
+      (WidgetTester tester) async {
     // Cargar el widget
     await tester.pumpWidget(const MaterialApp(home: PrincipalScreen()));
 
@@ -35,6 +37,4 @@ void main() {
     expect(find.byKey(Key('friends_button')), findsOneWidget);
     expect(find.byKey(Key('profile_button')), findsOneWidget);
   });
-
-
 }
