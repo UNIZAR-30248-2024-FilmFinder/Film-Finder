@@ -137,40 +137,48 @@ class LogIn extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 25),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color.fromRGBO(21, 4, 29, 1),
-                borderRadius: BorderRadius.circular(25.0),
-                border: Border.all(
-                  color: const Color.fromRGBO(190, 49, 68, 1),
-                  width: 1.0,
-                ),
+          Ink(
+            decoration: BoxDecoration(
+              color: const Color.fromRGBO(21, 4, 29, 1),
+              borderRadius: BorderRadius.circular(25.0),
+              border: Border.all(
+                color: const Color.fromRGBO(190, 49, 68, 1),
+                width: 1.0,
               ),
-              width: 250,
-              height: 50,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Image.asset(
-                      'assets/images/google_icon.png',
-                      width: 30.0,
-                      height: 30.0,
+            ),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(25.0),
+              splashColor:
+                  Colors.white.withOpacity(0.2), // Color del efecto de onda
+              highlightColor: Colors.transparent, // Evita el resaltado de fondo
+              onTap: () {
+                // Acción al tocar el botón
+              },
+              child: Container(
+                width: 250,
+                height: 50,
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Image.asset(
+                        'assets/images/google_icon.png',
+                        width: 30.0,
+                        height: 30.0,
+                      ),
                     ),
-                  ),
-                  const Text(
-                    'Continuar con Google',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
+                    const Text(
+                      'Continuar con Google',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
