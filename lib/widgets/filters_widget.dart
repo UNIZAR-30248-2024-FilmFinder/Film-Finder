@@ -77,6 +77,9 @@ class _FiltersState extends State<Filters> {
             if (pasoDeFiltro == 2) ...[
               _buildGroupSelection(),
             ],
+            if (pasoDeFiltro == 3) ...[
+              _buildRoomSelection(),
+            ],
           ],
         ),
       ),
@@ -711,7 +714,9 @@ class _FiltersState extends State<Filters> {
               Expanded(
                 child: GestureDetector(
                   onTap: () {
-                    //DIRIGIMOS A LA ELECCIÓN GRUPAL
+                    setState(() {
+                      pasoDeFiltro++;
+                    });
                   },
                   child: Container(
                     height: 240,
@@ -738,6 +743,149 @@ class _FiltersState extends State<Filters> {
                         Center(
                           child: Text(
                             'GRUPAL',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 40,
+        ),
+        ElevatedButton(
+          onPressed: () {
+            setState(() {
+              //REINICIAR VALORES
+              pasoDeFiltro--;
+            });
+          },
+          style: ElevatedButton.styleFrom(
+            foregroundColor: Colors.white,
+            backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+              side: const BorderSide(
+                color: Color.fromRGBO(190, 49, 68, 1),
+                width: 1.0,
+              ),
+            ),
+            fixedSize: const Size(130, 42),
+          ),
+          child: const Text(
+            'Atrás',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRoomSelection() {
+    return Column(
+      key: const Key('room_selection'),
+      children: [
+        const Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'Selecciona lo que desees hacer',
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 25.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onTap: () async {
+                    //Redirgir a la sala siendo miembro
+                  },
+                  child: Container(
+                    height: 240,
+                    margin: const EdgeInsets.only(right: 15),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 133, 46, 26),
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 1.25,
+                      ),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    padding: const EdgeInsets.all(16.0),
+                    child: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image(
+                          image: AssetImage('assets/icons/join.png'),
+                          width: 90,
+                          height: 90,
+                        ),
+                        SizedBox(height: 20),
+                        Center(
+                          child: Text(
+                            'UNIRSE',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    //Redirgir a la sala siendo lider
+                  },
+                  child: Container(
+                    height: 240,
+                    margin: const EdgeInsets.only(right: 8),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 133, 46, 26),
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 1.25,
+                      ),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    padding: const EdgeInsets.all(16.0),
+                    child: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image(
+                          image: AssetImage('assets/icons/create.png'),
+                          width: 90,
+                          height: 90,
+                        ),
+                        SizedBox(height: 20),
+                        Center(
+                          child: Text(
+                            'CREAR SALA',
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,

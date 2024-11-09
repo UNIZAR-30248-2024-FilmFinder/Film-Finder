@@ -112,6 +112,9 @@ flutter:
     # Iconos para el tamaño del grupo
     - assets/icons/grupal.png
     - assets/icons/individual.png
+    # Iconos para la creación de salas
+    - assets/icons/join.png
+    - assets/icons/create.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
