@@ -1,7 +1,11 @@
 import 'package:film_finder/pages/register_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:film_finder/pages/principal_screen.dart';
 import 'package:film_finder/widgets/text_field_login_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class LogIn extends StatelessWidget {
   LogIn({super.key});
@@ -14,6 +18,47 @@ class LogIn extends StatelessWidget {
         email: usernameController.text, password: passwordController.text);
   }
 
+  Future<UserCredential?> loginwithGoogle(BuildContext context) async {
+    try {
+      final googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) {
+        // El usuario canceló el inicio de sesión.
+        return null;
+      }
+      final googleAuth = await googleUser.authentication;
+      final cred = GoogleAuthProvider.credential(
+        idToken: googleAuth.idToken,
+        accessToken: googleAuth.accessToken,
+      );
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(cred);
+
+      // Almacenar datos adicionales si es un nuevo usuario.
+      if (userCredential.additionalUserInfo!.isNewUser) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user!.uid)
+            .set({
+          'name': googleUser.displayName ?? 'Usuario de Google',
+          'email': googleUser.email,
+          'imagePath': googleUser.photoUrl ?? '',
+          'about': '---',
+          'location': '---',
+        });
+      }
+      // Redirigir a la pantalla principal.
+      await Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const PrincipalScreen()),
+      );
+      return userCredential;
+    } catch (e) {
+      print("Error durante el inicio de sesión con Google: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Error en el inicio de sesión con Google")),
+      );
+    }
+    return null;
+  }
   @override
   Widget build(BuildContext context) {
     // Obtener la altura de la barra de estado
@@ -152,6 +197,7 @@ class LogIn extends StatelessWidget {
                   Colors.white.withOpacity(0.2), // Color del efecto de onda
               highlightColor: Colors.transparent, // Evita el resaltado de fondo
               onTap: () {
+                loginwithGoogle(context);
                 // Acción al tocar el botón
               },
               child: Container(
