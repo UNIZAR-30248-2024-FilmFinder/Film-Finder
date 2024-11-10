@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "279472999275",
     "project_id": "filmfinder-895d0",
-    "storage_bucket": "filmfinder-895d0.appspot.com"
+    "storage_bucket": "filmfinder-895d0.firebasestorage.app"
   },
   "client": [
     {
@@ -12,7 +12,20 @@
           "package_name": "com.example.film_finder"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "279472999275-lgars08agen7evf061ad99mcg6h4hps2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.film_finder",
+            "certificate_hash": "f20240f66900c5a6a48a18c7c9a8a8b08e1e0303"
+          }
+        },
+        {
+          "client_id": "279472999275-mkon3ck15f3e6g6rmqjgtq6gctk38anq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyB5MAq2j7VMOTwXY7lAE8zumpbDwFUVYvw"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "279472999275-mkon3ck15f3e6g6rmqjgtq6gctk38anq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "279472999275-3sln65v8rmikivkoi39717ruepcdqsde.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.filmFinder"
+              }
+            }
+          ]
         }
       }
     }
