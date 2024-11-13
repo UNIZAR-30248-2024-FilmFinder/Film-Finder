@@ -666,6 +666,9 @@ class _FiltersState extends State<Filters> {
                     } else {
                       print('Se encontraron ${movies.length} películas.');
                     }
+                    setState(() {
+                      pasoDeFiltro = 0;
+                    });
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -938,8 +941,11 @@ class _FiltersState extends State<Filters> {
   List<Movie> movies = [];
 
   Future<void> fetchTopRatedMovies() async {
+    movies = [];
     print('filterGenres: $filterGenres');
+    print('arrayGenres: $arrayGenres');
     print('filterProviders: $filterProviders');
+    print('arrayProviders: $arrayProviders');
 
     String url;
     if (filterGenres.isNotEmpty && filterProviders.isNotEmpty) {
@@ -1021,6 +1027,10 @@ class _FiltersState extends State<Filters> {
           }
           movies.add(movie);
         }));
+        filterGenres = [];
+        filterProviders = [];
+        arrayGenres.fillRange(0, arrayGenres.length, 0);
+        arrayProviders.fillRange(0, arrayProviders.length, 0);
       }
     } else {
       throw Exception('Something went wrong.');
