@@ -1,3 +1,5 @@
+import 'package:film_finder/widgets/room_widget.dart';
+import 'package:film_finder/widgets/text_field_login_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:film_finder/widgets/card_filter_widget.dart';
 import 'package:film_finder/pages/filter_film_screen.dart';
@@ -25,6 +27,8 @@ class _FiltersState extends State<Filters> {
   ScrollController _genreScrollController = ScrollController();
   ScrollController _platformScrollController = ScrollController();
 
+  final roomCodeController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -37,6 +41,20 @@ class _FiltersState extends State<Filters> {
     _genreScrollController.dispose();
     _platformScrollController.dispose();
     super.dispose();
+  }
+
+  void showCustomDialog(BuildContext context, bool isAdmin) {
+    showDialog(
+      context: context,
+      barrierDismissible:
+          false, // No se puede cerrar al hacer clic fuera del popup
+      builder: (BuildContext context) {
+        return RoomPopup(
+          code: 12345,
+          isAdmin: isAdmin,
+        );
+      },
+    );
   }
 
   @override
@@ -79,6 +97,9 @@ class _FiltersState extends State<Filters> {
             ],
             if (pasoDeFiltro == 3) ...[
               _buildRoomSelection(),
+            ],
+            if (pasoDeFiltro == 4) ...[
+              _joinRoom(),
             ],
           ],
         ),
@@ -820,7 +841,9 @@ class _FiltersState extends State<Filters> {
               Expanded(
                 child: GestureDetector(
                   onTap: () async {
-                    //Redirgir a la sala siendo miembro
+                    setState(() {
+                      pasoDeFiltro++;
+                    });
                   },
                   child: Container(
                     height: 240,
@@ -863,6 +886,7 @@ class _FiltersState extends State<Filters> {
                 child: GestureDetector(
                   onTap: () {
                     //Redirgir a la sala siendo lider
+                    showCustomDialog(context, true);
                   },
                   child: Container(
                     height: 240,
@@ -934,6 +958,126 @@ class _FiltersState extends State<Filters> {
             ),
           ),
         ),
+      ],
+    );
+  }
+
+  Widget _joinRoom() {
+    return Column(
+      key: const Key('join_room'),
+      children: [
+        const Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            '',
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 25.0),
+          child: Center(
+            child: Container(
+              height: 240,
+              margin: const EdgeInsets.only(right: 15),
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 133, 46, 26),
+                border: Border.all(
+                  color: Colors.white,
+                  width: 1.25,
+                ),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Center(
+                    child: Text(
+                      'Introdice el código de la sala',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  MyTextField(
+                    controller: roomCodeController,
+                    hintText: 'Código de la sala',
+                    obscureText: false,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 40,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  pasoDeFiltro--;
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  side: const BorderSide(
+                    color: Color.fromRGBO(190, 49, 68, 1),
+                    width: 1.0,
+                  ),
+                ),
+                fixedSize: const Size(130, 42),
+              ),
+              child: const Text(
+                'Atrás',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                showCustomDialog(context, false);
+              },
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  side: const BorderSide(
+                    color: Color.fromRGBO(190, 49, 68, 1),
+                    width: 1.0,
+                  ),
+                ),
+                fixedSize: const Size(130, 42),
+              ),
+              child: const Text(
+                'Unirse',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        )
       ],
     );
   }
