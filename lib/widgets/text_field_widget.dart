@@ -5,13 +5,16 @@ class TextFieldWidget extends StatefulWidget {
   final String text;
   final int maxLines;
   final ValueChanged<String> onChanged;
+  final TextEditingController? controller; // Controlador externo opcional
 
-  const TextFieldWidget(
-      {super.key,
-      required this.label,
-      required this.text,
-      this.maxLines = 1,
-      required this.onChanged});
+  const TextFieldWidget({
+    super.key,
+    required this.label,
+    required this.text,
+    this.maxLines = 1,
+    this.controller, // Puede recibir un controlador
+    required this.onChanged,
+  });
 
   @override
   // ignore: library_private_types_in_public_api
@@ -19,19 +22,23 @@ class TextFieldWidget extends StatefulWidget {
 }
 
 class _TextFieldWidget extends State<TextFieldWidget> {
-  late final TextEditingController controller;
+  late TextEditingController _controller;
 
   @override
   void initState() {
     super.initState();
 
-    controller = TextEditingController(text: widget.text);
+    // Si no se pasa un controlador externo, crear uno nuevo.
+    // Si se pasa un controlador, usar el que se pasa desde fuera.
+    _controller = widget.controller ?? TextEditingController(text: widget.text);
   }
 
   @override
   void dispose() {
-    controller.dispose();
-
+    // Solo dispose del controlador si es creado internamente
+    if (widget.controller == null) {
+      _controller.dispose();
+    }
     super.dispose();
   }
 
@@ -43,17 +50,21 @@ class _TextFieldWidget extends State<TextFieldWidget> {
         Text(
           widget.label,
           style: const TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+            color: Colors.white,
+          ),
         ),
         const SizedBox(
           height: 5,
         ),
         TextField(
-          controller: controller,
+          controller: _controller, // Usamos el controlador que se asigna
           maxLines: widget.maxLines,
           style: const TextStyle(
             color: Colors.white,
           ),
+          onChanged: widget.onChanged, // Manejamos el cambio de texto
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),

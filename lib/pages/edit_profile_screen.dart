@@ -1,3 +1,4 @@
+import 'package:film_finder/pages/profile_screen.dart';
 import 'package:film_finder/widgets/profile_widget.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
@@ -21,10 +22,11 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  late String name;
-  late String location;
-  late String about;
   late String imagePath;
+  late TextEditingController nameController;
+  late TextEditingController locationController;
+  late TextEditingController aboutController;
+
 
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
@@ -32,11 +34,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
-    name = widget.user['name'];
-    location = widget.user['location'];
-    about = widget.user['about'];
+    nameController = TextEditingController(text: widget.user['name']);
+    locationController = TextEditingController(text: widget.user['location']);
+    aboutController = TextEditingController(text: widget.user['about']);
     imagePath = widget.user['imagePath'];
   }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    locationController.dispose();
+    aboutController.dispose();
+    super.dispose();
+  }
+
 
   Future<void> _onProfilePictureClicked() async {
     final picker = ImagePicker();
@@ -52,12 +63,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Future<void> _updateUserProfile() async {
     try {
       await _firestore.collection('users').doc(_auth.currentUser!.uid).update({
-        'name': name,
-        'location': location,
-        'about': about,
-        'imagePath': imagePath, // Actualizar con la URL si se sube a Storage
+        'name': nameController.text,
+        'location': locationController.text,
+        'about': aboutController.text,
+        'imagePath': imagePath,
       });
-      Navigator.pop(context);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProfileScreen(),
+        ),
+      );
     } catch (e) {
       print("Error al actualizar el perfil: $e");
       ScaffoldMessenger.of(context).showSnackBar(
@@ -65,6 +81,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       );
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -87,22 +105,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           const SizedBox(height: 35),
           TextFieldWidget(
             label: 'Nombre de usuario',
-            text: name,
-            onChanged: (value) => setState(() => name = value),
+            text: nameController.text,
+            onChanged: (value) => setState(() => nameController.text = value),
+            controller: nameController, // Pasar el controlador aquí
           ),
           const SizedBox(height: 15),
           TextFieldWidget(
             label: 'Ubicación',
-            text: location,
-            onChanged: (value) => setState(() => location = value),
+            text: locationController.text,
+            onChanged: (value) => setState(() => locationController.text = value),
+            controller: locationController, // Pasar el controlador aquí
           ),
           const SizedBox(height: 15),
           TextFieldWidget(
             label: 'Sobre mí',
-            text: about,
+            text: aboutController.text,
             maxLines: 5,
-            onChanged: (value) => setState(() => about = value),
+            onChanged: (value) => setState(() => aboutController.text = value),
+            controller: aboutController, // Pasar el controlador aquí
           ),
+
           const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
