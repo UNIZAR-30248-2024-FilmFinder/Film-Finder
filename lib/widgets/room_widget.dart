@@ -2,6 +2,45 @@ import 'package:film_finder/methods/room_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+void showLoadingDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return Center(
+        child: Container(
+          padding: const EdgeInsets.all(20.0),
+          decoration: BoxDecoration(
+            color: const Color.fromRGBO(21, 4, 29, 1),
+            borderRadius: BorderRadius.circular(20.0),
+            border: Border.all(
+              color: const Color.fromRGBO(190, 49, 68, 1),
+              width: 2.0,
+            ),
+          ),
+          child: const Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                    Color.fromRGBO(190, 49, 68, 1)),
+              ),
+              SizedBox(width: 20),
+              Text(
+                "Creando sala...",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
 class RoomPopup extends StatelessWidget {
   const RoomPopup({super.key, required this.code, required this.isAdmin});
 

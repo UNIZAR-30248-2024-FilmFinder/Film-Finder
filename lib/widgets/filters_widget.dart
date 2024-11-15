@@ -20,6 +20,8 @@ class Filters extends StatefulWidget {
 class _FiltersState extends State<Filters> {
   int pasoDeFiltro = 0;
 
+  bool isRoomLoading = false;
+
   List<String> filterGenres = [];
   List<String> filterProviders = [];
   List<int> arrayGenres = List.filled(19, 0);
@@ -885,10 +887,21 @@ class _FiltersState extends State<Filters> {
               Expanded(
                 child: GestureDetector(
                   onTap: () async {
+                    if (isRoomLoading) return;
+
+                    setState(() {
+                      isRoomLoading = true;
+                    });
+
+                    // Muestra el pop-up de carga
+                    showLoadingDialog(context);
+
                     try {
                       String code = await createRoom();
+                      Navigator.of(context).pop(); // Cierra el pop-up de carga
                       showCustomDialog(context, true, code);
                     } catch (e) {
+                      Navigator.of(context).pop(); // Cierra el pop-up de carga
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content:
@@ -897,6 +910,10 @@ class _FiltersState extends State<Filters> {
                         ),
                       );
                       print('Error creating room: $e');
+                    } finally {
+                      setState(() {
+                        isRoomLoading = false;
+                      });
                     }
                   },
                   child: Container(
