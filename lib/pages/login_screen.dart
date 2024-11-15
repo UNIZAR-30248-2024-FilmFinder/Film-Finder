@@ -20,6 +20,10 @@ class LogIn extends StatelessWidget {
 
   Future<UserCredential?> loginwithGoogle(BuildContext context) async {
     try {
+      final googleSignIn = GoogleSignIn();
+
+      // Cerrar la sesión anterior de Google si existe.
+      await googleSignIn.signOut();
       final googleUser = await GoogleSignIn().signIn();
       if (googleUser == null) {
         // El usuario canceló el inicio de sesión.

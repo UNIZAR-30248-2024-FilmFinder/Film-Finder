@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:film_finder/pages/auth_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void showDeleteAccountDialog(BuildContext context) {
   showDialog(
@@ -32,9 +34,22 @@ void showDeleteAccountDialog(BuildContext context) {
             ),
           ),
           TextButton(
-            onPressed: () {
-              print('Cuenta borrada');
-              Navigator.of(context).pop();
+            onPressed: () async {
+              try {
+                User? user = FirebaseAuth.instance.currentUser;
+                if (user != null) {
+                  await user.delete();
+                  Navigator.of(context).pop(); // Cerrar el diálogo.
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => const AuthPage()),
+                  );
+                }
+              } catch (e) {
+                print('Error al borrar la cuenta: $e');
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Error al borrar la cuenta: $e')),
+                );
+              }
             },
             child: const Text(
               'Borrar Cuenta',
