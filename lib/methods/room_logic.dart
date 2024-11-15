@@ -104,3 +104,35 @@ Future<void> deleteRoomByCode(String code) async {
     throw Exception('No se pudo eliminar la sala');
   }
 }
+
+/// Escucha la eliminación de una sala basada en su código
+void listenToRoomDeletionByCode(
+    String code, void Function() onRoomDeleted) async {
+  final querySnapshot = await FirebaseFirestore.instance
+      .collection('rooms')
+      .where('code', isEqualTo: code)
+      .get();
+
+  if (querySnapshot.docs.isEmpty) {
+    print('No se encontró ninguna sala con el código: $code');
+    return;
+  }
+
+  final roomId = querySnapshot.docs.first.id;
+
+  listenToRoomDeletion(roomId, onRoomDeleted);
+}
+
+/// Escucha la eliminación de una sala basada en su ID
+void listenToRoomDeletion(String roomId, void Function() onRoomDeleted) {
+  final roomRef = FirebaseFirestore.instance.collection('rooms').doc(roomId);
+
+  // Escucha cambios en el documento de la sala
+  roomRef.snapshots().listen((snapshot) {
+    if (!snapshot.exists) {
+      // Si el documento ya no existe, se ejecuta el callback
+      print('La sala ha sido eliminada.');
+      onRoomDeleted();
+    }
+  });
+}

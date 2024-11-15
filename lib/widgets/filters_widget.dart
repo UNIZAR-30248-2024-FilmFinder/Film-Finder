@@ -894,7 +894,7 @@ class _FiltersState extends State<Filters> {
                     });
 
                     // Muestra el pop-up de carga
-                    showLoadingDialog(context);
+                    showLoadingDialog(context, true);
 
                     try {
                       String code = await createRoom();
