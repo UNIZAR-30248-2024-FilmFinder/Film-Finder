@@ -123,8 +123,7 @@ void showExitConfirmation(BuildContext context, bool isAdmin, String code) {
                       if (isAdmin) {
                         // El usuario es administrador, elimina la sala
                         try {
-                          await deleteRoomByCode(
-                              code); // Llama a la función para borrar
+                          await deleteRoomByCode(code);
                           print('Sala eliminada con éxito');
                         } catch (e) {
                           print('Error al eliminar la sala: $e');
@@ -135,7 +134,17 @@ void showExitConfirmation(BuildContext context, bool isAdmin, String code) {
                         }
                       } else {
                         // El usuario solo abandona la sala
-                        print('El usuario abandonó la sala');
+                        try {
+                          await leaveRoom(code);
+                          print('El usuario abandonó la sala');
+                        } catch (e) {
+                          print('Error al salirse de la sala: $e');
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text(
+                                    'No se pudo salirse de la sala correctamente')),
+                          );
+                        }
                       }
                     },
                     style: ElevatedButton.styleFrom(

@@ -43,6 +43,7 @@ class _FiltersState extends State<Filters> {
   void dispose() {
     _genreScrollController.dispose();
     _platformScrollController.dispose();
+    roomCodeController.dispose();
     super.dispose();
   }
 
@@ -1081,8 +1082,35 @@ class _FiltersState extends State<Filters> {
               ),
             ),
             ElevatedButton(
-              onPressed: () {
-                showCustomDialog(context, false, "123456");
+              onPressed: () async {
+                final roomCode = roomCodeController.text.trim();
+
+                if (isRoomLoading) return;
+
+                setState(() {
+                  isRoomLoading = true;
+                });
+
+                showLoadingDialog(context, false);
+
+                joinRoom(roomCode).then((_) {
+                  Navigator.of(context).pop(); // Cierra el pop-up de carga
+                  showCustomDialog(context, false, roomCode);
+                }).catchError((error) {
+                  Navigator.of(context).pop(); // Cierra el pop-up de carga
+                  // Manejar el error, mostrar mensaje al usuario
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('No se ha podido accder a la sala'),
+                    ),
+                  );
+                }).whenComplete(() {
+                  if (mounted) {
+                    setState(() {
+                      isRoomLoading = false;
+                    });
+                  }
+                });
               },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,

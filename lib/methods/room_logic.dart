@@ -68,15 +68,59 @@ Future<void> joinRoom(String code) async {
 
   final room = querySnapshot.docs.first;
 
+  // Actualiza la lista de miembros directamente desde Firestore para evitar problemas de sincronización
+  final updatedRoomSnapshot =
+      await FirebaseFirestore.instance.collection('rooms').doc(room.id).get();
+  final members = List<String>.from(updatedRoomSnapshot['members']);
+
   // Agregar al usuario a la sala si aún no es miembro
-  final members = List<String>.from(room['members']);
   if (!members.contains(user.uid)) {
     await room.reference.update({
       'members': FieldValue.arrayUnion([user.uid]),
     });
-    print('Te has unido a la sala ${room['name']}');
+    print('Te has unido a la sala con código $code');
   } else {
-    print('Ya eres miembro de esta sala');
+    print('Ya eres miembro de esta sala.');
+  }
+}
+
+Future<void> leaveRoom(String code) async {
+  final user = FirebaseAuth.instance.currentUser;
+  if (user == null) throw Exception("El usuario no está autenticado");
+
+  // Busca la sala por el código
+  final querySnapshot = await FirebaseFirestore.instance
+      .collection('rooms')
+      .where('code', isEqualTo: code)
+      .get();
+
+  if (querySnapshot.docs.isEmpty) {
+    throw Exception('No se encontró ninguna sala con ese código.');
+  }
+
+  final room = querySnapshot.docs.first;
+  final roomId = room.id;
+
+  // Verifica si el usuario está en la sala
+  final members = List<String>.from(room['members']);
+  if (!members.contains(user.uid)) {
+    throw Exception('El usuario no es miembro de esta sala.');
+  }
+
+  // Elimina al usuario de la sala
+  await FirebaseFirestore.instance.collection('rooms').doc(roomId).update({
+    'members': FieldValue.arrayRemove([user.uid]),
+  });
+
+  print('El usuario ha salido de la sala.');
+
+  // Si la sala queda vacía, elimínala automáticamente
+  final updatedRoom =
+      await FirebaseFirestore.instance.collection('rooms').doc(roomId).get();
+  final updatedMembers = List<String>.from(updatedRoom['members']);
+  if (updatedMembers.isEmpty) {
+    await updatedRoom.reference.delete();
+    print('La sala estaba vacía y ha sido eliminada.');
   }
 }
 
