@@ -232,28 +232,33 @@ class RoomPopup extends StatelessWidget {
                   width: 48.0,
                   height: 48.0,
                 ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      side: const BorderSide(
-                        color: Color.fromRGBO(190, 49, 68, 1),
-                        width: 1.0,
+                isAdmin
+                    ? ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            side: const BorderSide(
+                              color: Color.fromRGBO(190, 49, 68, 1),
+                              width: 1.0,
+                            ),
+                          ),
+                          fixedSize: const Size(115, 42),
+                        ),
+                        child: const Text(
+                          'Comenzar',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
+                    : const SizedBox(
+                        width: 115,
+                        height: 42,
                       ),
-                    ),
-                    fixedSize: const Size(115, 42),
-                  ),
-                  child: const Text(
-                    'Comenzar',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
                 IconButton(
                   onPressed: () {
                     showExitConfirmation(context, isAdmin);
