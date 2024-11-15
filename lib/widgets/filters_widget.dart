@@ -1,3 +1,4 @@
+import 'package:film_finder/methods/room_logic.dart';
 import 'package:film_finder/widgets/room_widget.dart';
 import 'package:film_finder/widgets/text_field_login_widget.dart';
 import 'package:flutter/material.dart';
@@ -43,14 +44,13 @@ class _FiltersState extends State<Filters> {
     super.dispose();
   }
 
-  void showCustomDialog(BuildContext context, bool isAdmin) {
+  void showCustomDialog(BuildContext context, bool isAdmin, String code) {
     showDialog(
       context: context,
-      barrierDismissible:
-          false, // No se puede cerrar al hacer clic fuera del popup
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return RoomPopup(
-          code: 12345,
+          code: code,
           isAdmin: isAdmin,
         );
       },
@@ -884,9 +884,20 @@ class _FiltersState extends State<Filters> {
               ),
               Expanded(
                 child: GestureDetector(
-                  onTap: () {
-                    //Redirgir a la sala siendo lider
-                    showCustomDialog(context, true);
+                  onTap: () async {
+                    try {
+                      String code = await createRoom();
+                      showCustomDialog(context, true, code);
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content:
+                              Text('Error al crear la sala: ${e.toString()}'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                      print('Error creating room: $e');
+                    }
                   },
                   child: Container(
                     height: 240,
@@ -1054,7 +1065,7 @@ class _FiltersState extends State<Filters> {
             ),
             ElevatedButton(
               onPressed: () {
-                showCustomDialog(context, false);
+                showCustomDialog(context, false, "123456");
               },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,

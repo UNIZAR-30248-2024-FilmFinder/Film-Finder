@@ -1,10 +1,11 @@
+import 'package:film_finder/methods/room_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class RoomPopup extends StatelessWidget {
   const RoomPopup({super.key, required this.code, required this.isAdmin});
 
-  final int code;
+  final String code;
   final bool isAdmin;
 
   @override
@@ -60,8 +61,7 @@ class RoomPopup extends StatelessWidget {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.of(context)
-                              .pop(); // Cerrar el diálogo de confirmación
+                          Navigator.of(context).pop();
                         },
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
@@ -84,11 +84,29 @@ class RoomPopup extends StatelessWidget {
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pop(); // Cerrar el diálogo de confirmación
-                          Navigator.of(context)
-                              .pop(); // Cerrar el popup principal
+                        onPressed: () async {
+                          // Cerrar el diálogo de confirmación
+                          Navigator.of(context).pop();
+                          // Cerrar el popup principal
+                          Navigator.of(context).pop();
+                          if (isAdmin) {
+                            // El usuario es administrador, elimina la sala
+                            try {
+                              await deleteRoomByCode(
+                                  code); // Llama a la función para borrar
+                              print('Sala eliminada con éxito');
+                            } catch (e) {
+                              print('Error al eliminar la sala: $e');
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content:
+                                        Text('No se pudo eliminar la sala')),
+                              );
+                            }
+                          } else {
+                            // El usuario solo abandona la sala
+                            print('El usuario abandonó la sala');
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
@@ -165,7 +183,7 @@ class RoomPopup extends StatelessWidget {
                 const SizedBox(height: 12.0),
                 GestureDetector(
                   onTap: () {
-                    Clipboard.setData(ClipboardData(text: code.toString()));
+                    Clipboard.setData(ClipboardData(text: code));
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
@@ -179,7 +197,7 @@ class RoomPopup extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      code.toString(),
+                      code,
                       style: const TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
