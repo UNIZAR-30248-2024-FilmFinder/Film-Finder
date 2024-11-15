@@ -47,14 +47,20 @@ class _FiltersState extends State<Filters> {
     super.dispose();
   }
 
-  void showCustomDialog(BuildContext context, bool isAdmin, String code) {
+  void showRoomDialog(BuildContext context, bool isAdmin, String code) {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return RoomPopup(
-          code: code,
-          isAdmin: isAdmin,
+        return WillPopScope(
+          onWillPop: () async {
+            showExitConfirmation(context, isAdmin, code);
+            return false;
+          },
+          child: RoomPopup(
+            code: code,
+            isAdmin: isAdmin,
+          ),
         );
       },
     );
@@ -900,7 +906,7 @@ class _FiltersState extends State<Filters> {
                     try {
                       String code = await createRoom();
                       Navigator.of(context).pop(); // Cierra el pop-up de carga
-                      showCustomDialog(context, true, code);
+                      showRoomDialog(context, true, code);
                     } catch (e) {
                       Navigator.of(context).pop(); // Cierra el pop-up de carga
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -1095,7 +1101,7 @@ class _FiltersState extends State<Filters> {
 
                 joinRoom(roomCode).then((_) {
                   Navigator.of(context).pop(); // Cierra el pop-up de carga
-                  showCustomDialog(context, false, roomCode);
+                  showRoomDialog(context, false, roomCode);
                 }).catchError((error) {
                   Navigator.of(context).pop(); // Cierra el pop-up de carga
                   // Manejar el error, mostrar mensaje al usuario

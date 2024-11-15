@@ -37,10 +37,25 @@ Future<String> createRoom() async {
   final user = FirebaseAuth.instance.currentUser;
   if (user == null) throw Exception("El usuario no está autenticado");
 
+  // Primero, revisamos si el usuario ya es admin de alguna sala
+  final querySnapshot = await FirebaseFirestore.instance
+      .collection('rooms')
+      .where('admin', isEqualTo: user.uid)
+      .get();
+
+  if (querySnapshot.docs.isNotEmpty) {
+    // Si ya existe una sala donde el usuario es admin, la eliminamos
+    for (var doc in querySnapshot.docs) {
+      await doc.reference.delete();
+      print('Sala existente eliminada antes de crear una nueva');
+    }
+  }
+
   // Espera el resultado del código único generado
   final code = await generateUniqueRoomCode(6);
   final roomId = FirebaseFirestore.instance.collection('rooms').doc().id;
 
+  // Crea una nueva sala
   await FirebaseFirestore.instance.collection('rooms').doc(roomId).set({
     'admin': user.uid,
     'code': code,
@@ -57,6 +72,35 @@ Future<void> joinRoom(String code) async {
   final user = FirebaseAuth.instance.currentUser;
   if (user == null) throw Exception("El usuario no está autenticado");
 
+  // Primero, verifica si el usuario ya está en alguna sala.
+  final roomsSnapshot = await FirebaseFirestore.instance
+      .collection('rooms')
+      .where('members', arrayContains: user.uid)
+      .get();
+
+  if (roomsSnapshot.docs.isNotEmpty) {
+    // Si el usuario está en alguna sala, lo eliminamos de la(s) sala(s).
+    for (var roomDoc in roomsSnapshot.docs) {
+      final roomData = roomDoc.data();
+      final members = List<String>.from(roomData['members']);
+
+      // Elimina al usuario de la sala
+      await roomDoc.reference.update({
+        'members': FieldValue.arrayRemove([user.uid]),
+      });
+
+      // Si es el último miembro de la sala, eliminamos la sala
+      if (members.length == 1) {
+        await roomDoc.reference.delete();
+        print(
+            'La sala con código ${roomData['code']} ha sido eliminada porque era la última.');
+      } else {
+        print('Te has salido de la sala con código ${roomData['code']}');
+      }
+    }
+  }
+
+  // Nos unimos a la nueva sala
   final querySnapshot = await FirebaseFirestore.instance
       .collection('rooms')
       .where('code', isEqualTo: code)

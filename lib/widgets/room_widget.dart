@@ -188,7 +188,7 @@ class RoomPopup extends StatefulWidget {
   _RoomPopupState createState() => _RoomPopupState();
 }
 
-class _RoomPopupState extends State<RoomPopup> {
+class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
@@ -200,6 +200,36 @@ class _RoomPopupState extends State<RoomPopup> {
         Navigator.of(context).popUntil((route) => route.isFirst);
       }
     });
+
+    // Añadir el observer para detectar el ciclo de vida de la app
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    // Limpiar el observer cuando el widget sea destruido
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.detached) {
+      // La aplicación se va a cerrar
+      handleAppExit();
+    }
+  }
+
+  void handleAppExit() {
+    // Si el usuario es el administrador, eliminamos la sala
+    if (widget.isAdmin) {
+      deleteRoomByCode(widget.code);
+    } else {
+      // Si el usuario no es admin, solo lo eliminamos de la sala
+      leaveRoom(widget.code);
+    }
   }
 
   @override
