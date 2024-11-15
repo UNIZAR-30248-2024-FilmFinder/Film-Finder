@@ -211,6 +211,51 @@ void listenToRoomDeletionByCode(
   listenToRoomDeletion(roomId, onRoomDeleted);
 }
 
+Stream<List<Map<String, dynamic>>> getRoomMembersStream(String roomCode) {
+  return FirebaseFirestore.instance
+      .collection('rooms')
+      .where('code', isEqualTo: roomCode)
+      .snapshots()
+      .asyncMap((roomSnapshot) async {
+    if (roomSnapshot.docs.isEmpty) {
+      throw Exception('No se encontró ninguna sala con ese código.');
+    }
+
+    final roomData = roomSnapshot.docs.first.data();
+    final memberIds = List<String>.from(roomData['members'] ?? []);
+
+    List<Map<String, dynamic>> membersData = [];
+    for (var memberId in memberIds) {
+      try {
+        final userSnapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(memberId)
+            .get();
+
+        if (userSnapshot.exists) {
+          membersData.add({
+            'id': memberId,
+            'name': userSnapshot.data()?['name'] ?? 'Usuario desconocido',
+          });
+        } else {
+          membersData.add({
+            'id': memberId,
+            'name': 'Usuario desconocido',
+          });
+        }
+      } catch (e) {
+        membersData.add({
+          'id': memberId,
+          'name': 'Usuario desconocido',
+        });
+        print('Error al obtener los datos del usuario $memberId: $e');
+      }
+    }
+
+    return membersData;
+  });
+}
+
 /// Escucha la eliminación de una sala basada en su ID
 void listenToRoomDeletion(String roomId, void Function() onRoomDeleted) {
   final roomRef = FirebaseFirestore.instance.collection('rooms').doc(roomId);

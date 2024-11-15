@@ -321,21 +321,42 @@ class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
                   ),
                 ),
                 const SizedBox(height: 10.0),
-                ...List.generate(4, (index) {
-                  return Row(
-                    children: [
-                      const Icon(Icons.person, color: Colors.blue),
-                      const SizedBox(width: 10.0),
-                      Text(
-                        'Usuario ${index + 1}',
-                        style: const TextStyle(
-                          fontSize: 13,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  );
-                }),
+                StreamBuilder<List<Map<String, dynamic>>>(
+                  stream: getRoomMembersStream(widget.code),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator(); // Cargando
+                    }
+
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+
+                    final members = snapshot.data ?? [];
+
+                    // Mostrar la lista de miembros
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ...members.map((memberData) {
+                          return Row(
+                            children: [
+                              const Icon(Icons.person, color: Colors.blue),
+                              const SizedBox(width: 10.0),
+                              Text(
+                                memberData['name'] ?? 'Usuario desconocido',
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          );
+                        }).toList(),
+                      ],
+                    );
+                  },
+                ),
               ],
             ),
             const SizedBox(height: 40.0),
