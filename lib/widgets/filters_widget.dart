@@ -709,7 +709,6 @@ class _FiltersState extends State<Filters> {
                   },
                   child: Container(
                     height: 240,
-                    margin: const EdgeInsets.only(right: 15),
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 133, 46, 26),
                       border: Border.all(
@@ -744,6 +743,9 @@ class _FiltersState extends State<Filters> {
                   ),
                 ),
               ),
+              const SizedBox(
+                width: 15,
+              ),
               Expanded(
                 child: GestureDetector(
                   onTap: () {
@@ -753,7 +755,6 @@ class _FiltersState extends State<Filters> {
                   },
                   child: Container(
                     height: 240,
-                    margin: const EdgeInsets.only(right: 8),
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 133, 46, 26),
                       border: Border.all(
@@ -856,7 +857,6 @@ class _FiltersState extends State<Filters> {
                   },
                   child: Container(
                     height: 240,
-                    margin: const EdgeInsets.only(right: 15),
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 133, 46, 26),
                       border: Border.all(
@@ -890,6 +890,9 @@ class _FiltersState extends State<Filters> {
                     ),
                   ),
                 ),
+              ),
+              const SizedBox(
+                width: 15,
               ),
               Expanded(
                 child: GestureDetector(
@@ -925,7 +928,6 @@ class _FiltersState extends State<Filters> {
                   },
                   child: Container(
                     height: 240,
-                    margin: const EdgeInsets.only(right: 8),
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 133, 46, 26),
                       border: Border.all(
@@ -1020,7 +1022,6 @@ class _FiltersState extends State<Filters> {
           child: Center(
             child: Container(
               height: 240,
-              margin: const EdgeInsets.only(right: 15),
               decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 133, 46, 26),
                 border: Border.all(
