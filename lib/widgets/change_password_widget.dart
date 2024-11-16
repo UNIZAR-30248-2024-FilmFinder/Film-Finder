@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ChangePasswordDialog extends StatelessWidget {
   final TextEditingController oldPasswordController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
 
   ChangePasswordDialog({super.key});
 
@@ -56,9 +56,7 @@ class ChangePasswordDialog extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 15,
-            ),
+            const SizedBox(height: 15),
             TextField(
               controller: newPasswordController,
               obscureText: true,
@@ -88,9 +86,7 @@ class ChangePasswordDialog extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 15,
-            ),
+            const SizedBox(height: 15),
             TextField(
               controller: confirmPasswordController,
               obscureText: true,
@@ -134,10 +130,35 @@ class ChangePasswordDialog extends StatelessWidget {
           ),
         ),
         TextButton(
-          onPressed: () {
+          onPressed: () async {
             if (newPasswordController.text == confirmPasswordController.text) {
-              print('Contraseña cambiada');
-              Navigator.of(context).pop();
+              try {
+                User? user = FirebaseAuth.instance.currentUser;
+                if (user != null) {
+                  // Obtener credenciales con la contraseña antigua
+                  AuthCredential credential = EmailAuthProvider.credential(
+                    email: user.email!,
+                    password: oldPasswordController.text,
+                  );
+
+                  // Re-autenticar al usuario
+                  await user.reauthenticateWithCredential(credential);
+
+                  // Actualizar la contraseña
+                  await user.updatePassword(newPasswordController.text);
+
+                  // Mostrar mensaje de éxito
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Contraseña actualizada correctamente.')),
+                  );
+                  Navigator.of(context).pop();
+                }
+              } catch (e) {
+                // Manejar errores, como credenciales incorrectas
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Error: ${e.toString()}')),
+                );
+              }
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Las contraseñas no coinciden.')),

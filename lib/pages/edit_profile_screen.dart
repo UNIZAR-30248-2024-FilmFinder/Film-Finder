@@ -68,6 +68,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         'about': aboutController.text,
         'imagePath': imagePath,
       });
+      // Navegar hacia atrás tras la actualización
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -131,13 +132,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             children: [
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return ChangePasswordDialog();
-                      },
-                    );
+                  onPressed: () async {
+                    User? user = FirebaseAuth.instance.currentUser;
+                    if (user != null) {
+                      List<UserInfo> providerData = user.providerData;
+                      bool isGoogleUser = providerData.any((userInfo) => userInfo.providerId == 'google.com');
+
+                      if (isGoogleUser) {
+                        // Mostrar mensaje de advertencia si el usuario ha iniciado sesión con Google
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Inico de sesión con Google. No puedes cambiar la contraseña.')),
+                        );
+                      } else {
+                        // Mostrar el cuadro de diálogo de cambio de contraseña si el usuario no es de Google
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return ChangePasswordDialog();
+                          },
+                        );
+                      }
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
