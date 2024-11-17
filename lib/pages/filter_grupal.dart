@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:film_finder/widgets/swiper_grupal.dart';
 import 'package:film_finder/methods/movie.dart';
 
-class FilterFilmScreen extends StatefulWidget {
+class FilterGrupalScreen extends StatefulWidget {
   final List<Movie> movies;
 
-  const FilterFilmScreen({
+  const FilterGrupalScreen({
     super.key,
     required this.movies,
   });
 
   @override
-  State<FilterFilmScreen> createState() => _FilterFilmScreenState();
+  State<FilterGrupalScreen> createState() => _FilterGrupalScreenState();
 }
 
-class _FilterFilmScreenState extends State<FilterFilmScreen> {
+class _FilterGrupalScreenState extends State<FilterGrupalScreen> {
 
   @override
   void initState() {

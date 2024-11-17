@@ -383,7 +383,7 @@ class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
                           fixedSize: const Size(115, 42),
                         ),
                         child: const Text(
-                          'Comenzar', //Aqui se debe manadar a Swiper, pero modificado para grupal
+                          'Comenzar',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
