@@ -55,13 +55,17 @@ Future<String> createRoom() async {
   final code = await generateUniqueRoomCode(6);
   final roomId = FirebaseFirestore.instance.collection('rooms').doc().id;
 
+
   // Crea una nueva sala
   await FirebaseFirestore.instance.collection('rooms').doc(roomId).set({
     'admin': user.uid,
     'code': code,
     'createdAt': FieldValue.serverTimestamp(),
     'members': [user.uid],
+    'matrix': [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
   });
+
+  
 
   print('Sala creada con éxito con código: $code');
 
@@ -116,12 +120,21 @@ Future<void> joinRoom(String code) async {
   final updatedRoomSnapshot =
       await FirebaseFirestore.instance.collection('rooms').doc(room.id).get();
   final members = List<String>.from(updatedRoomSnapshot['members']);
-
   // Agregar al usuario a la sala si aún no es miembro
   if (!members.contains(user.uid)) {
+    final currentMatrix = List<int>.from(updatedRoomSnapshot['matrix']);
+    
+    // Crear una lista de 20 ceros para el nuevo usuario
+    final newUserMatrix = List.filled(20, 0);
+    
+    // Combinar la matriz actual con los nuevos ceros
+    currentMatrix.addAll(newUserMatrix);
+
     await room.reference.update({
       'members': FieldValue.arrayUnion([user.uid]),
+      'matrix': currentMatrix,
     });
+
     print('Te has unido a la sala con código $code');
   } else {
     print('Ya eres miembro de esta sala.');
@@ -147,6 +160,20 @@ Future<void> leaveRoom(String code) async {
 
   // Verifica si el usuario está en la sala
   final members = List<String>.from(room['members']);
+  final matrix = List<int>.from(room['matrix']);
+
+  // Encuentra el índice del usuario en el array de miembros
+  final userIndex = members.indexOf(user.uid);
+  
+  // Calcula los índices de inicio y fin para los elementos de la matriz que corresponden a este usuario
+  final startIndex = userIndex * 20;
+  final endIndex = startIndex + 20;
+
+  final newMatrix = [
+    ...matrix.sublist(0, startIndex),
+    ...matrix.sublist(endIndex)
+  ];
+
   if (!members.contains(user.uid)) {
     throw Exception('El usuario no es miembro de esta sala.');
   }
@@ -154,6 +181,7 @@ Future<void> leaveRoom(String code) async {
   // Elimina al usuario de la sala
   await FirebaseFirestore.instance.collection('rooms').doc(roomId).update({
     'members': FieldValue.arrayRemove([user.uid]),
+    'matrix': newMatrix,
   });
 
   print('El usuario ha salido de la sala.');
