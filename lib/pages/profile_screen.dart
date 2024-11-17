@@ -25,8 +25,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _loadUserData() async {
     try {
       DocumentSnapshot doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
+
+      // Verificar si el usuario ha iniciado sesión con Google
+      if (user.providerData.any((provider) => provider.providerId == 'google.com')) {
+        data ??= {};
+        data['imagePath'] = user.photoURL;
+
+      }
       setState(() {
-        userData = doc.data() as Map<String, dynamic>?;
+        userData = data;
       });
     } catch (e) {
       print("Error al cargar los datos del usuario: $e");
@@ -50,7 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               const SizedBox(width: 35),
               ProfileWidget(
-                imagePath: userData!['imagePath'] ?? '', // Path de la imagen
+                imagePath: userData!['imagePath'] ?? '',
                 onClicked: () async {
                   Navigator.push(
                     context,

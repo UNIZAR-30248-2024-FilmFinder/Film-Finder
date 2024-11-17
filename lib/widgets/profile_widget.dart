@@ -19,28 +19,36 @@ class ProfileWidget extends StatelessWidget {
       child: Stack(
         children: [
           ClipOval(
-            child: ClipOval(
-              child: Material(
-                color: Colors.transparent,
-                child: imagePath.isNotEmpty
-                    ? Ink.image(
-                        image: FileImage(File(imagePath)),
-                        fit: BoxFit.cover,
-                        width: 128,
-                        height: 128,
-                        child: InkWell(
-                          onTap: onClicked,
-                        ),
-                      )
-                    : Ink.image(
-                        image: const AssetImage('assets/images/user.avif'),
-                        fit: BoxFit.cover,
-                        width: 128,
-                        height: 128,
-                        child: InkWell(
-                          onTap: onClicked,
-                        ),
-                      ),
+            child: Material(
+              color: Colors.transparent,
+              child: imagePath.isNotEmpty
+                  ? (Uri.tryParse(imagePath)?.isAbsolute == true
+                  ? Ink.image(
+                image: NetworkImage(imagePath), // Carga imagen desde la web
+                fit: BoxFit.cover,
+                width: 128,
+                height: 128,
+                child: InkWell(
+                  onTap: onClicked,
+                ),
+              )
+                  : Ink.image(
+                image: FileImage(File(imagePath)), // Carga imagen desde archivo local
+                fit: BoxFit.cover,
+                width: 128,
+                height: 128,
+                child: InkWell(
+                  onTap: onClicked,
+                ),
+              ))
+                  : Ink.image(
+                image: const AssetImage('assets/images/user.avif'), // Imagen por defecto
+                fit: BoxFit.cover,
+                width: 128,
+                height: 128,
+                child: InkWell(
+                  onTap: onClicked,
+                ),
               ),
             ),
           ),

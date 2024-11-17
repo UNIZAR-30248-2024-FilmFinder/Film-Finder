@@ -69,12 +69,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         'imagePath': imagePath,
       });
       // Navegar hacia atrás tras la actualización
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ProfileScreen(),
-        ),
-      );
+      Navigator.pop(context);
     } catch (e) {
       print("Error al actualizar el perfil: $e");
       ScaffoldMessenger.of(context).showSnackBar(
