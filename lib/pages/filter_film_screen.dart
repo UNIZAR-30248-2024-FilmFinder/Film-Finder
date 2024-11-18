@@ -15,7 +15,6 @@ class FilterFilmScreen extends StatefulWidget {
 }
 
 class _FilterFilmScreenState extends State<FilterFilmScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -24,24 +23,28 @@ class _FilterFilmScreenState extends State<FilterFilmScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
-        elevation: 0,
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        title: const Text(
-          'ELIGE PELICULAS',
-          style: TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-      ),
-      backgroundColor:  const Color.fromRGBO(34, 9, 44, 1),
+      backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
       body: SafeArea(
-        child: Swiper(
-          movies: widget.movies,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(top: 35),
+              child: Text(
+                'ELIGE UNA PELICULA',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Swiper(
+                movies: widget.movies,
+              ),
+            ),
+          ],
         ),
       ),
     );

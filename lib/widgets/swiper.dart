@@ -20,61 +20,140 @@ class Swiper extends StatefulWidget {
 
 class _SwiperState extends State<Swiper> {
   int currentindex = 0;
-  
-  @override
-  void initState() {
-    super.initState();
-  }
+  final CardSwiperController _cardSwiperController =
+      CardSwiperController(); // Controlador del Swiper
 
   @override
   Widget build(BuildContext context) {
     if (widget.movies.isNotEmpty) {
       return Scaffold(
-      backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
-      body: Center(
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 0),
-          height: MediaQuery.of(context).size.height * 0.68,
-          child: CardSwiper(
-            cardsCount: min(20, widget.movies.length),
-            cardBuilder: (context, index, x, y) {
-              String posterUrl = 'https://image.tmdb.org/t/p/original${widget.movies[index].posterPath}';
-              return CardFilter(
-                image: posterUrl,
-                title: widget.movies[index].title,
-                overview: widget.movies[index].overview,
-                releaseDate: widget.movies[index].releaseDay,
-                voteAverage: widget.movies[index].voteAverage,
-              );
-            },
-            allowedSwipeDirection: const AllowedSwipeDirection.only(left: true, right: true),
-            numberOfCardsDisplayed: 4,
-            backCardOffset: const Offset(0, 0),
-            onSwipe: (previous, current, direction) {
-              currentindex = current!;
-              if (direction == CardSwiperDirection.right) {
-                Fluttertoast.showToast(msg: 'Te ha gustado', backgroundColor: Colors.black, fontSize: 28);
-                Future.delayed(const Duration(milliseconds: 750), () {Fluttertoast.cancel();});
-                Navigator.push(
-                context, 
-                MaterialPageRoute(
-                  builder: (context) => FilmInfo(
-                  movie: widget.movies[previous],
+        backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Center(
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 0),
+                  height: MediaQuery.of(context).size.height * 0.68,
+                  child: CardSwiper(
+                    controller: _cardSwiperController,
+                    cardsCount: min(20, widget.movies.length),
+                    cardBuilder: (context, index, x, y) {
+                      String posterUrl =
+                          'https://image.tmdb.org/t/p/original${widget.movies[index].posterPath}';
+                      return CardFilter(
+                        image: posterUrl,
+                        title: widget.movies[index].title,
+                        overview: widget.movies[index].overview,
+                        releaseDate: widget.movies[index].releaseDay,
+                        voteAverage: widget.movies[index].voteAverage,
+                      );
+                    },
+                    allowedSwipeDirection: const AllowedSwipeDirection.only(
+                        left: true, right: true),
+                    numberOfCardsDisplayed: 4,
+                    backCardOffset: const Offset(0, 0),
+                    onSwipe: (previous, current, direction) {
+                      currentindex = current!;
+                      if (direction == CardSwiperDirection.right) {
+                        Fluttertoast.showToast(
+                            msg: 'Te ha gustado',
+                            backgroundColor: Colors.black,
+                            fontSize: 28);
+                        Future.delayed(const Duration(milliseconds: 750), () {
+                          Fluttertoast.cancel();
+                        });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FilmInfo(
+                              movie: widget.movies[previous],
+                            ),
+                          ),
+                        );
+                      } else if (direction == CardSwiperDirection.left) {
+                        Fluttertoast.showToast(
+                            msg: 'No te ha gustado',
+                            backgroundColor: Colors.black,
+                            fontSize: 28);
+                        Future.delayed(const Duration(milliseconds: 750), () {
+                          Fluttertoast.cancel();
+                        });
+                      }
+                      return true;
+                    },
                   ),
                 ),
-              );
-              } else if (direction == CardSwiperDirection.left) {
-                Fluttertoast.showToast(msg: 'No te ha gustado', backgroundColor: Colors.black, fontSize: 28);
-                Future.delayed(const Duration(milliseconds: 750), () {Fluttertoast.cancel();});
-              }
-              return true;
-            },
-          ),
+              ),
+            ),
+            // Botones en la parte inferior
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      _cardSwiperController.swipe(CardSwiperDirection.left);
+                      Fluttertoast.showToast(
+                          msg: 'No te ha gustado',
+                          backgroundColor: Colors.black,
+                          fontSize: 28);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: const Color.fromARGB(255, 133, 46, 26),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                        side: const BorderSide(
+                          color: Colors.red,
+                          width: 1.0,
+                        ),
+                      ),
+                      fixedSize: const Size(100, 50),
+                    ),
+                    child: const Icon(
+                      Icons.thumb_down,
+                      color: Colors.white,
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      _cardSwiperController.swipe(CardSwiperDirection.right);
+                      Fluttertoast.showToast(
+                        msg: 'Te ha gustado',
+                        backgroundColor: Colors.black,
+                        fontSize: 28,
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: const Color.fromARGB(255, 18, 89, 21),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                        side: const BorderSide(
+                          color: Colors.green,
+                          width: 1.0,
+                        ),
+                      ),
+                      fixedSize: const Size(100, 50),
+                    ),
+                    child: const Icon(
+                      Icons.thumb_up,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+          ],
         ),
-      ),
-    );
-    }
-    else{
+      );
+    } else {
       return const Center(
         child: Text(
           'No se encontraron películas.',
@@ -92,7 +171,7 @@ class CardFilter extends StatelessWidget {
   final String releaseDate;
   final double voteAverage;
 
-  CardFilter({
+  const CardFilter({
     super.key,
     required this.title,
     required this.image,
@@ -105,23 +184,29 @@ class CardFilter extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlipCard(
       front: Container(
-        child: Center(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return Image.network(
-                image,
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) {
-                  return const Center(
-                    child: Text(
-                      'Error al cargar la imagen',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  );
-                },
-              );
-            },
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 0, 0, 0),
+          border: Border.all(
+            color: Colors.white,
+            width: 1.5,
           ),
+          borderRadius: BorderRadius.circular(2.5),
+        ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return Image.network(
+              image,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) {
+                return const Center(
+                  child: Text(
+                    'Error al cargar la imagen',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                );
+              },
+            );
+          },
         ),
       ),
       back: Container(
@@ -130,12 +215,12 @@ class CardFilter extends StatelessWidget {
           color: const Color.fromARGB(255, 0, 0, 0),
           border: Border.all(
             color: Colors.white,
-            width: 1.25,
+            width: 1.5,
           ),
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(2.5),
         ),
         child: Column(
-          mainAxisSize: MainAxisSize.min, // Ajusta la altura del back a su contenido
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
