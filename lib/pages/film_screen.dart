@@ -1,3 +1,4 @@
+import 'package:film_finder/pages/principal_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:film_finder/methods/movie.dart';
 // ignore: depend_on_referenced_packages
@@ -24,7 +25,11 @@ class FilmInfo extends StatelessWidget {
           SliverAppBar.large(
             leading: IconButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => const PrincipalScreen(),
+                  ),
+                );
               },
               icon: const Icon(
                 Icons.arrow_back_rounded,
