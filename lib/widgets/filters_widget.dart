@@ -608,6 +608,8 @@ class _FiltersState extends State<Filters> {
               onPressed: () {
                 setState(() {
                   _platformScrollController.jumpTo(0);
+                  filterGenres = [];
+                  arrayGenres = List.filled(19, 0);
                   pasoDeFiltro--;
                 });
               },
@@ -696,9 +698,7 @@ class _FiltersState extends State<Filters> {
                     } else {
                       print('Se encontraron ${movies.length} películas.');
                     }
-                    setState(() {
-                      pasoDeFiltro = 0;
-                    });
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -706,6 +706,9 @@ class _FiltersState extends State<Filters> {
                                 movies: movies,
                               )),
                     );
+                    setState(() {
+                      pasoDeFiltro = 0;
+                    });
                   },
                   child: Container(
                     height: 240,
@@ -751,6 +754,8 @@ class _FiltersState extends State<Filters> {
                   onTap: () {
                     setState(() {
                       pasoDeFiltro++;
+                      filterProviders = [];
+                      arrayProviders = List.filled(5, 0);
                     });
                   },
                   child: Container(
