@@ -16,6 +16,48 @@ class Register extends StatelessWidget {
   final TextEditingController confirmpasswordController =
       TextEditingController();
 
+  void showLoadingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Center(
+            child: Container(
+              padding: const EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: const Color.fromRGBO(21, 4, 29, 1),
+                borderRadius: BorderRadius.circular(20.0),
+                border: Border.all(
+                  color: const Color.fromRGBO(190, 49, 68, 1),
+                  width: 2.0,
+                ),
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        Color.fromRGBO(190, 49, 68, 1)),
+                  ),
+                  SizedBox(width: 20),
+                  Text(
+                    "Creando la cuenta...",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   Future<void> validateAndRegister(BuildContext context) async {
     String password = passwordController.text;
     String confirmPassword = confirmpasswordController.text;
@@ -47,6 +89,14 @@ class Register extends StatelessWidget {
       return;
     }
 
+    if (name.length > 20) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('El nombre no puede tener más de 20 caracteres')),
+      );
+      return;
+    }
+
     // Llama a la función de registro si las contraseñas coinciden
     await registerUser(context);
   }
@@ -61,6 +111,9 @@ class Register extends StatelessWidget {
     String location = '---';
 
     try {
+      // Muestra el diálogo de carga
+      showLoadingDialog(context);
+
       UserCredential userCredential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
@@ -78,16 +131,43 @@ class Register extends StatelessWidget {
         'location': location,
       });
 
+      // Cierra el diálogo de carga antes de redirigir
+      Navigator.of(context).pop();
+
       // Redirigir a la pantalla principal después del registro
       await Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const PrincipalScreen()),
       );
+    } on FirebaseAuthException catch (e) {
+      // Cierra el diálogo de carga en caso de error
+      Navigator.of(context).pop();
+
+      // Maneja errores específicos de FirebaseAuth
+      String errorMessage;
+      if (e.code == 'email-already-in-use') {
+        errorMessage = 'El correo ya está en uso.';
+      } else if (e.code == 'invalid-email') {
+        errorMessage = 'El correo no es válido.';
+      } else if (e.code == 'weak-password') {
+        errorMessage = 'La contraseña es demasiado débil.';
+      } else {
+        errorMessage = 'Error desconocido al registrar';
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errorMessage)),
+      );
     } catch (e) {
-      // Mostrar un mensaje de error
+      // Cierra el diálogo de carga en caso de error
+      Navigator.of(context).pop();
+
+      // Maneja otros errores inesperados
       print("Error durante el registro: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Error en el registro")),
+        const SnackBar(
+          content: Text('Ocurrió un error inesperado'),
+        ),
       );
     }
   }

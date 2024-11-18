@@ -2,10 +2,12 @@ import 'package:film_finder/pages/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:film_finder/pages/principal_screen.dart';
 import 'package:film_finder/widgets/text_field_login_widget.dart';
+// ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart';
+// ignore: depend_on_referenced_packages
 import 'package:google_sign_in/google_sign_in.dart';
+// ignore: depend_on_referenced_packages
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 
 class LogIn extends StatelessWidget {
   LogIn({super.key});
@@ -13,9 +15,101 @@ class LogIn extends StatelessWidget {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void signUser() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: usernameController.text, password: passwordController.text);
+  void signUser(BuildContext context) async {
+    try {
+      // Verifica si los campos están vacíos
+      if (usernameController.text.isEmpty || passwordController.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Por favor, rellena todos los campos'),
+          ),
+        );
+        return; // Detiene la ejecución si faltan campos
+      }
+
+      // Muestra el diálogo de carga
+      showLoadingDialog(context);
+
+      // Realiza el inicio de sesión
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: usernameController.text,
+        password: passwordController.text,
+      );
+
+      // Cierra el diálogo de carga
+      Navigator.of(context).pop();
+    } on FirebaseAuthException catch (e) {
+      // Cierra el diálogo de carga en caso de error
+      Navigator.of(context).pop();
+
+      // Muestra un mensaje de error al usuario
+      String errorMessage;
+      if (e.code == 'invalid-email') {
+        errorMessage = 'Correo no encontrado.';
+      } else if (e.code == 'invalid-credential') {
+        errorMessage = 'Contraseña incorrecta.';
+      } else {
+        errorMessage = 'Error al iniciar sesión';
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(errorMessage),
+        ),
+      );
+    } catch (e) {
+      // Cierra el diálogo de carga en caso de errores no esperados
+      Navigator.of(context).pop();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Ocurrió un error inesperado'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  void showLoadingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Center(
+            child: Container(
+              padding: const EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: const Color.fromRGBO(21, 4, 29, 1),
+                borderRadius: BorderRadius.circular(20.0),
+                border: Border.all(
+                  color: const Color.fromRGBO(190, 49, 68, 1),
+                  width: 2.0,
+                ),
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        Color.fromRGBO(190, 49, 68, 1)),
+                  ),
+                  SizedBox(width: 20),
+                  Text(
+                    "Iniciando sesión...",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Future<UserCredential?> loginwithGoogle(BuildContext context) async {
@@ -25,16 +119,22 @@ class LogIn extends StatelessWidget {
       // Cerrar la sesión anterior de Google si existe.
       await googleSignIn.signOut();
       final googleUser = await GoogleSignIn().signIn();
+
+      // Muestra el diálogo de carga
+      showLoadingDialog(context);
+
       if (googleUser == null) {
         // El usuario canceló el inicio de sesión.
         return null;
       }
       final googleAuth = await googleUser.authentication;
+
       final cred = GoogleAuthProvider.credential(
         idToken: googleAuth.idToken,
         accessToken: googleAuth.accessToken,
       );
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(cred);
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(cred);
 
       // Almacenar datos adicionales si es un nuevo usuario.
       if (userCredential.additionalUserInfo!.isNewUser) {
@@ -49,20 +149,30 @@ class LogIn extends StatelessWidget {
           'location': '---',
         });
       }
+
+      // Cierra el diálogo de carga antes de redirigir
+      Navigator.of(context).pop();
+
       // Redirigir a la pantalla principal.
       await Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const PrincipalScreen()),
       );
+
       return userCredential;
     } catch (e) {
+      // Cierra el diálogo de carga en caso de error
+      Navigator.of(context).pop();
+
       print("Error durante el inicio de sesión con Google: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Error en el inicio de sesión con Google")),
+        const SnackBar(
+            content: Text("Error en el inicio de sesión con Google")),
       );
     }
     return null;
   }
+
   @override
   Widget build(BuildContext context) {
     // Obtener la altura de la barra de estado
@@ -137,7 +247,9 @@ class LogIn extends StatelessWidget {
           ),
           const SizedBox(height: 25),
           ElevatedButton(
-            onPressed: signUser,
+            onPressed: () {
+              signUser(context);
+            },
             style: ElevatedButton.styleFrom(
               foregroundColor: Colors.white,
               backgroundColor: const Color.fromRGBO(21, 4, 29, 1),

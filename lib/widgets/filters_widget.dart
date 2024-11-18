@@ -66,6 +66,48 @@ class _FiltersState extends State<Filters> {
     );
   }
 
+  void showLoadingListDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Center(
+            child: Container(
+              padding: const EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: const Color.fromRGBO(21, 4, 29, 1),
+                borderRadius: BorderRadius.circular(20.0),
+                border: Border.all(
+                  color: const Color.fromRGBO(190, 49, 68, 1),
+                  width: 2.0,
+                ),
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        Color.fromRGBO(190, 49, 68, 1)),
+                  ),
+                  SizedBox(width: 20),
+                  Text(
+                    "Cargando lista...",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -692,23 +734,47 @@ class _FiltersState extends State<Filters> {
               Expanded(
                 child: GestureDetector(
                   onTap: () async {
-                    await fetchTopRatedMovies();
-                    if (movies.isEmpty) {
-                      print('No se encontraron películas.');
-                    } else {
-                      print('Se encontraron ${movies.length} películas.');
-                    }
+                    // Muestra el diálogo de carga
+                    showLoadingListDialog(context);
 
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
+                    try {
+                      // Ejecuta la función para obtener las películas
+                      await fetchTopRatedMovies();
+
+                      if (movies.isEmpty) {
+                        print('No se encontraron películas.');
+                      } else {
+                        print('Se encontraron ${movies.length} películas.');
+                      }
+
+                      // Cierra el diálogo de carga antes de redirigir
+                      Navigator.of(context).pop();
+
+                      // Redirige a la nueva pantalla
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
                           builder: (context) => FilterFilmScreen(
-                                movies: movies,
-                              )),
-                    );
-                    setState(() {
-                      pasoDeFiltro = 0;
-                    });
+                            movies: movies,
+                          ),
+                        ),
+                      );
+
+                      setState(() {
+                        pasoDeFiltro = 0;
+                      });
+                    } catch (e) {
+                      // Cierra el diálogo de carga en caso de error
+                      Navigator.of(context).pop();
+
+                      // Muestra un mensaje de error al usuario
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Ocurrió un error'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
                   },
                   child: Container(
                     height: 240,
