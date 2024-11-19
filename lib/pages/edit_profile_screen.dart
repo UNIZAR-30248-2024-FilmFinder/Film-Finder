@@ -1,4 +1,3 @@
-import 'package:film_finder/pages/profile_screen.dart';
 import 'package:film_finder/widgets/profile_widget.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
@@ -27,7 +26,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   late TextEditingController locationController;
   late TextEditingController aboutController;
 
-
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
 
@@ -47,7 +45,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     aboutController.dispose();
     super.dispose();
   }
-
 
   Future<void> _onProfilePictureClicked() async {
     final picker = ImagePicker();
@@ -78,8 +75,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,7 +104,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           TextFieldWidget(
             label: 'Ubicación',
             text: locationController.text,
-            onChanged: (value) => setState(() => locationController.text = value),
+            onChanged: (value) =>
+                setState(() => locationController.text = value),
             controller: locationController, // Pasar el controlador aquí
           ),
           const SizedBox(height: 15),
@@ -120,7 +116,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             onChanged: (value) => setState(() => aboutController.text = value),
             controller: aboutController, // Pasar el controlador aquí
           ),
-
           const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -131,12 +126,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     User? user = FirebaseAuth.instance.currentUser;
                     if (user != null) {
                       List<UserInfo> providerData = user.providerData;
-                      bool isGoogleUser = providerData.any((userInfo) => userInfo.providerId == 'google.com');
+                      bool isGoogleUser = providerData.any(
+                          (userInfo) => userInfo.providerId == 'google.com');
 
                       if (isGoogleUser) {
                         // Mostrar mensaje de advertencia si el usuario ha iniciado sesión con Google
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Inico de sesión con Google. No puedes cambiar la contraseña.')),
+                          const SnackBar(
+                              content: Text(
+                                  'Inico de sesión con Google. No puedes cambiar la contraseña.')),
                         );
                       } else {
                         // Mostrar el cuadro de diálogo de cambio de contraseña si el usuario no es de Google

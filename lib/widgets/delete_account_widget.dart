@@ -1,10 +1,52 @@
 import 'package:flutter/material.dart';
-import 'package:film_finder/pages/auth_page.dart';
+// ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart';
 // ignore: depend_on_referenced_packages
 import 'package:google_sign_in/google_sign_in.dart';
 // ignore: depend_on_referenced_packages
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+void showLoadingDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.all(20.0),
+            decoration: BoxDecoration(
+              color: const Color.fromRGBO(21, 4, 29, 1),
+              borderRadius: BorderRadius.circular(20.0),
+              border: Border.all(
+                color: const Color.fromRGBO(190, 49, 68, 1),
+                width: 2.0,
+              ),
+            ),
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                      Color.fromRGBO(190, 49, 68, 1)),
+                ),
+                SizedBox(width: 20),
+                Text(
+                  "Borrando cuenta...",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
 
 void showDeleteAccountDialog(BuildContext context) {
   showDialog(
@@ -157,6 +199,9 @@ void showDeleteAccountDialog(BuildContext context) {
                     }
                   }
 
+                  // Muestra el diálogo de carga
+                  showLoadingDialog(context);
+
                   // Eliminar el documento del usuario en Firestore
                   try {
                     await FirebaseFirestore.instance
@@ -164,6 +209,7 @@ void showDeleteAccountDialog(BuildContext context) {
                         .doc(user.uid)
                         .delete();
                   } catch (e) {
+                    Navigator.of(context).pop();
                     print(
                         'Error al eliminar el documento del usuario en Firestore: $e');
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -176,6 +222,7 @@ void showDeleteAccountDialog(BuildContext context) {
 
                   // Eliminar la cuenta después de reautenticarse
                   await user.delete();
+                  Navigator.of(context).pop();
 
                   // Navegar a la página de autenticación
                   Navigator.of(context).pop(); // Cerrar el cuadro de diálogo
