@@ -79,37 +79,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   }
                 },
               ),
-              const SizedBox(width: 30),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    userData!['name'] ?? 'Nombre no disponible',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 26,
+              const SizedBox(width: 20),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      userData!['name'] ?? 'Nombre no disponible',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 24,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    userData!['location'] ?? 'Ubicación no disponible',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                      fontSize: 16,
+                    const SizedBox(height: 2),
+                    Text(
+                      userData!['location'] ?? 'Ubicación no disponible',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                        fontSize: 14,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    user.email ?? 'Correo no disponible',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w400,
-                      color: Color.fromARGB(255, 179, 178, 178),
-                      fontSize: 15,
+                    const SizedBox(height: 10),
+                    Text(
+                      user.email ?? 'Correo no disponible',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Color.fromARGB(255, 179, 178, 178),
+                        fontSize: 13,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
