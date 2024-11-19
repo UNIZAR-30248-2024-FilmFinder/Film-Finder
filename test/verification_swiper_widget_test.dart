@@ -11,7 +11,7 @@ void main() {
       ),
     ));
 
-    expect(find.text('ELIGE PELICULAS'),findsOneWidget);
+    expect(find.text('ELIGE UNA PELICULA'),findsOneWidget);
 
     expect (find.byType(Swiper),findsOneWidget);
 

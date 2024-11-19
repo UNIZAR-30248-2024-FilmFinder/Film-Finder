@@ -26,19 +26,6 @@ void main() {
             genres: [],
             trailerUrl: ''),
         Movie(
-            id: 1159565,
-            title: "Tiburón blanco: el club de la lucha",
-            posterPath: "/4gbp125YYBOTfNAGP7K81vFW792.jpg",
-            voteAverage: 8.3,
-            mediaType: "movie",
-            backDropPath: '',
-            overview: '',
-            releaseDay: '',
-            director: '',
-            duration: 0,
-            genres: [],
-            trailerUrl: ''),
-        Movie(
             id: 814776,
             title: "El club de las luchadoras",
             posterPath: "/zAPPIeqB4cjXiS5qPFgeifndunG.jpg",
@@ -51,6 +38,19 @@ void main() {
             duration: 0,
             genres: [],
             trailerUrl: ''),
+        Movie(
+            id: 1159565,
+            title: "Tiburón blanco: el club de la lucha",
+            posterPath: "/4gbp125YYBOTfNAGP7K81vFW792.jpg",
+            voteAverage: 7.8,
+            mediaType: "movie",
+            backDropPath: '',
+            overview: '',
+            releaseDay: '',
+            director: '',
+            duration: 0,
+            genres: [],
+            trailerUrl: '')
         // Agregar más películas originales según sea necesario
       ];
 
