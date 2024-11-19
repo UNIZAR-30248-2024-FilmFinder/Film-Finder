@@ -1,4 +1,3 @@
-import 'package:film_finder/pages/login_screen.dart';
 import 'package:film_finder/pages/principal_screen.dart';
 import 'package:film_finder/widgets/text_field_login_widget.dart';
 import 'package:flutter/material.dart';
@@ -233,10 +232,7 @@ class Register extends StatelessWidget {
           const SizedBox(height: 5),
           TextButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LogIn()),
-              );
+              Navigator.of(context).pushReplacementNamed('/');
             },
             child: RichText(
               text: const TextSpan(
