@@ -1176,10 +1176,17 @@ class _FiltersState extends State<Filters> {
                   showRoomDialog(context, false, roomCode);
                 }).catchError((error) {
                   Navigator.of(context).pop(); // Cierra el pop-up de carga
-                  // Manejar el error, mostrar mensaje al usuario
+
+                  String errorMessage = 'No se ha podido acceder a la sala';
+                  if (error.toString().contains('número máximo de miembros')) {
+                    errorMessage =
+                        'La sala ya tiene el número máximo de miembros.';
+                  }
+
+                  // Mostrar el mensaje de error al usuario
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('No se ha podido accder a la sala'),
+                    SnackBar(
+                      content: Text(errorMessage),
                     ),
                   );
                 }).whenComplete(() {
