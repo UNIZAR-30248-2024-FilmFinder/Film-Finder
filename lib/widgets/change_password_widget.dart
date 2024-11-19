@@ -1,10 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+void showLoadingDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.all(20.0),
+            decoration: BoxDecoration(
+              color: const Color.fromRGBO(21, 4, 29, 1),
+              borderRadius: BorderRadius.circular(20.0),
+              border: Border.all(
+                color: const Color.fromRGBO(190, 49, 68, 1),
+                width: 2.0,
+              ),
+            ),
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                      Color.fromRGBO(190, 49, 68, 1)),
+                ),
+                SizedBox(width: 20),
+                Text(
+                  "Cambiando contraseña...",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
 class ChangePasswordDialog extends StatelessWidget {
   final TextEditingController oldPasswordController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   ChangePasswordDialog({super.key});
 
@@ -132,31 +175,51 @@ class ChangePasswordDialog extends StatelessWidget {
         TextButton(
           onPressed: () async {
             if (newPasswordController.text == confirmPasswordController.text) {
-              try {
-                User? user = FirebaseAuth.instance.currentUser;
-                if (user != null) {
-                  // Obtener credenciales con la contraseña antigua
-                  AuthCredential credential = EmailAuthProvider.credential(
-                    email: user.email!,
-                    password: oldPasswordController.text,
-                  );
+              if (newPasswordController.text.length >= 6) {
+                try {
+                  User? user = FirebaseAuth.instance.currentUser;
+                  if (user != null) {
+                    // Muestra el diálogo de carga
+                    showLoadingDialog(context);
 
-                  // Re-autenticar al usuario
-                  await user.reauthenticateWithCredential(credential);
+                    // Obtener credenciales con la contraseña antigua
+                    AuthCredential credential = EmailAuthProvider.credential(
+                      email: user.email!,
+                      password: oldPasswordController.text,
+                    );
 
-                  // Actualizar la contraseña
-                  await user.updatePassword(newPasswordController.text);
+                    // Re-autenticar al usuario
+                    await user.reauthenticateWithCredential(credential);
 
-                  // Mostrar mensaje de éxito
+                    // Actualizar la contraseña
+                    await user.updatePassword(newPasswordController.text);
+
+                    Navigator.of(context).pop(); // Cerrar el cuadro de diálo
+
+                    // Mostrar mensaje de éxito
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content:
+                              Text('Contraseña actualizada correctamente.')),
+                    );
+                    Navigator.of(context).pop();
+                  }
+                } catch (e) {
+                  Navigator.of(context).pop(); // Cerrar el cuadro de diálo
+
+                  // Manejar errores, como credenciales incorrectas
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Contraseña actualizada correctamente.')),
+                    const SnackBar(
+                        content: Text('Error al cambiar la contraseña')),
                   );
-                  Navigator.of(context).pop();
                 }
-              } catch (e) {
-                // Manejar errores, como credenciales incorrectas
+              } else {
+                Navigator.of(context).pop(); // Cerrar el cuadro de diálo
+
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Error: ${e.toString()}')),
+                  const SnackBar(
+                      content: Text(
+                          'La contraseña debe tener al menos seis caracteres')),
                 );
               }
             } else {

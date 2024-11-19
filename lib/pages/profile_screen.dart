@@ -14,6 +14,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   late User user;
   Map<String, dynamic>? userData;
+  Key key = UniqueKey();
 
   @override
   void initState() {
@@ -24,14 +25,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _loadUserData() async {
     try {
-      DocumentSnapshot doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      DocumentSnapshot doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
       Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
 
       // Verificar si el usuario ha iniciado sesión con Google
-      if (user.providerData.any((provider) => provider.providerId == 'google.com')) {
+      if (user.providerData
+          .any((provider) => provider.providerId == 'google.com')) {
         data ??= {};
         data['imagePath'] = user.photoURL;
-
       }
       setState(() {
         userData = data;
@@ -60,12 +64,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ProfileWidget(
                 imagePath: userData!['imagePath'] ?? '',
                 onClicked: () async {
-                  Navigator.push(
+                  final result = await Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => EditProfileScreen(user: userData!),
                     ),
                   );
+
+                  // Verifica el resultado y actualiza la página si es necesario
+                  if (result == true) {
+                    setState(() {
+                      _loadUserData();
+                    });
+                  }
                 },
               ),
               const SizedBox(width: 30),

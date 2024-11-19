@@ -58,6 +58,30 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Future<void> _updateUserProfile() async {
+    if (nameController.text.length > 20) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('El nombre no puede tener más de 20 caracteres')),
+      );
+      return;
+    }
+
+    if (locationController.text.length > 35) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('La ubicación no puede tener más de 35 caracteres')),
+      );
+      return;
+    }
+
+    if (aboutController.text.length > 500) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('La biografía no puede tener más de 500 caracteres')),
+      );
+      return;
+    }
+
     try {
       await _firestore.collection('users').doc(_auth.currentUser!.uid).update({
         'name': nameController.text,
@@ -66,11 +90,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         'imagePath': imagePath,
       });
       // Navegar hacia atrás tras la actualización
-      Navigator.pop(context);
+      Navigator.pop(context, true);
     } catch (e) {
       print("Error al actualizar el perfil: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error al actualizar el perfil: $e")),
+        const SnackBar(content: Text("Error al actualizar el perfil")),
       );
     }
   }
@@ -84,134 +108,143 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
-        physics: const BouncingScrollPhysics(),
-        children: [
-          ProfileWidget(
-            imagePath: imagePath,
-            onClicked: _onProfilePictureClicked,
-            isEdit: true,
-          ),
-          const SizedBox(height: 35),
-          TextFieldWidget(
-            label: 'Nombre de usuario',
-            text: nameController.text,
-            onChanged: (value) => setState(() => nameController.text = value),
-            controller: nameController, // Pasar el controlador aquí
-          ),
-          const SizedBox(height: 15),
-          TextFieldWidget(
-            label: 'Ubicación',
-            text: locationController.text,
-            onChanged: (value) =>
-                setState(() => locationController.text = value),
-            controller: locationController, // Pasar el controlador aquí
-          ),
-          const SizedBox(height: 15),
-          TextFieldWidget(
-            label: 'Sobre mí',
-            text: aboutController.text,
-            maxLines: 5,
-            onChanged: (value) => setState(() => aboutController.text = value),
-            controller: aboutController, // Pasar el controlador aquí
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () async {
-                    User? user = FirebaseAuth.instance.currentUser;
-                    if (user != null) {
-                      List<UserInfo> providerData = user.providerData;
-                      bool isGoogleUser = providerData.any(
-                          (userInfo) => userInfo.providerId == 'google.com');
+      body: GestureDetector(
+        onTap: () {
+          // Quita el foco actual (cierra el teclado)
+          FocusScope.of(context).unfocus();
+        },
+        child: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          physics: const BouncingScrollPhysics(),
+          children: [
+            ProfileWidget(
+              imagePath: imagePath,
+              onClicked: _onProfilePictureClicked,
+              isEdit: true,
+            ),
+            const SizedBox(height: 35),
+            TextFieldWidget(
+              label: 'Nombre de usuario',
+              text: nameController.text,
+              onChanged: (value) => setState(() => nameController.text = value),
+              controller: nameController, // Pasar el controlador aquí
+            ),
+            const SizedBox(height: 15),
+            TextFieldWidget(
+              label: 'Ubicación',
+              text: locationController.text,
+              onChanged: (value) =>
+                  setState(() => locationController.text = value),
+              controller: locationController, // Pasar el controlador aquí
+            ),
+            const SizedBox(height: 15),
+            TextFieldWidget(
+              label: 'Sobre mí',
+              text: aboutController.text,
+              maxLines: 5,
+              onChanged: (value) =>
+                  setState(() => aboutController.text = value),
+              controller: aboutController, // Pasar el controlador aquí
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      User? user = FirebaseAuth.instance.currentUser;
+                      if (user != null) {
+                        List<UserInfo> providerData = user.providerData;
+                        bool isGoogleUser = providerData.any(
+                            (userInfo) => userInfo.providerId == 'google.com');
 
-                      if (isGoogleUser) {
-                        // Mostrar mensaje de advertencia si el usuario ha iniciado sesión con Google
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text(
-                                  'Inico de sesión con Google. No puedes cambiar la contraseña.')),
-                        );
-                      } else {
-                        // Mostrar el cuadro de diálogo de cambio de contraseña si el usuario no es de Google
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return ChangePasswordDialog();
-                          },
-                        );
+                        if (isGoogleUser) {
+                          // Mostrar mensaje de advertencia si el usuario ha iniciado sesión con Google
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text(
+                                    'Inico de sesión con Google. No puedes cambiar la contraseña.')),
+                          );
+                        } else {
+                          // Mostrar el cuadro de diálogo de cambio de contraseña si el usuario no es de Google
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return ChangePasswordDialog();
+                            },
+                          );
+                        }
                       }
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: const Color.fromRGBO(21, 4, 29, 1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      side: const BorderSide(
-                        color: Color.fromRGBO(190, 49, 68, 1),
-                        width: 1.0,
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: const Color.fromRGBO(21, 4, 29, 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        side: const BorderSide(
+                          color: Color.fromRGBO(190, 49, 68, 1),
+                          width: 1.0,
+                        ),
                       ),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                  ),
-                  child: const Text(
-                    'Cambiar contraseña',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                    child: const Text(
+                      'Cambiar contraseña',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 25),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    showDeleteAccountDialog(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: const Color.fromRGBO(190, 49, 68, 1),
-                    backgroundColor: const Color.fromRGBO(21, 4, 29, 1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      side: const BorderSide(
-                        color: Color.fromRGBO(190, 49, 68, 1),
-                        width: 1.0,
+                const SizedBox(width: 25),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      showDeleteAccountDialog(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: const Color.fromRGBO(190, 49, 68, 1),
+                      backgroundColor: const Color.fromRGBO(21, 4, 29, 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        side: const BorderSide(
+                          color: Color.fromRGBO(190, 49, 68, 1),
+                          width: 1.0,
+                        ),
                       ),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                  ),
-                  child: const Text(
-                    'Borrar cuenta',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                    child: const Text(
+                      'Borrar cuenta',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 50),
-          ElevatedButton(
-            onPressed: _updateUserProfile,
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.white,
-              backgroundColor: const Color.fromRGBO(21, 4, 29, 1),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-                side: const BorderSide(
-                  color: Color.fromRGBO(190, 49, 68, 1),
-                  width: 1.0,
+              ],
+            ),
+            const SizedBox(height: 50),
+            ElevatedButton(
+              onPressed: _updateUserProfile,
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: const Color.fromRGBO(21, 4, 29, 1),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  side: const BorderSide(
+                    color: Color.fromRGBO(190, 49, 68, 1),
+                    width: 1.0,
+                  ),
                 ),
+                padding: const EdgeInsets.symmetric(vertical: 10),
               ),
-              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: const Text(
+                'CONFIRMAR',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+              ),
             ),
-            child: const Text(
-              'CONFIRMAR',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
