@@ -125,14 +125,17 @@ class LogIn extends StatelessWidget {
 
       if (googleUser == null) {
         // El usuario canceló el inicio de sesión.
+        Navigator.of(context).pop(); // Cierra el diálogo de carga.
         return null;
       }
+
       final googleAuth = await googleUser.authentication;
 
       final cred = GoogleAuthProvider.credential(
         idToken: googleAuth.idToken,
         accessToken: googleAuth.accessToken,
       );
+
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(cred);
 
@@ -150,7 +153,7 @@ class LogIn extends StatelessWidget {
         });
       }
 
-      // Cierra el diálogo de carga antes de redirigir
+      // Cierra el diálogo de carga antes de redirigir.
       Navigator.of(context).pop();
 
       // Redirigir a la pantalla principal.
@@ -161,8 +164,10 @@ class LogIn extends StatelessWidget {
 
       return userCredential;
     } catch (e) {
-      // Cierra el diálogo de carga en caso de error
-      Navigator.of(context).pop();
+      // Cierra el diálogo de carga en caso de error.
+      if (Navigator.canPop(context)) {
+        Navigator.of(context).pop();
+      }
 
       print("Error durante el inicio de sesión con Google: $e");
       ScaffoldMessenger.of(context).showSnackBar(
