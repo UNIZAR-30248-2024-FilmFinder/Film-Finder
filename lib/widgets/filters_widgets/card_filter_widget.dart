@@ -5,11 +5,13 @@ import 'package:flip_card/flip_card.dart';
 class CardFilter extends StatelessWidget {
   final String text;
   final String image;
+  final VoidCallback onFlip;
 
   const CardFilter({
     super.key,
     required this.text,
     required this.image,
+    required this.onFlip,
   });
 
   Widget frontCard(BuildContext context) {
@@ -91,6 +93,7 @@ class CardFilter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlipCard(
+      onFlip: onFlip,
       front: frontCard(context),
       back: backCard(context),
     );

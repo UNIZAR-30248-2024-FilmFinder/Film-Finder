@@ -1,11 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'pages/login_screen.dart';
+import 'package:film_finder/pages/auth_pages/auth_page.dart';
 
-void main() {
+void main() async {
   // Ensures the initialization of the widgets.
   WidgetsFlutterBinding.ensureInitialized();
-
+  await Firebase.initializeApp();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky,
       overlays: [SystemUiOverlay.top]);
 
@@ -44,7 +45,7 @@ class RedirectPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Future.delayed(Duration.zero, () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const LogIn()),
+        MaterialPageRoute(builder: (context) => const AuthPage()),
       );
     });
 

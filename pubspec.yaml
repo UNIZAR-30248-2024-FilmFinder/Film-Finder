@@ -36,10 +36,24 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   carousel_slider: ^5.0.0
+  provider: ^6.1.2
+  flutter_card_swiper: ^7.0.2
+  palette_generator: ^0.3.3+4
+  fluttertoast: ^8.2.8
+  flip_card: ^0.7.0
+  firebase_core: ^3.4.0
+  mockito: ^5.0.17
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter
+  firebase_core: ^3.4.0
+  firebase_auth: ^5.1.0
+  cloud_firestore: ^5.4.0
+  google_sign_in: ^6.2.1
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -48,11 +62,11 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
 
-  fluttertoast: ^8.2.1
-
   google_nav_bar: ^5.0.6
 
-  flip_card: ^0.6.0
+  image_picker: ^0.8.5
+
+  url_launcher: ^6.1.8
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -67,6 +81,10 @@ flutter:
   assets:
     - assets/images/example.jpg
     - assets/images/example_poster.jpg
+    - assets/images/titulo.png
+    - assets/images/user.avif
+    - assets/images/google_icon.png
+    - assets/images/app_icon.png
     # Iconos de los diferentes géneros
     - assets/genres_icons/accion.png
     - assets/genres_icons/animacion.png
@@ -93,6 +111,12 @@ flutter:
     - assets/platform_icons/hbo.png
     - assets/platform_icons/netflix.png
     - assets/platform_icons/primeVideo.png
+    # Iconos para el tamaño del grupo
+    - assets/icons/grupal.png
+    - assets/icons/individual.png
+    # Iconos para la creación de salas
+    - assets/icons/join.png
+    - assets/icons/create.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

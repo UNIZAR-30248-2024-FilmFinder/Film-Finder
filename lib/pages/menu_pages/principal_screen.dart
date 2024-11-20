@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:film_finder/pages/initial_screen.dart';
-import 'package:film_finder/pages/explore_screen.dart';
-import 'package:film_finder/pages/friends_screen.dart';
-import 'package:film_finder/pages/profile_screen.dart';
+import 'package:film_finder/pages/menu_pages/initial_screen.dart';
+import 'package:film_finder/pages/menu_pages/explore_screen.dart';
+import 'package:film_finder/pages/profile_pages/friends_screen.dart';
+import 'package:film_finder/pages/profile_pages/profile_screen.dart';
 
 class PrincipalScreen extends StatefulWidget {
   const PrincipalScreen({super.key});
@@ -32,6 +32,12 @@ class _PrincipalScreenState extends State<PrincipalScreen> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (Navigator.canPop(context)) {
+        Navigator.of(context).pop();
+      }
+    });
+
     return Scaffold(
       backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
       bottomNavigationBar: Container(
@@ -50,18 +56,22 @@ class _PrincipalScreenState extends State<PrincipalScreen> {
               GButton(
                 icon: Icons.home,
                 text: 'Inicio',
+                key: Key('init_button'),
               ),
               GButton(
                 icon: Icons.search,
                 text: 'Explorar',
+                key: Key('explore_button'),
               ),
               GButton(
                 icon: Icons.add_reaction,
                 text: 'Amigos',
+                key: Key('friends_button'),
               ),
               GButton(
                 icon: Icons.person,
                 text: 'Perfil',
+                key: Key('profile_button'),
               ),
             ],
           ),

@@ -1,16 +1,18 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:film_finder/pages/film_screen.dart';
+import 'package:film_finder/pages/film_pages/film_screen.dart';
 import 'package:film_finder/methods/constants.dart';
 // ignore: depend_on_referenced_packages
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../methods/movie.dart';
+import '../../methods/movie.dart';
 import 'package:http/http.dart' as http;
 
 class SearchingBar extends StatefulWidget {
-  const SearchingBar({super.key});
+  final Function(bool) onSearchToggled;
+
+  const SearchingBar({super.key, required this.onSearchToggled});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -24,6 +26,10 @@ class _SearchingBarState extends State<SearchingBar> {
   List<Movie> movies = [];
   bool showList = false;
 
+  Future<void> onTapMovie(Movie movie) async {
+    await _fetchMovieDetails(movie.id);
+  }
+
   //FUNCIÓN QUE EXTRAE LA INFO NECESARIA PARA MOSTRAR EN EL BUSCADOR
   Future<void> searchListFunction(String val) async {
     String searchURL =
@@ -35,8 +41,8 @@ class _SearchingBarState extends State<SearchingBar> {
       var tempData = jsonDecode(searchResponse.body);
       var searchJson = tempData['results'];
 
-      movies
-          .clear(); // Limpiamos la lista de películas antes de llenarla nuevamente
+      // Limpiamos la lista de películas antes de llenarla nuevamente
+      movies.clear();
 
       for (var i in searchJson) {
         if (i['id'] != null &&
@@ -55,8 +61,9 @@ class _SearchingBarState extends State<SearchingBar> {
             director: 'Unknown Director',
             duration: 0,
             genres: [],
-            backDropPath: '', // No lo cargamos aún
-            overview: 'No overview available', // No lo cargamos aún
+            backDropPath: '',
+            overview: 'No overview available',
+            trailerUrl: '',
           ));
 
           // Limitamos a 15 películas
@@ -68,7 +75,7 @@ class _SearchingBarState extends State<SearchingBar> {
     }
   }
 
-  //FUNCIÓN QUE EXTRAE EL RESTO DE INFORMACIÓN NECESARIA PARA CARGAR LA PÁGINA DE PELÍCULA
+// FUNCIÓN QUE EXTRAE EL RESTO DE INFORMACIÓN NECESARIA PARA CARGAR LA PÁGINA DE PELÍCULA
   Future<void> _fetchMovieDetails(int movieId) async {
     try {
       // Definimos las URLs para obtener detalles y créditos
@@ -76,15 +83,19 @@ class _SearchingBarState extends State<SearchingBar> {
           'https://api.themoviedb.org/3/movie/$movieId/credits?api_key=${Constants.apiKey}';
       String detailsURL =
           'https://api.themoviedb.org/3/movie/$movieId?api_key=${Constants.apiKey}&language=es-ES';
+      String videosURL =
+          'https://api.themoviedb.org/3/movie/$movieId/videos?api_key=${Constants.apiKey}&language=es-ES';
 
-      // Ejecutamos ambas solicitudes de forma paralela
+      // Ejecutamos las solicitudes de forma paralela
       var responses = await Future.wait([
         http.get(Uri.parse(creditsURL)),
         http.get(Uri.parse(detailsURL)),
+        http.get(Uri.parse(videosURL)), // Añadido para obtener los videos
       ]);
 
       var creditsResponse = responses[0];
       var detailsResponse = responses[1];
+      var videosResponse = responses[2]; // Respuesta para los videos
 
       // Procesamos la información de los créditos
       String director = 'Unknown Director';
@@ -104,6 +115,7 @@ class _SearchingBarState extends State<SearchingBar> {
       List<String> genresList = [];
       String overview = 'No overview available';
       String backDropPath = '';
+      String trailerUrl = '';
 
       if (detailsResponse.statusCode == 200) {
         var detailsData = jsonDecode(detailsResponse.body);
@@ -118,6 +130,18 @@ class _SearchingBarState extends State<SearchingBar> {
         }
       }
 
+      // Procesamos la respuesta de los videos para obtener el tráiler
+      if (videosResponse.statusCode == 200) {
+        var videosData = jsonDecode(videosResponse.body);
+        var videosList = videosData['results'] as List<dynamic>;
+        for (var video in videosList) {
+          if (video['site'] == 'YouTube' && video['type'] == 'Trailer') {
+            trailerUrl = 'https://www.youtube.com/watch?v=${video['key']}';
+            break;
+          }
+        }
+      }
+
       // Buscamos la película por ID y actualizamos sus detalles
       for (var movie in movies) {
         if (movie.id == movieId) {
@@ -126,6 +150,7 @@ class _SearchingBarState extends State<SearchingBar> {
           movie.genres = genresList;
           movie.overview = overview;
           movie.backDropPath = backDropPath;
+          movie.trailerUrl = trailerUrl; // Asigna la URL del tráiler
           break;
         }
       }
@@ -163,6 +188,11 @@ class _SearchingBarState extends State<SearchingBar> {
                       val1 = value;
                     },
                   );
+                  if (searchText.text.isEmpty) {
+                    setState(() {
+                      widget.onSearchToggled(false);
+                    });
+                  }
                 },
                 onChanged: (value) {
                   setState(
@@ -174,6 +204,15 @@ class _SearchingBarState extends State<SearchingBar> {
                           val1 = value;
                         },
                       );
+                      if (searchText.text.isEmpty) {
+                        setState(() {
+                          widget.onSearchToggled(false);
+                        });
+                      } else {
+                        setState(() {
+                          widget.onSearchToggled(true);
+                        });
+                      }
                     },
                   );
                 },
@@ -195,6 +234,7 @@ class _SearchingBarState extends State<SearchingBar> {
                       setState(() {
                         searchText.clear();
                         FocusManager.instance.primaryFocus?.unfocus();
+                        widget.onSearchToggled(false);
                       });
                     },
                     icon: Icon(
@@ -245,20 +285,12 @@ class _SearchingBarState extends State<SearchingBar> {
                                     ),
                                   ),
                                 );
-
-                                FocusManager.instance.primaryFocus?.unfocus();
-
-                                Future.delayed(
-                                    const Duration(milliseconds: 500), () {
-                                  setState(() {
-                                    searchText.clear();
-                                  });
-                                });
                               },
                               child: Container(
+                                padding: const EdgeInsets.only(left: 5),
                                 margin:
                                     const EdgeInsets.only(top: 4, bottom: 4),
-                                height: 190,
+                                height: 125,
                                 width: MediaQuery.of(context).size.width,
                                 decoration: const BoxDecoration(
                                   color: Color.fromRGBO(21, 4, 29, 1),
@@ -268,8 +300,10 @@ class _SearchingBarState extends State<SearchingBar> {
                                 child: Row(
                                   children: [
                                     Container(
+                                      key: ValueKey(
+                                          'movieImage_${movies[index].id}'),
                                       width: MediaQuery.of(context).size.width *
-                                          0.33,
+                                          0.22,
                                       decoration: BoxDecoration(
                                         borderRadius: const BorderRadius.all(
                                             Radius.circular(10)),
@@ -279,6 +313,82 @@ class _SearchingBarState extends State<SearchingBar> {
                                           ),
                                           fit: BoxFit.fill,
                                         ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            movies[index].title,
+                                            softWrap: true,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 3,
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Año de estreno: ${DateTime.parse(movies[index].releaseDay).year}',
+                                                softWrap: true,
+                                                style: const TextStyle(
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w300,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              const Spacer(),
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 2,
+                                                        horizontal: 10),
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: Colors.grey),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      movies[index]
+                                                          .voteAverage
+                                                          .toStringAsFixed(1),
+                                                      style: const TextStyle(
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w300,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    const Icon(
+                                                      Icons.star,
+                                                      color: Colors.yellow,
+                                                      size: 15,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 25,
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
