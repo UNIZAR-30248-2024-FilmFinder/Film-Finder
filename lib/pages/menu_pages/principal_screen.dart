@@ -32,12 +32,6 @@ class _PrincipalScreenState extends State<PrincipalScreen> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (Navigator.canPop(context)) {
-        Navigator.of(context).pop();
-      }
-    });
-
     return Scaffold(
       backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
       bottomNavigationBar: Container(

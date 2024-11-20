@@ -25,10 +25,10 @@ class FilmInfo extends StatelessWidget {
           SliverAppBar.large(
             leading: IconButton(
               onPressed: () {
-                Navigator.of(context).pushReplacement(
+                Navigator.push(
+                  context,
                   MaterialPageRoute(
-                    builder: (context) => const PrincipalScreen(),
-                  ),
+                      builder: (context) => const PrincipalScreen()),
                 );
               },
               icon: const Icon(

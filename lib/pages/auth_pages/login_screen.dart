@@ -125,7 +125,6 @@ class LogIn extends StatelessWidget {
 
       if (googleUser == null) {
         // El usuario canceló el inicio de sesión.
-        Navigator.of(context).pop(); // Cierra el diálogo de carga.
         return null;
       }
 
@@ -153,9 +152,6 @@ class LogIn extends StatelessWidget {
         });
       }
 
-      // Cierra el diálogo de carga antes de redirigir.
-      Navigator.of(context).pop();
-
       // Redirigir a la pantalla principal.
       await Navigator.pushReplacement(
         context,
@@ -164,16 +160,13 @@ class LogIn extends StatelessWidget {
 
       return userCredential;
     } catch (e) {
-      // Cierra el diálogo de carga en caso de error.
-      if (Navigator.canPop(context)) {
-        Navigator.of(context).pop();
-      }
-
       print("Error durante el inicio de sesión con Google: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content: Text("Error en el inicio de sesión con Google")),
       );
+    } finally {
+      Navigator.of(context).pop();
     }
     return null;
   }

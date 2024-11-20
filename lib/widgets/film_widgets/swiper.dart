@@ -169,10 +169,6 @@ class _SwiperState extends State<Swiper> {
                   ElevatedButton(
                     onPressed: () {
                       _cardSwiperController.swipe(CardSwiperDirection.left);
-                      Fluttertoast.showToast(
-                          msg: 'No te ha gustado',
-                          backgroundColor: Colors.black,
-                          fontSize: 28);
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
@@ -194,11 +190,6 @@ class _SwiperState extends State<Swiper> {
                   ElevatedButton(
                     onPressed: () {
                       _cardSwiperController.swipe(CardSwiperDirection.right);
-                      Fluttertoast.showToast(
-                        msg: 'Te ha gustado',
-                        backgroundColor: Colors.black,
-                        fontSize: 28,
-                      );
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
