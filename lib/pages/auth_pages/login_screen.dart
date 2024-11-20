@@ -120,9 +120,6 @@ class LogIn extends StatelessWidget {
       await googleSignIn.signOut();
       final googleUser = await GoogleSignIn().signIn();
 
-      // Muestra el diálogo de carga
-      showLoadingDialog(context);
-
       if (googleUser == null) {
         // El usuario canceló el inicio de sesión.
         return null;
@@ -165,8 +162,6 @@ class LogIn extends StatelessWidget {
         const SnackBar(
             content: Text("Error en el inicio de sesión con Google")),
       );
-    } finally {
-      Navigator.of(context).pop();
     }
     return null;
   }
