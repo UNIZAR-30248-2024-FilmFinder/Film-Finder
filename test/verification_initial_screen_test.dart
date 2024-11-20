@@ -1,9 +1,9 @@
-import 'package:film_finder/pages/principal_screen.dart';
-import 'package:film_finder/widgets/filters_widget.dart';
-import 'package:film_finder/widgets/search_bar.dart';
+import 'package:film_finder/pages/menu_pages/principal_screen.dart';
+import 'package:film_finder/widgets/filters_widgets/filters_widget.dart';
+import 'package:film_finder/widgets/film_widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:film_finder/pages/initial_screen.dart';
+import 'package:film_finder/pages/menu_pages/initial_screen.dart';
 
 void main() {
   testWidgets('InitialScreen displays title, search bar, and filters',

@@ -1,9 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:film_finder/pages/auth_page.dart';
+import 'package:film_finder/pages/auth_pages/auth_page.dart';
 
-void main() async{
+void main() async {
   // Ensures the initialization of the widgets.
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

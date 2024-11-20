@@ -1,16 +1,16 @@
-import 'package:film_finder/pages/profile_screen.dart';
-import 'package:film_finder/pages/register_screen.dart';
-import 'package:film_finder/widgets/profile_widget.dart';
+import 'package:film_finder/pages/profile_pages/profile_screen.dart';
+import 'package:film_finder/widgets/profile_widgets/profile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:film_finder/pages/login_screen.dart'; // Importa tu pantalla de login
-import 'package:film_finder/main.dart'; // Importa la app principal si es necesario
+import 'package:film_finder/pages/auth_pages/login_screen.dart'; // Importa tu pantalla de login
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Test de integración de la pantalla de edición de información del perfil de usuario', (WidgetTester tester) async {
+  testWidgets(
+      'Test de integración de la pantalla de edición de información del perfil de usuario',
+      (WidgetTester tester) async {
     // Inicializa la aplicación en la pantalla de inicio de sesión
     await tester.pumpWidget(MaterialApp(
       home: LogIn(),
@@ -23,7 +23,7 @@ void main() {
     await tester.tap(find.text('INICIAR SESIÓN'));
     await tester.pumpAndSettle();
 
-    await tester.pumpWidget(MaterialApp(
+    await tester.pumpWidget(const MaterialApp(
       home: ProfileScreen(),
     ));
 
@@ -38,7 +38,10 @@ void main() {
     expect(find.text('Cambiar contraseña'), findsOneWidget);
     expect(find.text('Borrar cuenta'), findsOneWidget);
 
-    expect(find.byType(TextField), findsNWidgets(3)); // Asume que hay cuatro campos de texto (user, location y description)
+    expect(
+        find.byType(TextField),
+        findsNWidgets(
+            3)); // Asume que hay cuatro campos de texto (user, location y description)
     await tester.enterText(find.byType(TextField).at(0), 'NewNameTest');
     await tester.enterText(find.byType(TextField).at(1), 'NewLocationTest');
     await tester.enterText(find.byType(TextField).at(2), 'NewDescrptionTest');
@@ -47,10 +50,9 @@ void main() {
     await tester.tap(find.text('CONFIRMAR'));
     await tester.pumpAndSettle();
 
-    await tester.pumpWidget(
-        MaterialApp(
-          home: ProfileScreen(),
-        ));
+    await tester.pumpWidget(MaterialApp(
+      home: ProfileScreen(),
+    ));
 
     expect(find.textContaining('NewNameTest'), findsOneWidget);
     expect(find.textContaining('NewLocationTest'), findsOneWidget);

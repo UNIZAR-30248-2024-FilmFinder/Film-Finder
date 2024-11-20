@@ -1,11 +1,11 @@
-import 'package:film_finder/pages/principal_screen.dart';
+import 'package:film_finder/pages/menu_pages/principal_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:film_finder/methods/movie.dart';
 import 'dart:math';
-import 'package:film_finder/pages/film_screen.dart';
+import 'package:film_finder/pages/film_pages/film_screen.dart';
 
 class Swiper extends StatefulWidget {
   final List<Movie> movies;

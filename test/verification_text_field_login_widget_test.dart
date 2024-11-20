@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:film_finder/widgets/text_field_login_widget.dart';
+import 'package:film_finder/widgets/profile_widgets/text_field_login_widget.dart';
 
 void main() {
   testWidgets('MyTextField widget test', (WidgetTester tester) async {
@@ -49,7 +49,8 @@ void main() {
     await tester.pump(); // Asegúrate de que el widget se haya reconstruido
 
     // Verifica que el obscureText esté activado
-    final textFieldWithObscure = tester.widget<TextField>(find.byType(TextField));
+    final textFieldWithObscure =
+        tester.widget<TextField>(find.byType(TextField));
     expect(textFieldWithObscure.obscureText, true);
   });
 }

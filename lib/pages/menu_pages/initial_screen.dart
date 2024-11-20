@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:film_finder/widgets/search_bar.dart';
-import 'package:film_finder/widgets/filters_widget.dart';
+import 'package:film_finder/widgets/film_widgets/search_bar.dart';
+import 'package:film_finder/widgets/filters_widgets/filters_widget.dart';
 
 class InitialScreen extends StatefulWidget {
   const InitialScreen({super.key});

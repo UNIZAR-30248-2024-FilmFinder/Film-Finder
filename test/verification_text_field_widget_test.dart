@@ -1,9 +1,11 @@
-import 'package:film_finder/widgets/text_field_widget.dart';
+import 'package:film_finder/widgets/profile_widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('TextFieldWidget should display label and allow text input', (WidgetTester tester) async {
+  testWidgets('TextFieldWidget should display label and allow text input',
+      (WidgetTester tester) async {
+    // ignore: unused_local_variable
     String inputText = '';
 
     // Crear el widget con un callback para capturar el texto ingresado
@@ -24,13 +26,14 @@ void main() {
 
     // Verificar que el campo de texto está vacío al inicio
     expect(find.byType(TextField), findsOneWidget);
-    expect((tester.widget<TextField>(find.byType(TextField)).controller!.text), '');
+    expect((tester.widget<TextField>(find.byType(TextField)).controller!.text),
+        '');
 
     // Ingresar texto en el campo de texto
     await tester.enterText(find.byType(TextField), 'Hello World');
 
     // Verificar que el texto ingresado se refleja en el controlador
-    expect((tester.widget<TextField>(find.byType(TextField)).controller!.text), 'Hello World');
-
+    expect((tester.widget<TextField>(find.byType(TextField)).controller!.text),
+        'Hello World');
   });
 }

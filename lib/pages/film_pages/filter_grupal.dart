@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:film_finder/widgets/swiper_grupal.dart';
+import 'package:film_finder/widgets/film_widgets/swiper_grupal.dart';
 import 'package:film_finder/methods/movie.dart';
 
 class FilterGrupalScreen extends StatefulWidget {
@@ -15,7 +15,6 @@ class FilterGrupalScreen extends StatefulWidget {
 }
 
 class _FilterGrupalScreenState extends State<FilterGrupalScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -38,7 +37,7 @@ class _FilterGrupalScreenState extends State<FilterGrupalScreen> {
           ),
         ),
       ),
-      backgroundColor:  const Color.fromRGBO(34, 9, 44, 1),
+      backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
       body: SafeArea(
         child: SwiperGrupal(
           movies: widget.movies,

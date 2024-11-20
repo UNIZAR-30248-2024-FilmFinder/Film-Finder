@@ -1,4 +1,4 @@
-import 'package:film_finder/widgets/profile_widget.dart';
+import 'package:film_finder/widgets/profile_widgets/profile_widget.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,16 +7,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // ignore: depend_on_referenced_packages
 import 'package:image_picker/image_picker.dart';
 
-import '../widgets/change_password_widget.dart';
-import '../widgets/delete_account_widget.dart';
-import '../widgets/text_field_widget.dart';
+import '../../widgets/profile_widgets/change_password_widget.dart';
+import '../../widgets/profile_widgets/delete_account_widget.dart';
+import '../../widgets/profile_widgets/text_field_widget.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final Map<String, dynamic> user;
 
-  const EditProfileScreen({Key? key, required this.user}) : super(key: key);
+  const EditProfileScreen({super.key, required this.user});
 
   @override
+  // ignore: library_private_types_in_public_api
   _EditProfileScreenState createState() => _EditProfileScreenState();
 }
 

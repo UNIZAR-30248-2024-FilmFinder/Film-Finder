@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:film_finder/widgets/swiper.dart';
+import 'package:film_finder/widgets/film_widgets/swiper.dart';
 import 'package:film_finder/methods/movie.dart';
 
 class FilterFilmScreen extends StatefulWidget {

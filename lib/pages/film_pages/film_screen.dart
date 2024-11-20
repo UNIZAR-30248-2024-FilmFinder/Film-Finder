@@ -1,4 +1,4 @@
-import 'package:film_finder/pages/principal_screen.dart';
+import 'package:film_finder/pages/menu_pages/principal_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:film_finder/methods/movie.dart';
 // ignore: depend_on_referenced_packages

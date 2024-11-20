@@ -4,7 +4,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:film_finder/methods/movie.dart';
 import 'dart:math';
-import 'package:film_finder/pages/film_screen.dart';
 
 class SwiperGrupal extends StatefulWidget {
   final List<Movie> movies;
@@ -20,7 +19,7 @@ class SwiperGrupal extends StatefulWidget {
 
 class _SwiperGrupalState extends State<SwiperGrupal> {
   int currentindex = 0;
-  
+
   @override
   void initState() {
     super.initState();
@@ -30,43 +29,54 @@ class _SwiperGrupalState extends State<SwiperGrupal> {
   Widget build(BuildContext context) {
     if (widget.movies.isNotEmpty) {
       return Scaffold(
-      backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
-      body: Center(
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 0),
-          height: MediaQuery.of(context).size.height * 0.68,
-          child: CardSwiper(
-            cardsCount: min(20, widget.movies.length),
-            cardBuilder: (context, index, x, y) {
-              String posterUrl = 'https://image.tmdb.org/t/p/original${widget.movies[index].posterPath}';
-              return CardFilter(
-                image: posterUrl,
-                title: widget.movies[index].title,
-                overview: widget.movies[index].overview,
-                releaseDate: widget.movies[index].releaseDay,
-                voteAverage: widget.movies[index].voteAverage,
-              );
-            },
-            allowedSwipeDirection: const AllowedSwipeDirection.only(left: true, right: true),
-            numberOfCardsDisplayed: 4,
-            backCardOffset: const Offset(0, 0),
-            onSwipe: (previous, current, direction) {
-              currentindex = current!;
-              if (direction == CardSwiperDirection.right) {
-                Fluttertoast.showToast(msg: 'Te ha gustado', backgroundColor: Colors.black, fontSize: 28);
-                Future.delayed(const Duration(milliseconds: 750), () {Fluttertoast.cancel();});
-              } else if (direction == CardSwiperDirection.left) {
-                Fluttertoast.showToast(msg: 'No te ha gustado', backgroundColor: Colors.black, fontSize: 28);
-                Future.delayed(const Duration(milliseconds: 750), () {Fluttertoast.cancel();});
-              }
-              return true;
-            },
+        backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
+        body: Center(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 0),
+            height: MediaQuery.of(context).size.height * 0.68,
+            child: CardSwiper(
+              cardsCount: min(20, widget.movies.length),
+              cardBuilder: (context, index, x, y) {
+                String posterUrl =
+                    'https://image.tmdb.org/t/p/original${widget.movies[index].posterPath}';
+                return CardFilter(
+                  image: posterUrl,
+                  title: widget.movies[index].title,
+                  overview: widget.movies[index].overview,
+                  releaseDate: widget.movies[index].releaseDay,
+                  voteAverage: widget.movies[index].voteAverage,
+                );
+              },
+              allowedSwipeDirection:
+                  const AllowedSwipeDirection.only(left: true, right: true),
+              numberOfCardsDisplayed: 4,
+              backCardOffset: const Offset(0, 0),
+              onSwipe: (previous, current, direction) {
+                currentindex = current!;
+                if (direction == CardSwiperDirection.right) {
+                  Fluttertoast.showToast(
+                      msg: 'Te ha gustado',
+                      backgroundColor: Colors.black,
+                      fontSize: 28);
+                  Future.delayed(const Duration(milliseconds: 750), () {
+                    Fluttertoast.cancel();
+                  });
+                } else if (direction == CardSwiperDirection.left) {
+                  Fluttertoast.showToast(
+                      msg: 'No te ha gustado',
+                      backgroundColor: Colors.black,
+                      fontSize: 28);
+                  Future.delayed(const Duration(milliseconds: 750), () {
+                    Fluttertoast.cancel();
+                  });
+                }
+                return true;
+              },
+            ),
           ),
         ),
-      ),
-    );
-    }
-    else{
+      );
+    } else {
       return const Center(
         child: Text(
           'No se encontraron películas.',
@@ -127,7 +137,8 @@ class CardFilter extends StatelessWidget {
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Column(
-          mainAxisSize: MainAxisSize.min, // Ajusta la altura del back a su contenido
+          mainAxisSize:
+              MainAxisSize.min, // Ajusta la altura del back a su contenido
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

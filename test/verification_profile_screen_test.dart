@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:film_finder/pages/profile_screen.dart';
+import 'package:film_finder/pages/profile_pages/profile_screen.dart';
 
 void main() {
-  testWidgets('Test básico de la pantalla de ProfileScreen', (WidgetTester tester) async {
+  testWidgets('Test básico de la pantalla de ProfileScreen',
+      (WidgetTester tester) async {
     // Cargar la pantalla de ProfileScreen
     await tester.pumpWidget(
       const MaterialApp(
@@ -29,7 +30,5 @@ void main() {
 
     // Verificar que el texto "Sobre mi:" está presente
     expect(find.text('Sobre mi:'), findsOneWidget);
-
-
   });
 }

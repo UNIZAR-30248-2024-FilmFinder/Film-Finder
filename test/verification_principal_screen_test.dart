@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:film_finder/pages/initial_screen.dart';
-import 'package:film_finder/pages/explore_screen.dart';
-import 'package:film_finder/pages/friends_screen.dart';
-import 'package:film_finder/pages/profile_screen.dart';
-import 'package:film_finder/pages/principal_screen.dart';
+import 'package:film_finder/pages/menu_pages/initial_screen.dart';
+import 'package:film_finder/pages/menu_pages/explore_screen.dart';
+import 'package:film_finder/pages/profile_pages/friends_screen.dart';
+import 'package:film_finder/pages/profile_pages/profile_screen.dart';
+import 'package:film_finder/pages/menu_pages/principal_screen.dart';
 
 void main() {
   testWidgets('Testing navigation between tabs', (WidgetTester tester) async {

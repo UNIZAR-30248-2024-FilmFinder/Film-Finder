@@ -1,5 +1,5 @@
-import 'package:film_finder/widgets/movie_slider.dart';
-import 'package:film_finder/widgets/trending_slider.dart';
+import 'package:film_finder/widgets/film_widgets/movie_slider.dart';
+import 'package:film_finder/widgets/film_widgets/trending_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:film_finder/methods/api.dart';
 import 'package:film_finder/methods/movie.dart';
@@ -11,14 +11,14 @@ class ExploreScreen extends StatefulWidget {
   State<ExploreScreen> createState() => _ExploreScreenState();
 }
 
-class _ExploreScreenState extends State<ExploreScreen>{
+class _ExploreScreenState extends State<ExploreScreen> {
   late Future<List<Movie>> trendingmovies;
   late Future<List<Movie>> topratedmovies;
   late Future<List<Movie>> upcomingmovies;
   bool moviesLoaded = false;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     if (!moviesLoaded) {
       trendingmovies = Api().getTrendingMovies();
@@ -64,14 +64,14 @@ class _ExploreScreenState extends State<ExploreScreen>{
               SizedBox(
                 child: FutureBuilder(
                   future: trendingmovies,
-                  builder: (context, snapshot){
-                    if(snapshot.hasError){
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
                       return Center(
                         child: Text(snapshot.error.toString()),
                       );
-                    }else if(snapshot.hasData){
+                    } else if (snapshot.hasData) {
                       return TrendingSlider(snapshot: snapshot);
-                    }else {
+                    } else {
                       return const Center(child: CircularProgressIndicator());
                     }
                   },
@@ -89,14 +89,16 @@ class _ExploreScreenState extends State<ExploreScreen>{
               SizedBox(
                 child: FutureBuilder(
                   future: topratedmovies,
-                  builder: (context, snapshot){
-                    if(snapshot.hasError){
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
                       return Center(
                         child: Text(snapshot.error.toString()),
                       );
-                    }else if(snapshot.hasData){
-                      return MovieSlider(snapshot: snapshot,);
-                    }else {
+                    } else if (snapshot.hasData) {
+                      return MovieSlider(
+                        snapshot: snapshot,
+                      );
+                    } else {
                       return const Center(child: CircularProgressIndicator());
                     }
                   },
@@ -114,14 +116,14 @@ class _ExploreScreenState extends State<ExploreScreen>{
               SizedBox(
                 child: FutureBuilder(
                   future: upcomingmovies,
-                  builder: (context, snapshot){
-                    if(snapshot.hasError){
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
                       return Center(
                         child: Text(snapshot.error.toString()),
                       );
-                    }else if(snapshot.hasData){
+                    } else if (snapshot.hasData) {
                       return MovieSlider(snapshot: snapshot);
-                    }else {
+                    } else {
                       return const Center(child: CircularProgressIndicator());
                     }
                   },

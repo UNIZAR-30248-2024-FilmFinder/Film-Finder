@@ -1,7 +1,7 @@
-import 'package:film_finder/pages/register_screen.dart';
+import 'package:film_finder/pages/auth_pages/register_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:film_finder/pages/principal_screen.dart';
-import 'package:film_finder/widgets/text_field_login_widget.dart';
+import 'package:film_finder/pages/menu_pages/principal_screen.dart';
+import 'package:film_finder/widgets/profile_widgets/text_field_login_widget.dart';
 // ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart';
 // ignore: depend_on_referenced_packages

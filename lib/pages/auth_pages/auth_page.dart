@@ -1,9 +1,10 @@
-import 'package:film_finder/pages/login_screen.dart';
-import 'package:film_finder/pages/principal_screen.dart';
+import 'package:film_finder/pages/auth_pages/login_screen.dart';
+import 'package:film_finder/pages/menu_pages/principal_screen.dart';
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart';
 
-class AuthPage extends StatelessWidget{
+class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
 
   @override
@@ -16,12 +17,11 @@ class AuthPage extends StatelessWidget{
           if (user == null) {
             return LogIn(); // o tu pantalla de registro
           } else {
-            return PrincipalScreen(); // Pantalla principal
+            return const PrincipalScreen(); // Pantalla principal
           }
         }
-        return CircularProgressIndicator(); // Cargando...
+        return const CircularProgressIndicator(); // Cargando...
       },
     );
   }
-
 }

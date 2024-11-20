@@ -1,23 +1,22 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:film_finder/methods/constants.dart';
-import 'package:film_finder/pages/film_screen.dart';
+import 'package:film_finder/pages/film_pages/film_screen.dart';
 import 'package:flutter/material.dart';
+
 class TrendingSlider extends StatelessWidget {
   const TrendingSlider({
     super.key,
     required this.snapshot,
   });
 
-
   final AsyncSnapshot snapshot;
-
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: CarouselSlider.builder(
-        itemCount: snapshot.data!.length, 
+        itemCount: snapshot.data!.length,
         options: CarouselOptions(
           height: 300,
           autoPlay: true,
@@ -27,14 +26,14 @@ class TrendingSlider extends StatelessWidget {
           autoPlayCurve: Curves.fastOutSlowIn,
           autoPlayAnimationDuration: const Duration(seconds: 5),
         ),
-        itemBuilder: (context, itemIndex, pageViewIndex) {  
+        itemBuilder: (context, itemIndex, pageViewIndex) {
           return GestureDetector(
-            onTap: (){
+            onTap: () {
               Navigator.push(
-                context, 
+                context,
                 MaterialPageRoute(
                   builder: (context) => FilmInfo(
-                  movie: snapshot.data[itemIndex],
+                    movie: snapshot.data[itemIndex],
                   ),
                 ),
               );

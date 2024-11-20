@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:film_finder/pages/initial_screen.dart';
-import 'package:film_finder/pages/explore_screen.dart';
-import 'package:film_finder/pages/friends_screen.dart';
-import 'package:film_finder/pages/profile_screen.dart';
+import 'package:film_finder/pages/menu_pages/initial_screen.dart';
+import 'package:film_finder/pages/menu_pages/explore_screen.dart';
+import 'package:film_finder/pages/profile_pages/friends_screen.dart';
+import 'package:film_finder/pages/profile_pages/profile_screen.dart';
 
 class PrincipalScreen extends StatefulWidget {
   const PrincipalScreen({super.key});

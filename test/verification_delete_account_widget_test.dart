@@ -1,7 +1,6 @@
-import 'package:film_finder/pages/auth_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:film_finder/widgets/delete_account_widget.dart'; // Asegúrate de que la ruta sea correcta.
+import 'package:film_finder/widgets/profile_widgets/delete_account_widget.dart'; // Asegúrate de que la ruta sea correcta.
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mockito/mockito.dart';
 
@@ -10,9 +9,6 @@ class MockFirebaseAuth extends Mock implements FirebaseAuth {}
 
 void main() {
   testWidgets('Test de eliminación de cuenta', (WidgetTester tester) async {
-    // Configura el mock de FirebaseAuth
-    final mockAuth = MockFirebaseAuth();
-
     // Cargar el widget con el botón para mostrar el diálogo de confirmación
     await tester.pumpWidget(
       MaterialApp(
@@ -38,7 +34,8 @@ void main() {
 
     // Verificar que el diálogo se muestra correctamente
     expect(find.text('Confirmar Borrado'), findsOneWidget);
-    expect(find.textContaining('¿Está seguro de que desea borrar su cuenta?'), findsOneWidget);
+    expect(find.textContaining('¿Está seguro de que desea borrar su cuenta?'),
+        findsOneWidget);
     expect(find.text('Cancelar'), findsOneWidget);
     expect(find.text('Borrar Cuenta'), findsOneWidget);
 
@@ -46,7 +43,5 @@ void main() {
     await tester.tap(find.text('Cancelar'));
     await tester.pump();
     expect(find.text('Confirmar Borrado'), findsNothing);
-
   });
 }
-

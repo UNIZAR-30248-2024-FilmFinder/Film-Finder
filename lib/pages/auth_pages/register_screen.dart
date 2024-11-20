@@ -1,5 +1,5 @@
-import 'package:film_finder/pages/principal_screen.dart';
-import 'package:film_finder/widgets/text_field_login_widget.dart';
+import 'package:film_finder/pages/menu_pages/principal_screen.dart';
+import 'package:film_finder/widgets/profile_widgets/text_field_login_widget.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,7 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Register extends StatelessWidget {
-  Register({Key? key}) : super(key: key);
+  Register({super.key});
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();

@@ -1,9 +1,9 @@
 import 'package:film_finder/main.dart';
-import 'package:film_finder/pages/auth_page.dart';
+import 'package:film_finder/pages/auth_pages/auth_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:film_finder/pages/login_screen.dart';
-import 'package:film_finder/pages/principal_screen.dart';
+import 'package:film_finder/pages/auth_pages/login_screen.dart';
+import 'package:film_finder/pages/menu_pages/principal_screen.dart';
 
 void main() {
   /* REVISAR CUANDO ESTE ACABADO LOGIN BIEN

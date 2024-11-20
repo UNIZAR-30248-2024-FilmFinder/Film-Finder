@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:film_finder/pages/film_screen.dart';
+import 'package:film_finder/pages/film_pages/film_screen.dart';
 import 'package:film_finder/methods/constants.dart';
 // ignore: depend_on_referenced_packages
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../methods/movie.dart';
+import '../../methods/movie.dart';
 import 'package:http/http.dart' as http;
 
 class SearchingBar extends StatefulWidget {

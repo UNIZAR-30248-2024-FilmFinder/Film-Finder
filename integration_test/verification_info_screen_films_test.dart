@@ -1,8 +1,8 @@
-import 'package:film_finder/widgets/search_bar.dart';
+import 'package:film_finder/widgets/film_widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:film_finder/pages/film_screen.dart'; // Importa tu pantalla FilmInfo
+import 'package:film_finder/pages/film_pages/film_screen.dart'; // Importa tu pantalla FilmInfo
 import 'package:film_finder/methods/movie.dart'; // Importa la clase Movie
 
 void main() {

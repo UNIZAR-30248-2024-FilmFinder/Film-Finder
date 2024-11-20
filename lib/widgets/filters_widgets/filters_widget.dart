@@ -1,9 +1,9 @@
 import 'package:film_finder/methods/room_logic.dart';
-import 'package:film_finder/widgets/room_widget.dart';
-import 'package:film_finder/widgets/text_field_login_widget.dart';
+import 'package:film_finder/widgets/film_widgets/room_widget.dart';
+import 'package:film_finder/widgets/profile_widgets/text_field_login_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:film_finder/widgets/card_filter_widget.dart';
-import 'package:film_finder/pages/filter_film_screen.dart';
+import 'package:film_finder/widgets/filters_widgets/card_filter_widget.dart';
+import 'package:film_finder/pages/film_pages/filter_film_screen.dart';
 import 'package:film_finder/methods/movie.dart';
 import 'package:film_finder/methods/constants.dart';
 import 'package:http/http.dart' as http;

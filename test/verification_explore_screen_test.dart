@@ -1,8 +1,8 @@
-import 'package:film_finder/widgets/movie_slider.dart';
-import 'package:film_finder/widgets/trending_slider.dart';
+import 'package:film_finder/widgets/film_widgets/movie_slider.dart';
+import 'package:film_finder/widgets/film_widgets/trending_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:film_finder/pages/explore_screen.dart';
+import 'package:film_finder/pages/menu_pages/explore_screen.dart';
 
 void main() {
   testWidgets('ExploreScreen renders correctly', (WidgetTester tester) async {
@@ -26,14 +26,17 @@ void main() {
     expect(find.byType(SingleChildScrollView), findsOneWidget);
 
     // Simula un desplazamiento hacia abajo
-    await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -300));
+    await tester.drag(
+        find.byType(SingleChildScrollView), const Offset(0, -300));
     await tester.pump();
 
     // Verifica que el desplazamiento fue exitoso (el contenido se mueve)
-    expect(find.text('Tendencias'), findsOneWidget);  // Se asegura de que sigue en la pantalla
+    expect(find.text('Tendencias'),
+        findsOneWidget); // Se asegura de que sigue en la pantalla
   });
 
-  testWidgets('ExploreScreen has correct AppBar and background color', (WidgetTester tester) async {
+  testWidgets('ExploreScreen has correct AppBar and background color',
+      (WidgetTester tester) async {
     await tester.pumpWidget(const MaterialApp(home: ExploreScreen()));
 
     // Verifica que el AppBar tiene el color adecuado
@@ -44,5 +47,4 @@ void main() {
     final scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
     expect(scaffold.backgroundColor, const Color.fromRGBO(34, 9, 44, 1));
   });
-
 }
