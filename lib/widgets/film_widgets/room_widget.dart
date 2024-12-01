@@ -1,6 +1,12 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:film_finder/methods/constants.dart';
 import 'package:film_finder/methods/room_logic.dart';
+import 'package:film_finder/methods/movie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:film_finder/widgets/filters_widgets/filters_widget.dart';
+import 'package:film_finder/pages/film_pages/filter_grupal.dart';
 
 void showLoadingDialog(BuildContext context, bool isCreatingRoom) {
   showDialog(
@@ -189,6 +195,12 @@ class RoomPopup extends StatefulWidget {
 }
 
 class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
+  List<Movie> movies = [];
+  List<String> filterGenres = [];
+  List<String> filterProviders = [];
+  List<int> arrayGenres = List.filled(19, 0);
+  List<int> arrayProviders = List.filled(5, 0);
+
   @override
   void initState() {
     super.initState();
@@ -369,7 +381,24 @@ class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
                 ),
                 widget.isAdmin
                     ? ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          showLoadingListDialog(context);
+                          await fetchTopRatedMovies();
+                          if (movies.isEmpty) {
+                            print('No se encontraron películas.');
+                          } else {
+                            print('Se encontraron ${movies.length} películas.');
+                          }
+                          Navigator.of(context).pop();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => FilterGrupalScreen(
+                                movies: movies,
+                              ),
+                            ),
+                          );
+                        },
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
@@ -413,6 +442,145 @@ class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
           ],
         ),
       ),
+    );
+  }
+
+  Future<void> fetchTopRatedMovies() async {
+    movies = [];
+    print('filterGenres: $filterGenres');
+    print('arrayGenres: $arrayGenres');
+    print('filterProviders: $filterProviders');
+    print('arrayProviders: $arrayProviders');
+
+    String url;
+    if (filterGenres.isNotEmpty && filterProviders.isNotEmpty) {
+      String genreString = filterGenres.join('%2C');
+      String providerString = filterProviders.join('%7C');
+      url =
+          'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_genres=$genreString&with_watch_providers=$providerString';
+    } else if (filterGenres.isNotEmpty && filterProviders.isEmpty) {
+      String genreString = filterGenres.join('%2C');
+      url =
+          'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_genres=$genreString';
+    } else if (filterGenres.isEmpty && filterProviders.isNotEmpty) {
+      String providerString = filterProviders.join('%7C');
+      url =
+          'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_watch_providers=$providerString';
+    } else {
+      url =
+          'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&language=es-ES&page=1&region=ES&sort_by=popularity.desc';
+    }
+
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final decodedData = json.decode(response.body)['results'] as List;
+      const int batchSize = 5;
+      for (int i = 0; i < decodedData.length; i += batchSize) {
+        final batch = decodedData.skip(i).take(batchSize);
+        await Future.wait(batch.map((movieData) async {
+          Movie movie = Movie.fromJson(movieData);
+          try {
+            String creditsURL =
+                'https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${Constants.apiKey}';
+            String detailsURL =
+                'https://api.themoviedb.org/3/movie/${movie.id}?api_key=${Constants.apiKey}&language=es-ES';
+            String videosURL =
+                'https://api.themoviedb.org/3/movie/${movie.id}/videos?api_key=${Constants.apiKey}&language=es-ES';
+            var responses = await Future.wait([
+              http.get(Uri.parse(creditsURL)),
+              http.get(Uri.parse(detailsURL)),
+              http.get(Uri.parse(videosURL)),
+            ]);
+            var creditsResponse = responses[0];
+            var detailsResponse = responses[1];
+            var videosResponse = responses[2];
+            if (creditsResponse.statusCode == 200) {
+              var creditsData = json.decode(creditsResponse.body);
+              var crewList = creditsData['crew'] as List<dynamic>;
+              for (var crewMember in crewList) {
+                if (crewMember['job'] == 'Director') {
+                  movie.director = crewMember['name'];
+                  break;
+                }
+              }
+            }
+            if (detailsResponse.statusCode == 200) {
+              var detailsData = json.decode(detailsResponse.body);
+              movie.duration = detailsData['runtime'] ?? 0;
+              movie.overview =
+                  detailsData['overview'] ?? 'No overview available';
+              movie.backDropPath = detailsData['backdrop_path'] ?? '';
+              if (detailsData['genres'] != null) {
+                movie.genres = (detailsData['genres'] as List)
+                    .map((genre) => genre['name'] as String)
+                    .toList();
+              }
+            }
+            if (videosResponse.statusCode == 200) {
+              var videosData = json.decode(videosResponse.body);
+              var videosList = videosData['results'] as List<dynamic>;
+              for (var video in videosList) {
+                if (video['site'] == 'YouTube' && video['type'] == 'Trailer') {
+                  movie.trailerUrl =
+                      'https://www.youtube.com/watch?v=${video['key']}';
+                  break;
+                }
+              }
+            }
+          } catch (e) {
+            print('Error al obtener detalles de la película ${movie.id}: $e');
+          }
+          movies.add(movie);
+        }));
+        filterGenres = [];
+        filterProviders = [];
+        arrayGenres.fillRange(0, arrayGenres.length, 0);
+        arrayProviders.fillRange(0, arrayProviders.length, 0);
+      }
+    } else {
+      throw Exception('Something went wrong.');
+    }
+  }
+
+  void showLoadingListDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Center(
+            child: Container(
+              padding: const EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: const Color.fromRGBO(21, 4, 29, 1),
+                borderRadius: BorderRadius.circular(20.0),
+                border: Border.all(
+                  color: const Color.fromRGBO(190, 49, 68, 1),
+                  width: 2.0,
+                ),
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        Color.fromRGBO(190, 49, 68, 1)),
+                  ),
+                  SizedBox(width: 20),
+                  Text(
+                    "Cargando lista...",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
