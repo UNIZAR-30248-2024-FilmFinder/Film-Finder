@@ -34,6 +34,7 @@ class TrendingSlider extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => FilmInfo(
                     movie: snapshot.data[itemIndex],
+                    pop: true,
                   ),
                 ),
               );

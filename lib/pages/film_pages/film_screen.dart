@@ -6,9 +6,11 @@ import 'package:film_finder/methods/movie.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class FilmInfo extends StatelessWidget {
-  const FilmInfo({super.key, required this.movie});
+  const FilmInfo({super.key, required this.movie, required this.pop});
 
   final Movie movie;
+
+  final bool pop;
 
   void _launchURL() async {
     final Uri url = Uri.parse(movie.trailerUrl);
@@ -28,11 +30,16 @@ class FilmInfo extends StatelessWidget {
               SliverAppBar.large(
                 leading: IconButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const PrincipalScreen()),
-                    );
+                    if (pop == false) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PrincipalScreen(),
+                        ),
+                      );
+                    } else if (pop == true) {
+                      Navigator.pop(context);
+                    }
                   },
                   icon: const Icon(
                     Icons.arrow_back_rounded,

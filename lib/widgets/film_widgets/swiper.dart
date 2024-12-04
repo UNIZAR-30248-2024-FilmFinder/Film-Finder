@@ -142,6 +142,7 @@ class _SwiperState extends State<Swiper> {
                           MaterialPageRoute(
                             builder: (context) => FilmInfo(
                               movie: widget.movies[previous],
+                              pop: false,
                             ),
                           ),
                         );

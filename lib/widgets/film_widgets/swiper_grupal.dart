@@ -142,6 +142,7 @@ class _SwiperGrupalState extends State<SwiperGrupal> {
                           MaterialPageRoute(
                             builder: (context) => FilmInfo(
                               movie: widget.movies[previous],
+                              pop: false,
                             ),
                           ),
                         );

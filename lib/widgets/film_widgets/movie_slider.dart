@@ -29,6 +29,7 @@ class MovieSlider extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) => FilmInfo(
                           movie: snapshot.data[index],
+                          pop: true,
                         ),
                       ),
                     );
