@@ -5,7 +5,6 @@ import 'package:film_finder/methods/room_logic.dart';
 import 'package:film_finder/methods/movie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:film_finder/widgets/filters_widgets/filters_widget.dart';
 import 'package:film_finder/pages/film_pages/filter_grupal.dart';
 
 void showLoadingDialog(BuildContext context, bool isCreatingRoom) {
