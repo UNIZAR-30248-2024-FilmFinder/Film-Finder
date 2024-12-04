@@ -51,6 +51,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
     if (pickedFile != null) {
       setState(() {
         imagePath = pickedFile.path;
@@ -59,26 +61,43 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Future<void> _updateUserProfile() async {
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
     if (nameController.text.length > 20) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('El nombre no puede tener más de 20 caracteres')),
+          content: Text('El nombre no puede tener más de 20 caracteres'),
+          duration: Duration(days: 1),
+          backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+        ),
       );
       return;
     }
 
     if (locationController.text.length > 35) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('La ubicación no puede tener más de 35 caracteres')),
+          content: Text('La ubicación no puede tener más de 35 caracteres'),
+          duration: Duration(days: 1),
+          backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+        ),
       );
       return;
     }
 
     if (aboutController.text.length > 500) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('La biografía no puede tener más de 500 caracteres')),
+          content: Text('La biografía no puede tener más de 500 caracteres'),
+          duration: Duration(days: 1),
+          backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+        ),
       );
       return;
     }
@@ -94,8 +113,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       Navigator.pop(context, true);
     } catch (e) {
       print("Error al actualizar el perfil: $e");
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Error al actualizar el perfil")),
+        const SnackBar(
+          content: Text("Error al actualizar el perfil"),
+          duration: Duration(days: 1),
+          backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+        ),
       );
     }
   }
@@ -105,7 +130,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
       appBar: AppBar(
-        leading: const BackButton(color: Colors.white),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            Navigator.of(context).pop();
+          },
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -154,6 +185,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () async {
+                      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
                       User? user = FirebaseAuth.instance.currentUser;
                       if (user != null) {
                         List<UserInfo> providerData = user.providerData;
@@ -162,10 +195,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                         if (isGoogleUser) {
                           // Mostrar mensaje de advertencia si el usuario ha iniciado sesión con Google
+                          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                                 content: Text(
-                                    'Inico de sesión con Google. No puedes cambiar la contraseña.')),
+                                    'Inico de sesión con Google. No puedes cambiar la contraseña.'),
+                                duration: Duration(days: 1),
+                                backgroundColor: Color.fromRGBO(21, 4, 29, 1)),
                           );
                         } else {
                           // Mostrar el cuadro de diálogo de cambio de contraseña si el usuario no es de Google
@@ -201,6 +238,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
+                      ScaffoldMessenger.of(context).removeCurrentSnackBar();
                       showDeleteAccountDialog(context);
                     },
                     style: ElevatedButton.styleFrom(

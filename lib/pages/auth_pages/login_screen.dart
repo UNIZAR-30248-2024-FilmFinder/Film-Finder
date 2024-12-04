@@ -19,9 +19,13 @@ class LogIn extends StatelessWidget {
     try {
       // Verifica si los campos están vacíos
       if (usernameController.text.isEmpty || passwordController.text.isEmpty) {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Por favor, rellena todos los campos'),
+            duration: Duration(days: 1),
+            backgroundColor: Color.fromRGBO(21, 4, 29, 1),
           ),
         );
         return; // Detiene la ejecución si faltan campos
@@ -52,19 +56,26 @@ class LogIn extends StatelessWidget {
         errorMessage = 'Error al iniciar sesión';
       }
 
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(errorMessage),
+          duration: const Duration(days: 1),
+          backgroundColor: const Color.fromRGBO(21, 4, 29, 1),
         ),
       );
     } catch (e) {
       // Cierra el diálogo de carga en caso de errores no esperados
       Navigator.of(context).pop();
 
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Ocurrió un error inesperado'),
-          backgroundColor: Colors.red,
+          duration: Duration(days: 1),
+          backgroundColor: Color.fromRGBO(21, 4, 29, 1),
         ),
       );
     }
@@ -158,9 +169,14 @@ class LogIn extends StatelessWidget {
       return userCredential;
     } catch (e) {
       print("Error durante el inicio de sesión con Google: $e");
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text("Error en el inicio de sesión con Google")),
+          content: Text("Error en el inicio de sesión con Google"),
+          duration: Duration(days: 1),
+          backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+        ),
       );
     }
     return null;
@@ -215,6 +231,8 @@ class LogIn extends StatelessWidget {
           const SizedBox(height: 5),
           TextButton(
             onPressed: () {
+              ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => Register()),
@@ -241,6 +259,7 @@ class LogIn extends StatelessWidget {
           const SizedBox(height: 25),
           ElevatedButton(
             onPressed: () {
+              ScaffoldMessenger.of(context).removeCurrentSnackBar();
               signUser(context);
             },
             style: ElevatedButton.styleFrom(
@@ -302,12 +321,11 @@ class LogIn extends StatelessWidget {
             ),
             child: InkWell(
               borderRadius: BorderRadius.circular(25.0),
-              splashColor:
-                  Colors.white.withOpacity(0.2), // Color del efecto de onda
-              highlightColor: Colors.transparent, // Evita el resaltado de fondo
+              splashColor: Colors.white.withOpacity(0.2),
+              highlightColor: Colors.transparent,
               onTap: () {
+                ScaffoldMessenger.of(context).removeCurrentSnackBar();
                 loginwithGoogle(context);
-                // Acción al tocar el botón
               },
               child: Container(
                 width: 250,

@@ -134,7 +134,9 @@ void showExitConfirmation(BuildContext context, bool isAdmin, String code) {
                           print('Error al eliminar la sala: $e');
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                                content: Text('No se pudo eliminar la sala')),
+                              content: Text('No se pudo eliminar la sala'),
+                              backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+                            ),
                           );
                         }
                       } else {
@@ -146,8 +148,10 @@ void showExitConfirmation(BuildContext context, bool isAdmin, String code) {
                           print('Error al salirse de la sala: $e');
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                                content: Text(
-                                    'No se pudo salirse de la sala correctamente')),
+                              content: Text(
+                                  'No se pudo salirse de la sala correctamente'),
+                              backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+                            ),
                           );
                         }
                       }

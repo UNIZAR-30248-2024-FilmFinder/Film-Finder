@@ -21,7 +21,10 @@ void main() {
     // Ejecuta la app y navega a la pantalla de FilmInfo con la película de prueba
     await tester.pumpWidget(
       MaterialApp(
-        home: FilmInfo(movie: foundMovie),
+        home: FilmInfo(
+          movie: foundMovie,
+          pop: false,
+        ),
       ),
     );
 

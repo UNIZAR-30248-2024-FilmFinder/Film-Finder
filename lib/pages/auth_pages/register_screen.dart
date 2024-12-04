@@ -67,31 +67,53 @@ class Register extends StatelessWidget {
         confirmPassword.isEmpty ||
         email.isEmpty ||
         name.isEmpty) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor, rellena todos los campos.')),
+        const SnackBar(
+          content: Text('Por favor, rellena todos los campos.'),
+          duration: Duration(days: 1),
+          backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+        ),
       );
       return;
     }
 
     if (password.length < 6) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('La contraseña debe tener al menos 6 caracteres.')),
+          content: Text('La contraseña debe tener al menos 6 caracteres.'),
+          duration: Duration(days: 1),
+          backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+        ),
       );
       return;
     }
 
     if (password != confirmPassword) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Las contraseñas no coinciden.')),
+        const SnackBar(
+          content: Text('Las contraseñas no coinciden.'),
+          duration: Duration(days: 1),
+          backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+        ),
       );
       return;
     }
 
     if (name.length > 20) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('El nombre no puede tener más de 20 caracteres')),
+          content: Text('El nombre no puede tener más de 20 caracteres'),
+          duration: Duration(days: 1),
+          backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+        ),
       );
       return;
     }
@@ -154,8 +176,14 @@ class Register extends StatelessWidget {
         errorMessage = 'Error desconocido al registrar';
       }
 
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMessage)),
+        SnackBar(
+          content: Text(errorMessage),
+          duration: const Duration(days: 1),
+          backgroundColor: const Color.fromRGBO(21, 4, 29, 1),
+        ),
       );
     } catch (e) {
       // Cierra el diálogo de carga en caso de error
@@ -163,9 +191,14 @@ class Register extends StatelessWidget {
 
       // Maneja otros errores inesperados
       print("Error durante el registro: $e");
+
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Ocurrió un error inesperado'),
+          duration: Duration(days: 1),
+          backgroundColor: Color.fromRGBO(21, 4, 29, 1),
         ),
       );
     }
@@ -232,6 +265,7 @@ class Register extends StatelessWidget {
           const SizedBox(height: 5),
           TextButton(
             onPressed: () {
+              ScaffoldMessenger.of(context).removeCurrentSnackBar();
               Navigator.of(context).pushReplacementNamed('/');
             },
             child: RichText(
@@ -254,7 +288,10 @@ class Register extends StatelessWidget {
           ),
           const SizedBox(height: 25),
           ElevatedButton(
-            onPressed: () => validateAndRegister(context),
+            onPressed: () {
+              ScaffoldMessenger.of(context).removeCurrentSnackBar();
+              validateAndRegister(context);
+            },
             style: ElevatedButton.styleFrom(
               foregroundColor: Colors.white,
               backgroundColor: const Color.fromRGBO(21, 4, 29, 1),
