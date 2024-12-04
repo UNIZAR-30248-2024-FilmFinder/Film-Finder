@@ -80,7 +80,7 @@ class _SwiperState extends State<Swiper> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     const Text(
-                                      'Fin de la lista',
+                                      '¡Ya no quedan más películas!',
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 20,
@@ -97,29 +97,65 @@ class _SwiperState extends State<Swiper> {
                                       textAlign: TextAlign.center,
                                     ),
                                     const SizedBox(height: 20),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color.fromRGBO(
-                                            190, 49, 68, 1),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                        Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const PrincipalScreen(),
+                                    Column(
+                                      children: [
+                                        SizedBox(
+                                          width: 150,
+                                          child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  const Color.fromARGB(
+                                                      255, 18, 89, 21),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                              currentindex = 0;
+                                            },
+                                            child: const Text(
+                                              'Volver a ver',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
                                           ),
-                                        );
-                                      },
-                                      child: const Text(
-                                        'Volver al inicio',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        SizedBox(
+                                          width: 150,
+                                          child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  const Color.fromRGBO(
+                                                      190, 49, 68, 1),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                              Navigator.of(context)
+                                                  .pushReplacement(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const PrincipalScreen(),
+                                                ),
+                                              );
+                                            },
+                                            child: const Text(
+                                              'Volver al inicio',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
                                   ],
                                 ),
                               ),
@@ -173,12 +209,12 @@ class _SwiperState extends State<Swiper> {
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
-                      backgroundColor: const Color.fromARGB(255, 133, 46, 26),
+                      backgroundColor: Colors.red,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25.0),
                         side: const BorderSide(
-                          color: Colors.red,
-                          width: 1.0,
+                          color: Color.fromARGB(255, 133, 46, 26),
+                          width: 3.5,
                         ),
                       ),
                       fixedSize: const Size(100, 50),
@@ -194,12 +230,12 @@ class _SwiperState extends State<Swiper> {
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
-                      backgroundColor: const Color.fromARGB(255, 18, 89, 21),
+                      backgroundColor: Colors.green,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25.0),
                         side: const BorderSide(
-                          color: Colors.green,
-                          width: 1.0,
+                          color: Color.fromARGB(255, 18, 89, 21),
+                          width: 3.5,
                         ),
                       ),
                       fixedSize: const Size(100, 50),

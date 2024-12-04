@@ -173,12 +173,12 @@ class _SwiperGrupalState extends State<SwiperGrupal> {
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
-                      backgroundColor: const Color.fromARGB(255, 133, 46, 26),
+                      backgroundColor: Colors.red,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25.0),
                         side: const BorderSide(
-                          color: Colors.red,
-                          width: 1.0,
+                          color: Color.fromARGB(255, 133, 46, 26),
+                          width: 3.5,
                         ),
                       ),
                       fixedSize: const Size(100, 50),
@@ -194,12 +194,12 @@ class _SwiperGrupalState extends State<SwiperGrupal> {
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
-                      backgroundColor: const Color.fromARGB(255, 18, 89, 21),
+                      backgroundColor: Colors.green,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25.0),
                         side: const BorderSide(
-                          color: Colors.green,
-                          width: 1.0,
+                          color: Color.fromARGB(255, 18, 89, 21),
+                          width: 3.5,
                         ),
                       ),
                       fixedSize: const Size(100, 50),
