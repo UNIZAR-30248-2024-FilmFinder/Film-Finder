@@ -48,175 +48,180 @@ class Diary extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
-      body: ListView.builder(
-        itemCount: groupedList.length,
-        scrollDirection: Axis.vertical,
-        physics: const BouncingScrollPhysics(),
-        itemBuilder: (context, index) {
-          final item = groupedList[index];
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: ListView.builder(
+          itemCount: groupedList.length,
+          scrollDirection: Axis.vertical,
+          physics: const BouncingScrollPhysics(),
+          itemBuilder: (context, index) {
+            final item = groupedList[index];
 
-          if (item is String) {
-            final monthLabel = DateFormat('MMMM yyyy', 'es')
-                .format(DateTime.parse('$item-01'));
+            if (item is String) {
+              final monthLabel = DateFormat('MMMM yyyy', 'es')
+                  .format(DateTime.parse('$item-01'));
 
-            return Column(
-              children: [
-                const SizedBox(
-                  height: 10,
-                ),
-                const Divider(
-                  color: Color.fromRGBO(190, 49, 68, 1),
-                  thickness: 1,
-                  endIndent: 75,
-                  indent: 75,
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                  color: const Color.fromRGBO(34, 9, 44, 1),
-                  child: Text(
-                    monthLabel,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+              return Column(
+                children: [
+                  const SizedBox(
+                    height: 10,
                   ),
-                ),
-                const Divider(
-                  color: Color.fromRGBO(190, 49, 68, 1),
-                  thickness: 1,
-                  endIndent: 75,
-                  indent: 75,
-                ),
-              ],
-            );
-          } else if (item is MovieDiaryEntry) {
-            return Row(
-              children: [
-                // Container for viewing day
-                Container(
-                  width: 75,
-                  height: 125,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: const Color.fromRGBO(21, 4, 29, 1),
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    border: Border.all(
-                      color: Colors.white,
-                      width: 0.75,
-                    ),
+                  const Divider(
+                    color: Color.fromRGBO(190, 49, 68, 1),
+                    thickness: 1,
+                    endIndent: 75,
+                    indent: 75,
                   ),
-                  child: Text(
-                    DateTime.parse(item.viewingDate).day.toString(),
-                    style: const TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w300,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                //GestureDetector for the rest of the content
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () async {},
-                    child: Container(
-                      padding: const EdgeInsets.only(left: 5),
-                      margin: const EdgeInsets.only(top: 4, bottom: 4),
-                      height: 125,
-                      decoration: const BoxDecoration(
-                        color: Color.fromRGBO(21, 4, 29, 1),
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                    color: const Color.fromRGBO(34, 9, 44, 1),
+                    child: Text(
+                      monthLabel,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
-                      child: Row(
-                        children: [
-                          // Container for poster image
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.22,
-                            decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              image: DecorationImage(
-                                image: AssetImage(
-                                    'assets/images/example_poster.jpg'),
-                                fit: BoxFit.fill,
+                    ),
+                  ),
+                  const Divider(
+                    color: Color.fromRGBO(190, 49, 68, 1),
+                    thickness: 1,
+                    endIndent: 75,
+                    indent: 75,
+                  ),
+                ],
+              );
+            } else if (item is MovieDiaryEntry) {
+              return Row(
+                children: [
+                  // Container for viewing day
+                  Container(
+                    width: 75,
+                    height: 125,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: const Color.fromRGBO(21, 4, 29, 1),
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 0.75,
+                      ),
+                    ),
+                    child: Text(
+                      DateTime.parse(item.viewingDate).day.toString(),
+                      style: const TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w300,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  //GestureDetector for the rest of the content
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () async {},
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 5),
+                        margin: const EdgeInsets.only(top: 4, bottom: 4),
+                        height: 125,
+                        decoration: const BoxDecoration(
+                          color: Color.fromRGBO(21, 4, 29, 1),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        child: Row(
+                          children: [
+                            // Container for poster image
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.22,
+                              decoration: const BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                image: DecorationImage(
+                                  image: AssetImage(
+                                      'assets/images/example_poster.jpg'),
+                                  fit: BoxFit.fill,
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 20),
-                          // Container for film details
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  item.movie.title,
-                                  softWrap: true,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 3,
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
+                            const SizedBox(width: 20),
+                            // Container for film details
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    item.movie.title,
+                                    softWrap: true,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 3,
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 2.5),
-                                Row(
-                                  children: [
-                                    Text(
-                                      '${DateTime.parse(item.movie.releaseDay).year}',
-                                      softWrap: true,
-                                      style: const TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w300,
-                                        color: Colors.white,
+                                  const SizedBox(height: 2.5),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        '${DateTime.parse(item.movie.releaseDay).year}',
+                                        softWrap: true,
+                                        style: const TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w300,
+                                          color: Colors.white,
+                                        ),
                                       ),
-                                    ),
-                                    const Spacer(),
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 2, horizontal: 10),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.grey),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            item.personalRating.toString(),
-                                            style: const TextStyle(
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.w300,
-                                              color: Colors.white,
+                                      const Spacer(),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 2, horizontal: 10),
+                                        decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: Colors.grey),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              item.personalRating.toString(),
+                                              style: const TextStyle(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white,
+                                              ),
                                             ),
-                                          ),
-                                          const Icon(
-                                            Icons.star,
-                                            color: Colors.yellow,
-                                            size: 15,
-                                          ),
-                                        ],
+                                            const Icon(
+                                              Icons.star,
+                                              color: Colors.yellow,
+                                              size: 15,
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 25),
-                                  ],
-                                ),
-                              ],
+                                      const SizedBox(width: 25),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        },
+                ],
+              );
+            } else {
+              return const SizedBox.shrink();
+            }
+          },
+        ),
       ),
     );
   }

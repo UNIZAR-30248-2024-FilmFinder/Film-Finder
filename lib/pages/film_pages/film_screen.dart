@@ -5,15 +5,23 @@ import 'package:film_finder/methods/movie.dart';
 // ignore: depend_on_referenced_packages
 import 'package:url_launcher/url_launcher.dart';
 
-class FilmInfo extends StatelessWidget {
-  const FilmInfo({super.key, required this.movie, required this.pop});
-
+class FilmInfo extends StatefulWidget {
   final Movie movie;
 
   final bool pop;
 
+  const FilmInfo({super.key, required this.movie, required this.pop});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _FilmInfoState createState() => _FilmInfoState();
+}
+
+class _FilmInfoState extends State<FilmInfo> {
+  late bool isFavourite = false;
+
   void _launchURL() async {
-    final Uri url = Uri.parse(movie.trailerUrl);
+    final Uri url = Uri.parse(widget.movie.trailerUrl);
     if (!await launchUrl(url)) {
       throw 'Could not launch $url';
     }
@@ -30,14 +38,14 @@ class FilmInfo extends StatelessWidget {
               SliverAppBar.large(
                 leading: IconButton(
                   onPressed: () {
-                    if (pop == false) {
+                    if (widget.pop == false) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const PrincipalScreen(),
                         ),
                       );
-                    } else if (pop == true) {
+                    } else if (widget.pop == true) {
                       Navigator.pop(context);
                     }
                   },
@@ -59,7 +67,7 @@ class FilmInfo extends StatelessWidget {
                           ? Stack(
                               children: [
                                 Text(
-                                  movie.title,
+                                  widget.movie.title,
                                   style: TextStyle(
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold,
@@ -70,7 +78,7 @@ class FilmInfo extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  movie.title,
+                                  widget.movie.title,
                                   style: const TextStyle(
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold,
@@ -86,7 +94,7 @@ class FilmInfo extends StatelessWidget {
                           bottomRight: Radius.circular(24),
                         ),
                         child: Image.network(
-                          'https://image.tmdb.org/t/p/original${movie.backDropPath}',
+                          'https://image.tmdb.org/t/p/original${widget.movie.backDropPath}',
                           fit: BoxFit.cover,
                           filterQuality: FilterQuality.high,
                         ),
@@ -105,7 +113,7 @@ class FilmInfo extends StatelessWidget {
                         child: Row(
                           children: [
                             Image.network(
-                              'https://image.tmdb.org/t/p/original${movie.posterPath}',
+                              'https://image.tmdb.org/t/p/original${widget.movie.posterPath}',
                               filterQuality: FilterQuality.high,
                               height: 165,
                               width: 165,
@@ -118,7 +126,7 @@ class FilmInfo extends StatelessWidget {
                                   Stack(
                                     children: [
                                       Text(
-                                        movie.title,
+                                        widget.movie.title,
                                         style: TextStyle(
                                           fontSize: 19,
                                           fontWeight: FontWeight.bold,
@@ -129,7 +137,7 @@ class FilmInfo extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        movie.title,
+                                        widget.movie.title,
                                         style: const TextStyle(
                                           fontSize: 19,
                                           fontWeight: FontWeight.w600,
@@ -152,7 +160,7 @@ class FilmInfo extends StatelessWidget {
                                       ),
                                       Expanded(
                                         child: Text(
-                                          movie.genres.join(', '),
+                                          widget.movie.genres.join(', '),
                                           softWrap: true,
                                           style: const TextStyle(
                                             fontSize: 13,
@@ -177,7 +185,7 @@ class FilmInfo extends StatelessWidget {
                                       ),
                                       Expanded(
                                         child: Text(
-                                          '${movie.duration} min',
+                                          '${widget.movie.duration} min',
                                           softWrap: true,
                                           style: const TextStyle(
                                             fontSize: 13,
@@ -202,7 +210,7 @@ class FilmInfo extends StatelessWidget {
                                       ),
                                       Expanded(
                                         child: Text(
-                                          movie.director,
+                                          widget.movie.director,
                                           softWrap: true,
                                           style: const TextStyle(
                                             fontSize: 13,
@@ -215,13 +223,14 @@ class FilmInfo extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 15),
                                   GestureDetector(
-                                    onTap: movie.trailerUrl.isNotEmpty &&
-                                            movie.trailerUrl != ''
+                                    onTap: widget.movie.trailerUrl.isNotEmpty &&
+                                            widget.movie.trailerUrl != ''
                                         ? _launchURL
                                         : null,
                                     child: Visibility(
-                                      visible: movie.trailerUrl.isNotEmpty &&
-                                          movie.trailerUrl != '',
+                                      visible:
+                                          widget.movie.trailerUrl.isNotEmpty &&
+                                              widget.movie.trailerUrl != '',
                                       child: const Text(
                                         'VER TRAILER',
                                         style: TextStyle(
@@ -260,7 +269,7 @@ class FilmInfo extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    movie.releaseDay,
+                                    widget.movie.releaseDay,
                                     style: const TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w300,
@@ -287,7 +296,7 @@ class FilmInfo extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    movie.voteAverage.toStringAsFixed(1),
+                                    widget.movie.voteAverage.toStringAsFixed(1),
                                     style: const TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w300,
@@ -306,7 +315,7 @@ class FilmInfo extends StatelessWidget {
                       ),
                       const SizedBox(height: 25),
                       Text(
-                        movie.overview,
+                        widget.movie.overview,
                         style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w300,
@@ -321,7 +330,8 @@ class FilmInfo extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => DiaryFilm(movie: movie),
+                                builder: (context) =>
+                                    DiaryFilm(movie: widget.movie),
                               ),
                             );
                           },
@@ -356,12 +366,9 @@ class FilmInfo extends StatelessWidget {
             right: 20,
             child: ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DiaryFilm(movie: movie),
-                  ),
-                );
+                setState(() {
+                  isFavourite = !isFavourite;
+                });
               },
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.zero,
@@ -376,8 +383,12 @@ class FilmInfo extends StatelessWidget {
                 ),
                 fixedSize: const Size(60, 60),
               ),
-              child: const Center(
-                child: Icon(Icons.add, size: 40),
+              child: Icon(
+                isFavourite ? Icons.favorite : Icons.favorite_border,
+                color: isFavourite
+                    ? const Color.fromRGBO(190, 49, 68, 1)
+                    : const Color.fromRGBO(190, 49, 68, 1),
+                size: 30,
               ),
             ),
           ),

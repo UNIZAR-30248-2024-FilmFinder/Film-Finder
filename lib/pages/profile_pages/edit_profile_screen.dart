@@ -159,7 +159,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               label: 'Nombre de usuario',
               text: nameController.text,
               onChanged: (value) => setState(() => nameController.text = value),
-              controller: nameController, // Pasar el controlador aquí
+              controller: nameController,
             ),
             const SizedBox(height: 15),
             TextFieldWidget(
@@ -167,7 +167,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               text: locationController.text,
               onChanged: (value) =>
                   setState(() => locationController.text = value),
-              controller: locationController, // Pasar el controlador aquí
+              controller: locationController,
             ),
             const SizedBox(height: 15),
             TextFieldWidget(
@@ -176,7 +176,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               maxLines: 5,
               onChanged: (value) =>
                   setState(() => aboutController.text = value),
-              controller: aboutController, // Pasar el controlador aquí
+              controller: aboutController,
             ),
             const SizedBox(height: 20),
             Row(
