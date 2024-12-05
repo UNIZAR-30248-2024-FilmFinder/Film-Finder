@@ -2,6 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:film_finder/pages/auth_pages/auth_page.dart';
+// ignore: depend_on_referenced_packages
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   // Ensures the initialization of the widgets.
@@ -9,6 +11,8 @@ void main() async {
   await Firebase.initializeApp();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky,
       overlays: [SystemUiOverlay.top]);
+
+  await initializeDateFormatting('es', null);
 
   // It is set in vertical format
   SystemChrome.setPreferredOrientations([

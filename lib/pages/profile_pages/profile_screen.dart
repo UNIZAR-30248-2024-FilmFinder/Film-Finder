@@ -1,5 +1,7 @@
 // ignore: depend_on_referenced_packages
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:film_finder/methods/movie.dart';
+import 'package:film_finder/pages/profile_pages/diary_screen.dart';
 // ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -184,7 +186,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
           _ProfileOptionTile(
             icon: Icons.book_outlined,
             label: 'Ver diario',
-            onTap: () {},
+            onTap: () {
+              List<MovieDiaryEntry> movieDiary = [];
+
+              //Ejemplo de inserción. AQUI SE AÑADIRAN TODAS LAS PELICULAS QUE SE ESTEN ALMACENANDO EN EL DIARIO DE FIREBASE con un bucle
+              //Lo mejor sera no guardae movie, sino el id y luego hacer la petición esto
+
+              movieDiary.add(
+                MovieDiaryEntry(
+                  movie: Movie(
+                    id: 1,
+                    title: "Inception6",
+                    backDropPath: "/path_to_banner.jpg",
+                    overview: "A mind-bending thriller",
+                    posterPath: "/path_to_poster.jpg",
+                    releaseDay: "2010-07-16",
+                    voteAverage: 8.8,
+                    mediaType: "Movie",
+                    director: "Christopher Nolan",
+                    duration: 148,
+                    genres: ["Action", "Sci-Fi", "Thriller"],
+                    trailerUrl: "https://youtube.com/trailer_inception",
+                  ),
+                  viewingDate: "2024-12-06",
+                  personalRating: 9,
+                  review:
+                      "Un excelente thriller de ciencia ficción que juega con la mente.",
+                ),
+              );
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Diary(
+                    movies: movieDiary,
+                  ),
+                ),
+              );
+            },
           ),
           _ProfileOptionTile(
             icon: Icons.star,
@@ -295,7 +334,7 @@ class _ProfileOptionTile extends StatelessWidget {
       ),
       title: Text(
         label,
-        style: TextStyle(
+        style: const TextStyle(
             fontWeight: FontWeight.w500, color: Colors.white, fontSize: 16),
       ),
       trailing: Container(

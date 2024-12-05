@@ -51,3 +51,17 @@ class Movie {
     );
   }
 }
+
+class MovieDiaryEntry {
+  Movie movie;
+  String viewingDate;
+  int personalRating;
+  String review;
+
+  MovieDiaryEntry({
+    required this.movie,
+    required this.viewingDate,
+    required this.personalRating,
+    required this.review,
+  });
+}

@@ -19,15 +19,15 @@ class _DiaryFilmState extends State<DiaryFilm> {
   @override
   void initState() {
     super.initState();
-    selectedDate = DateTime.now(); // Fecha inicial (hoy)
+    selectedDate = DateTime.now();
   }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
-      firstDate: DateTime(2000), // Rango mínimo
-      lastDate: DateTime(2100), // Rango máximo
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.dark().copyWith(
@@ -46,7 +46,7 @@ class _DiaryFilmState extends State<DiaryFilm> {
 
     if (picked != null && picked != selectedDate) {
       setState(() {
-        selectedDate = picked; // Actualizar fecha seleccionada
+        selectedDate = picked;
       });
     }
   }
