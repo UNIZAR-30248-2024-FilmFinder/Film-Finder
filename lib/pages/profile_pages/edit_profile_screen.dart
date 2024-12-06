@@ -127,162 +127,171 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            Navigator.of(context).pop();
-          },
+    return WillPopScope(
+      onWillPop: () async {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              Navigator.of(context).pop();
+            },
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
         ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: GestureDetector(
-        onTap: () {
-          // Quita el foco actual (cierra el teclado)
-          FocusScope.of(context).unfocus();
-        },
-        child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
-          physics: const BouncingScrollPhysics(),
-          children: [
-            ProfileWidget(
-              imagePath: imagePath,
-              onClicked: _onProfilePictureClicked,
-              isEdit: true,
-            ),
-            const SizedBox(height: 35),
-            TextFieldWidget(
-              label: 'Nombre de usuario',
-              text: nameController.text,
-              onChanged: (value) => setState(() => nameController.text = value),
-              controller: nameController,
-            ),
-            const SizedBox(height: 15),
-            TextFieldWidget(
-              label: 'Ubicación',
-              text: locationController.text,
-              onChanged: (value) =>
-                  setState(() => locationController.text = value),
-              controller: locationController,
-            ),
-            const SizedBox(height: 15),
-            TextFieldWidget(
-              label: 'Sobre mí',
-              text: aboutController.text,
-              maxLines: 5,
-              onChanged: (value) =>
-                  setState(() => aboutController.text = value),
-              controller: aboutController,
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        body: GestureDetector(
+          onTap: () {
+            // Quita el foco actual (cierra el teclado)
+            FocusScope.of(context).unfocus();
+          },
+          child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            physics: const BouncingScrollPhysics(),
+            children: [
+              ProfileWidget(
+                imagePath: imagePath,
+                onClicked: _onProfilePictureClicked,
+                isEdit: true,
+              ),
+              const SizedBox(height: 35),
+              TextFieldWidget(
+                label: 'Nombre de usuario',
+                text: nameController.text,
+                onChanged: (value) =>
+                    setState(() => nameController.text = value),
+                controller: nameController,
+              ),
+              const SizedBox(height: 15),
+              TextFieldWidget(
+                label: 'Ubicación',
+                text: locationController.text,
+                onChanged: (value) =>
+                    setState(() => locationController.text = value),
+                controller: locationController,
+              ),
+              const SizedBox(height: 15),
+              TextFieldWidget(
+                label: 'Sobre mí',
+                text: aboutController.text,
+                maxLines: 5,
+                onChanged: (value) =>
+                    setState(() => aboutController.text = value),
+                controller: aboutController,
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        ScaffoldMessenger.of(context).removeCurrentSnackBar();
 
-                      User? user = FirebaseAuth.instance.currentUser;
-                      if (user != null) {
-                        List<UserInfo> providerData = user.providerData;
-                        bool isGoogleUser = providerData.any(
-                            (userInfo) => userInfo.providerId == 'google.com');
+                        User? user = FirebaseAuth.instance.currentUser;
+                        if (user != null) {
+                          List<UserInfo> providerData = user.providerData;
+                          bool isGoogleUser = providerData.any((userInfo) =>
+                              userInfo.providerId == 'google.com');
 
-                        if (isGoogleUser) {
-                          // Mostrar mensaje de advertencia si el usuario ha iniciado sesión con Google
-                          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                          if (isGoogleUser) {
+                            // Mostrar mensaje de advertencia si el usuario ha iniciado sesión con Google
+                            ScaffoldMessenger.of(context)
+                                .removeCurrentSnackBar();
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text(
-                                    'Inico de sesión con Google. No puedes cambiar la contraseña.'),
-                                duration: Duration(days: 1),
-                                backgroundColor: Color.fromRGBO(21, 4, 29, 1)),
-                          );
-                        } else {
-                          // Mostrar el cuadro de diálogo de cambio de contraseña si el usuario no es de Google
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return ChangePasswordDialog();
-                            },
-                          );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text(
+                                      'Inico de sesión con Google. No puedes cambiar la contraseña.'),
+                                  duration: Duration(days: 1),
+                                  backgroundColor:
+                                      Color.fromRGBO(21, 4, 29, 1)),
+                            );
+                          } else {
+                            // Mostrar el cuadro de diálogo de cambio de contraseña si el usuario no es de Google
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return ChangePasswordDialog();
+                              },
+                            );
+                          }
                         }
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: const Color.fromRGBO(21, 4, 29, 1),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        side: const BorderSide(
-                          color: Color.fromRGBO(190, 49, 68, 1),
-                          width: 1.0,
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: const Color.fromRGBO(21, 4, 29, 1),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          side: const BorderSide(
+                            color: Color.fromRGBO(190, 49, 68, 1),
+                            width: 1.0,
+                          ),
                         ),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                    ),
-                    child: const Text(
-                      'Cambiar contraseña',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                      child: const Text(
+                        'Cambiar contraseña',
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w500),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 25),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                      showDeleteAccountDialog(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: const Color.fromRGBO(190, 49, 68, 1),
-                      backgroundColor: const Color.fromRGBO(21, 4, 29, 1),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        side: const BorderSide(
-                          color: Color.fromRGBO(190, 49, 68, 1),
-                          width: 1.0,
+                  const SizedBox(width: 25),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                        showDeleteAccountDialog(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: const Color.fromRGBO(190, 49, 68, 1),
+                        backgroundColor: const Color.fromRGBO(21, 4, 29, 1),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          side: const BorderSide(
+                            color: Color.fromRGBO(190, 49, 68, 1),
+                            width: 1.0,
+                          ),
                         ),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                    ),
-                    child: const Text(
-                      'Borrar cuenta',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                      child: const Text(
+                        'Borrar cuenta',
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w500),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 50),
-            ElevatedButton(
-              onPressed: _updateUserProfile,
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: const Color.fromRGBO(21, 4, 29, 1),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  side: const BorderSide(
-                    color: Color.fromRGBO(190, 49, 68, 1),
-                    width: 1.0,
+                ],
+              ),
+              const SizedBox(height: 50),
+              ElevatedButton(
+                onPressed: _updateUserProfile,
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: const Color.fromRGBO(21, 4, 29, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    side: const BorderSide(
+                      color: Color.fromRGBO(190, 49, 68, 1),
+                      width: 1.0,
+                    ),
                   ),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                 ),
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: const Text(
+                  'CONFIRMAR',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                ),
               ),
-              child: const Text(
-                'CONFIRMAR',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
