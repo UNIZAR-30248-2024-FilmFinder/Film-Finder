@@ -330,8 +330,16 @@ class _FilmInfoState extends State<FilmInfo> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    DiaryFilm(movie: widget.movie),
+                                builder: (context) => DiaryFilm(
+                                  movieId: widget.movie.id,
+                                  posterPath: widget.movie.posterPath,
+                                  title: widget.movie.title,
+                                  releaseDay: widget.movie.releaseDay,
+                                  isEditing: false,
+                                  editDate: "",
+                                  editRating: 0,
+                                  editReview: "",
+                                ),
                               ),
                             );
                           },

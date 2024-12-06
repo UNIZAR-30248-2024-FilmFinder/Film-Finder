@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:film_finder/methods/constants.dart';
 import 'package:film_finder/methods/movie.dart';
+import 'package:film_finder/pages/film_pages/add_film_diary_screen.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
@@ -93,7 +94,6 @@ class Diary extends StatelessWidget {
             );
           }
 
-          // Procesar las películas cargadas
           var moviesInfo = snapshot.data!;
           Map<String, List<Map<String, dynamic>>> groupedMovies = {};
 
@@ -114,6 +114,15 @@ class Diary extends StatelessWidget {
               (a, b) =>
                   DateTime.parse('$b-01').compareTo(DateTime.parse('$a-01')),
             );
+
+          for (var key in groupedMovies.keys) {
+            groupedMovies[key]!.sort((a, b) {
+              var movieA = a['movie'] as MovieDiaryEntry;
+              var movieB = b['movie'] as MovieDiaryEntry;
+              return DateTime.parse(movieB.viewingDate)
+                  .compareTo(DateTime.parse(movieA.viewingDate));
+            });
+          }
 
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -191,106 +200,127 @@ class Diary extends StatelessWidget {
                             ),
                             const SizedBox(width: 10),
                             Expanded(
-                              child: Container(
-                                padding: const EdgeInsets.only(left: 5),
-                                margin:
-                                    const EdgeInsets.only(top: 4, bottom: 4),
-                                height: 125,
-                                decoration: const BoxDecoration(
-                                  color: Color.fromRGBO(21, 4, 29, 1),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                ),
-                                child: Row(
-                                  children: [
-                                    // Imagen de poster
-                                    Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.22,
-                                      decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(10)),
-                                        image: DecorationImage(
-                                          image: NetworkImage(posterPath),
-                                          fit: BoxFit.fill,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DiaryFilm(
+                                        movieId: movie.movieId,
+                                        posterPath: posterPath,
+                                        title: title,
+                                        releaseDay: releaseDate,
+                                        isEditing: true,
+                                        editDate: movie.viewingDate,
+                                        editRating: movie.personalRating,
+                                        editReview: movie.review,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.only(left: 5),
+                                  margin:
+                                      const EdgeInsets.only(top: 4, bottom: 4),
+                                  height: 125,
+                                  decoration: const BoxDecoration(
+                                    color: Color.fromRGBO(21, 4, 29, 1),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      // Imagen de poster
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.22,
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(10)),
+                                          image: DecorationImage(
+                                            image: NetworkImage(posterPath),
+                                            fit: BoxFit.fill,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 20),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Text(
-                                            title,
-                                            softWrap: true,
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 3,
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
+                                      const SizedBox(width: 20),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                              title,
+                                              softWrap: true,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 3,
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                '${DateTime.parse(releaseDate).year}',
-                                                softWrap: true,
-                                                style: const TextStyle(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.w300,
-                                                  color: Colors.white,
+                                            const SizedBox(height: 5),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  '${DateTime.parse(releaseDate).year}',
+                                                  softWrap: true,
+                                                  style: const TextStyle(
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.w300,
+                                                    color: Colors.white,
+                                                  ),
                                                 ),
-                                              ),
-                                              const Spacer(),
-                                              Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 2,
-                                                        horizontal: 10),
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color:
-                                                          const Color.fromRGBO(
-                                                              190, 49, 68, 1)),
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      movie.personalRating
-                                                          .toString(),
-                                                      style: const TextStyle(
-                                                        fontSize: 13,
-                                                        fontWeight:
-                                                            FontWeight.w300,
-                                                        color: Colors.white,
+                                                const Spacer(),
+                                                Container(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      vertical: 2,
+                                                      horizontal: 10),
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: const Color
+                                                            .fromRGBO(
+                                                            190, 49, 68, 1)),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        movie.personalRating
+                                                            .toString(),
+                                                        style: const TextStyle(
+                                                          fontSize: 13,
+                                                          fontWeight:
+                                                              FontWeight.w300,
+                                                          color: Colors.white,
+                                                        ),
                                                       ),
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 5,
-                                                    ),
-                                                    const Icon(
-                                                      Icons.star,
-                                                      color: Colors.yellow,
-                                                      size: 15,
-                                                    ),
-                                                  ],
+                                                      const SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      const Icon(
+                                                        Icons.star,
+                                                        color: Colors.yellow,
+                                                        size: 15,
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                              const SizedBox(width: 25),
-                                            ],
-                                          ),
-                                        ],
+                                                const SizedBox(width: 25),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

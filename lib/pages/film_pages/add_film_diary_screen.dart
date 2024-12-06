@@ -1,4 +1,3 @@
-import 'package:film_finder/methods/movie.dart';
 import 'package:film_finder/pages/menu_pages/principal_screen.dart';
 import 'package:film_finder/widgets/profile_widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +11,32 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class DiaryFilm extends StatefulWidget {
-  final Movie movie;
+  final int movieId;
 
-  const DiaryFilm({super.key, required this.movie});
+  final String posterPath;
+
+  final String title;
+
+  final String releaseDay;
+
+  final bool isEditing;
+
+  final String editDate;
+
+  final String editReview;
+
+  final double editRating;
+
+  const DiaryFilm(
+      {super.key,
+      required this.movieId,
+      required this.posterPath,
+      required this.releaseDay,
+      required this.title,
+      required this.isEditing,
+      required this.editDate,
+      required this.editRating,
+      required this.editReview});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -33,8 +55,14 @@ class _DiaryFilmState extends State<DiaryFilm> {
   @override
   void initState() {
     super.initState();
-    selectedDate = DateTime.now();
-    reviewController = TextEditingController(text: "");
+
+    if (widget.isEditing) {
+      reviewController = TextEditingController(text: widget.editReview);
+      selectedDate = DateTime.parse(widget.editDate);
+    } else {
+      reviewController = TextEditingController(text: "");
+      selectedDate = DateTime.now();
+    }
   }
 
   @override
@@ -83,7 +111,7 @@ class _DiaryFilmState extends State<DiaryFilm> {
 
       await FirebaseFirestore.instance.collection('diary').add({
         'userId': user.uid,
-        'movieId': widget.movie.id,
+        'movieId': widget.movieId,
         'viewingDate': DateFormat('yyyy-MM-dd').format(selectedDate),
         'review': reviewController.text,
         'rating': finalRating,
@@ -132,6 +160,37 @@ class _DiaryFilmState extends State<DiaryFilm> {
               Navigator.pop(context);
             },
           ),
+          actions: [
+            if (widget.isEditing)
+              PopupMenuButton(
+                icon: const Icon(
+                  Icons.delete,
+                  color: Color.fromRGBO(190, 49, 68, 1),
+                ),
+                color: const Color.fromRGBO(190, 49, 68, 1),
+                onSelected: (value) {
+                  if (value == 'delete') {
+                    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Entrada borrada con éxito."),
+                        backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+                      ),
+                    );
+                  }
+                },
+                itemBuilder: (context) => [
+                  const PopupMenuItem(
+                    value: 'delete',
+                    child: Text(
+                      "Borrar entrada del diario",
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ),
+                ],
+              ),
+          ],
         ),
         backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
         body: GestureDetector(
@@ -148,7 +207,7 @@ class _DiaryFilmState extends State<DiaryFilm> {
                   child: Row(
                     children: [
                       Image.network(
-                        'https://image.tmdb.org/t/p/original${widget.movie.posterPath}',
+                        'https://image.tmdb.org/t/p/original${widget.posterPath}',
                         filterQuality: FilterQuality.high,
                         height: 130,
                         width: 130,
@@ -161,7 +220,7 @@ class _DiaryFilmState extends State<DiaryFilm> {
                             Stack(
                               children: [
                                 Text(
-                                  widget.movie.title,
+                                  widget.title,
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
@@ -172,7 +231,7 @@ class _DiaryFilmState extends State<DiaryFilm> {
                                   ),
                                 ),
                                 Text(
-                                  widget.movie.title,
+                                  widget.title,
                                   style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
@@ -183,7 +242,7 @@ class _DiaryFilmState extends State<DiaryFilm> {
                             ),
                             const SizedBox(height: 7),
                             Text(
-                              '${DateTime.parse(widget.movie.releaseDay).year}',
+                              '${DateTime.parse(widget.releaseDay).year}',
                               softWrap: true,
                               style: const TextStyle(
                                 fontSize: 13,
@@ -290,7 +349,7 @@ class _DiaryFilmState extends State<DiaryFilm> {
                         width: 5,
                       ),
                       RatingBar.builder(
-                        initialRating: 0,
+                        initialRating: widget.editRating / 2,
                         minRating: 0.5,
                         allowHalfRating: true,
                         itemSize: 40.0,
@@ -356,55 +415,106 @@ class _DiaryFilmState extends State<DiaryFilm> {
                       ],
                     )),
                 const Spacer(),
-                Center(
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      if (finalRating == 0) {
-                        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                if (!widget.isEditing)
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (finalRating == 0) {
+                          ScaffoldMessenger.of(context).removeCurrentSnackBar();
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Por favor, añade una valoración'),
-                            duration: Duration(days: 1),
-                            backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Por favor, añade una valoración'),
+                              duration: Duration(days: 1),
+                              backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+                            ),
+                          );
+                          return;
+                        }
+
+                        if (reviewController.text.length >= 1000) {
+                          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                  'La crítica tiene que tener menos de 1000 caracteres'),
+                              duration: Duration(days: 1),
+                              backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+                            ),
+                          );
+                          return;
+                        }
+
+                        await _saveToDiary();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: const Color.fromRGBO(21, 4, 29, 1),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                          side: const BorderSide(
+                            color: Color.fromRGBO(190, 49, 68, 1),
+                            width: 1.0,
                           ),
-                        );
-                        return;
-                      }
-
-                      if (reviewController.text.length >= 1000) {
-                        ScaffoldMessenger.of(context).removeCurrentSnackBar();
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                                'La crítica tiene que tener menos de 1000 caracteres'),
-                            duration: Duration(days: 1),
-                            backgroundColor: Color.fromRGBO(21, 4, 29, 1),
-                          ),
-                        );
-                        return;
-                      }
-
-                      await _saveToDiary();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: const Color.fromRGBO(21, 4, 29, 1),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                        side: const BorderSide(
-                          color: Color.fromRGBO(190, 49, 68, 1),
-                          width: 1.0,
                         ),
                       ),
-                    ),
-                    child: const Text(
-                      "Añadir al diario",
-                      style: TextStyle(fontSize: 18),
+                      child: const Text(
+                        "Añadir al diario",
+                        style: TextStyle(fontSize: 18),
+                      ),
                     ),
                   ),
-                ),
+                if (widget.isEditing)
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (finalRating == 0) {
+                          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Por favor, añade una valoración'),
+                              duration: Duration(days: 1),
+                              backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+                            ),
+                          );
+                          return;
+                        }
+
+                        if (reviewController.text.length >= 1000) {
+                          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                  'La crítica tiene que tener menos de 1000 caracteres'),
+                              duration: Duration(days: 1),
+                              backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+                            ),
+                          );
+                          return;
+                        }
+
+                        //FUNCIÓN PARA MODIFICAR
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: const Color.fromRGBO(21, 4, 29, 1),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                          side: const BorderSide(
+                            color: Color.fromRGBO(190, 49, 68, 1),
+                            width: 1.0,
+                          ),
+                        ),
+                      ),
+                      child: const Text(
+                        "Guardar cambio",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                  ),
                 const SizedBox(
                   height: 35,
                 ),
