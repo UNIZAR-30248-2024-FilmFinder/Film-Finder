@@ -339,6 +339,7 @@ class _FilmInfoState extends State<FilmInfo> {
                                   editDate: "",
                                   editRating: 0,
                                   editReview: "",
+                                  documentId: '0',
                                 ),
                               ),
                             );

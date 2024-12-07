@@ -201,9 +201,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   movieDiary = diarySnapshot.docs.map((doc) {
                     final data = doc.data();
                     return MovieDiaryEntry(
-                      movieId: data['movieId'] ?? '',
+                      documentId: doc.id,
+                      movieId: data['movieId'] ?? 0,
                       viewingDate: data['viewingDate'] ?? '',
-                      personalRating: data['rating'] ?? 0,
+                      personalRating: (data['rating'] ?? 0).toDouble(),
                       review: data['review'] ?? '',
                     );
                   }).toList();

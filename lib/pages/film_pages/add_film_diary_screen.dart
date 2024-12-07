@@ -1,4 +1,5 @@
 import 'package:film_finder/pages/menu_pages/principal_screen.dart';
+import 'package:film_finder/pages/profile_pages/profile_screen.dart';
 import 'package:film_finder/widgets/profile_widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
@@ -27,6 +28,8 @@ class DiaryFilm extends StatefulWidget {
 
   final double editRating;
 
+  final String documentId;
+
   const DiaryFilm(
       {super.key,
       required this.movieId,
@@ -36,7 +39,8 @@ class DiaryFilm extends StatefulWidget {
       required this.isEditing,
       required this.editDate,
       required this.editRating,
-      required this.editReview});
+      required this.editReview,
+      required this.documentId});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -59,6 +63,7 @@ class _DiaryFilmState extends State<DiaryFilm> {
     if (widget.isEditing) {
       reviewController = TextEditingController(text: widget.editReview);
       selectedDate = DateTime.parse(widget.editDate);
+      finalRating = widget.editRating;
     } else {
       reviewController = TextEditingController(text: "");
       selectedDate = DateTime.now();
@@ -130,6 +135,48 @@ class _DiaryFilmState extends State<DiaryFilm> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Error al guardar'),
+          duration: Duration(days: 1),
+          backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+        ),
+      );
+    }
+  }
+
+  Future<void> _updateDiaryEntry(String documentId) async {
+    try {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        throw Exception("Usuario no autenticado");
+      }
+
+      if (documentId.isEmpty) {
+        throw Exception("El ID del documento no puede estar vacío");
+      }
+
+      await FirebaseFirestore.instance
+          .collection('diary')
+          .doc(documentId)
+          .update({
+        'viewingDate': DateFormat('yyyy-MM-dd').format(selectedDate),
+        'review': reviewController.text,
+        'rating': finalRating,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const ProfileScreen(),
+        ),
+      );
+    } catch (error) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error al actualizar la entrada del diario'),
           duration: Duration(days: 1),
           backgroundColor: Color.fromRGBO(21, 4, 29, 1),
         ),
@@ -496,7 +543,7 @@ class _DiaryFilmState extends State<DiaryFilm> {
                           return;
                         }
 
-                        //FUNCIÓN PARA MODIFICAR
+                        _updateDiaryEntry(widget.documentId);
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,

@@ -214,6 +214,7 @@ class Diary extends StatelessWidget {
                                         editDate: movie.viewingDate,
                                         editRating: movie.personalRating,
                                         editReview: movie.review,
+                                        documentId: movie.documentId,
                                       ),
                                     ),
                                   );

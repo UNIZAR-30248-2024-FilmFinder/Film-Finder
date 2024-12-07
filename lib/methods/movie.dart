@@ -53,12 +53,14 @@ class Movie {
 }
 
 class MovieDiaryEntry {
+  String documentId;
   int movieId;
   String viewingDate;
   double personalRating;
   String review;
 
   MovieDiaryEntry({
+    required this.documentId,
     required this.movieId,
     required this.viewingDate,
     required this.personalRating,
