@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:film_finder/methods/constants.dart';
 import 'package:film_finder/methods/movie.dart';
 import 'package:film_finder/pages/film_pages/add_film_diary_screen.dart';
+import 'package:film_finder/pages/menu_pages/principal_screen.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
@@ -71,6 +72,21 @@ class Diary extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const PrincipalScreen(initialIndex: 3),
+              ),
+            );
+          },
+          icon: const Icon(
+            Icons.arrow_back_rounded,
+            color: Colors.white,
+            size: 30,
+          ),
+        ),
       ),
       backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
       body: FutureBuilder<List<Map<String, dynamic>>>(
