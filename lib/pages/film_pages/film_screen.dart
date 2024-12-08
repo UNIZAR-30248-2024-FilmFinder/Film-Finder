@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:film_finder/methods/movie.dart';
 // ignore: depend_on_referenced_packages
 import 'package:url_launcher/url_launcher.dart';
+// ignore: depend_on_referenced_packages
+import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore: depend_on_referenced_packages
+import 'package:firebase_auth/firebase_auth.dart';
 
 class FilmInfo extends StatefulWidget {
   final Movie movie;
@@ -25,6 +29,90 @@ class _FilmInfoState extends State<FilmInfo> {
     if (!await launchUrl(url)) {
       throw 'Could not launch $url';
     }
+  }
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<void> _checkIfFavorite() async {
+    try {
+      final User? user = _auth.currentUser;
+
+      if (user == null) {
+        throw Exception("El usuario no está autenticado.");
+      }
+
+      final String userId = user.uid;
+
+      final DocumentReference userFavoritesRef =
+          _firestore.collection('favorites').doc(userId);
+
+      final DocumentSnapshot snapshot = await userFavoritesRef.get();
+
+      if (snapshot.exists) {
+        final List<dynamic> favoriteMovies = snapshot['movieIds'] ?? [];
+        if (favoriteMovies.contains(widget.movie.id)) {
+          setState(() {
+            isFavourite = true;
+          });
+        }
+      }
+    } catch (e) {
+      print('Error al verificar favoritos: $e');
+    }
+  }
+
+  Future<void> _toggleFavorite() async {
+    try {
+      final User? user = _auth.currentUser;
+
+      if (user == null) {
+        throw Exception("El usuario no está autenticado.");
+      }
+
+      final String userId = user.uid;
+
+      final DocumentReference userFavoritesRef =
+          _firestore.collection('favorites').doc(userId);
+
+      final DocumentSnapshot snapshot = await userFavoritesRef.get();
+
+      if (snapshot.exists) {
+        List<dynamic> favoriteMovies = snapshot['movieIds'] ?? [];
+
+        if (favoriteMovies.contains(widget.movie.id)) {
+          favoriteMovies.remove(widget.movie.id);
+          setState(() {
+            isFavourite = false;
+          });
+          print('Película eliminada de favoritos.');
+        } else {
+          favoriteMovies.add(widget.movie.id);
+          setState(() {
+            isFavourite = true;
+          });
+          print('Película añadida a favoritos.');
+        }
+
+        await userFavoritesRef.update({'movieIds': favoriteMovies});
+      } else {
+        await userFavoritesRef.set({
+          'movieIds': [widget.movie.id],
+        });
+        setState(() {
+          isFavourite = true;
+        });
+        print('Película añadida a favoritos.');
+      }
+    } catch (e) {
+      print('Error al manejar favoritos: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIfFavorite();
   }
 
   @override
@@ -374,11 +462,7 @@ class _FilmInfoState extends State<FilmInfo> {
             bottom: 20,
             right: 20,
             child: ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  isFavourite = !isFavourite;
-                });
-              },
+              onPressed: _toggleFavorite,
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.zero,
                 foregroundColor: Colors.white,
@@ -394,9 +478,7 @@ class _FilmInfoState extends State<FilmInfo> {
               ),
               child: Icon(
                 isFavourite ? Icons.favorite : Icons.favorite_border,
-                color: isFavourite
-                    ? const Color.fromRGBO(190, 49, 68, 1)
-                    : const Color.fromRGBO(190, 49, 68, 1),
+                color: const Color.fromRGBO(190, 49, 68, 1),
                 size: 30,
               ),
             ),
