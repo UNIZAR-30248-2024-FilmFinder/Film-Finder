@@ -215,6 +215,7 @@ class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
   late List<String> localFilterProviders;
   late List<int> localArrayGenres;
   late List<int> localArrayProviders;
+
   @override
   void initState() {
     super.initState();
@@ -229,9 +230,39 @@ class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
         Navigator.of(context).popUntil((route) => route.isFirst);
       }
     });
-
+    if (!widget.isAdmin) {
+        listenForMoviesReady();
+    }
     // Añadir el observer para detectar el ciclo de vida de la app
     WidgetsBinding.instance.addObserver(this);
+  }
+
+  // Función para escuchar cambios en Firestore
+  void listenForMoviesReady() {
+    FirebaseFirestore.instance
+        .collection('rooms')
+        .doc(widget.code)
+        .snapshots()
+        .listen((snapshot) {
+        if (snapshot.exists) {
+          final roomData = snapshot.data() as Map<String, dynamic>;
+          if (roomData['moviesReady'] == true) {
+            final moviesData = roomData['movies'] as List;
+            final List<Movie> movies = moviesData.map((movieJson) {
+            return Movie.fromFirebase(movieJson as Map<String, dynamic>);
+          }).toList();
+          // Redirigir a la pantalla de selección
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => FilterGrupalScreen(movies: movies),
+              ),
+            );
+          });
+        }
+      }
+    });
   }
 
   @override

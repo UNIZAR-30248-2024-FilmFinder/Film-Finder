@@ -66,6 +66,40 @@ class Movie {
       'poster_path': posterPath
     };
   }
+
+  factory Movie.fromFirebase(Map<String, dynamic> json) {
+  // Asegurar que los géneros sean una lista de cadenas
+  List<String> genresList = [];
+  if (json['genres'] != null) {
+    if (json['genres'] is List) {
+      genresList = (json['genres'] as List).map((genre) {
+        if (genre is String) {
+          return genre;
+        } else if (genre is Map) {
+          return genre['name'] as String;
+        } else {
+          return 'Unknown Genre';
+        }
+      }).toList();
+    }
+  }
+
+  return Movie(
+    id: json['id'] ?? 0,
+    title: json['title'] ?? 'Unknown Title',
+    backDropPath: json['backDropPath'] ?? json['backdrop_path'] ?? '',
+    overview: json['overview'] ?? 'No overview available',
+    posterPath: json['posterPath'] ?? json['poster_path'] ?? '',
+    releaseDay: json['releaseDay'] ?? json['release_date'] ?? 'Unknown Release Date',
+    voteAverage: json['vote_average'].toDouble(),
+    mediaType: json['mediaType'] ?? 'Movie',
+    director: json['director'] ?? 'Unknown Director',
+    duration: json['duration'] ?? 0,
+    genres: genresList,
+    trailerUrl: json['trailerUrl'] ?? '',
+  );
+}
+
 }
 
 class MovieDiaryEntry {
