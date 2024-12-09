@@ -57,77 +57,6 @@ class _SwiperGrupalState extends State<SwiperGrupal> {
                     backCardOffset: const Offset(0, 0),
                     onSwipe: (previous, current, direction) {
                       currentindex++;
-
-                      // Verifica si es el último elemento
-                      if (currentindex >= widget.movies.length) {
-                        // Mostrar el pop-up indicando que se llegó al final
-                        showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (BuildContext context) {
-                            return Center(
-                              child: Container(
-                                padding: const EdgeInsets.all(20.0),
-                                decoration: BoxDecoration(
-                                  color: const Color.fromRGBO(21, 4, 29, 1),
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  border: Border.all(
-                                    color: const Color.fromRGBO(190, 49, 68, 1),
-                                    width: 2.0,
-                                  ),
-                                ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Text(
-                                      'Fin de la lista',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 20),
-                                    const Text(
-                                      'Has llegado al final de la lista de películas.',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    const SizedBox(height: 20),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color.fromRGBO(
-                                            190, 49, 68, 1),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                        Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const PrincipalScreen(),
-                                          ),
-                                        );
-                                      },
-                                      child: const Text(
-                                        'Volver al inicio',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      }
-
                       // Manejo de dirección del swipe
                       if (direction == CardSwiperDirection.right) {
                         Fluttertoast.showToast(
@@ -137,16 +66,6 @@ class _SwiperGrupalState extends State<SwiperGrupal> {
                         Future.delayed(const Duration(milliseconds: 750), () {
                           Fluttertoast.cancel();
                         });
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => FilmInfo(
-                              movie: widget.movies[previous],
-                              pop: false,
-                              favorite: false,
-                            ),
-                          ),
-                        );
                       } else if (direction == CardSwiperDirection.left) {
                         Fluttertoast.showToast(
                             msg: 'No te ha gustado',
