@@ -24,6 +24,7 @@ void main() {
         home: FilmInfo(
           movie: foundMovie,
           pop: false,
+          favorite: false,
         ),
       ),
     );

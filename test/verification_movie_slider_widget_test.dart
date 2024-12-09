@@ -41,7 +41,8 @@ class MockMovie extends Movie {
 class MockSnapshot extends Mock implements AsyncSnapshot<List<MockMovie>> {}
 
 void main() {
-  testWidgets('Renderiza MovieSlider y navega a FilmInfo', (WidgetTester tester) async {
+  testWidgets('Renderiza MovieSlider y navega a FilmInfo',
+      (WidgetTester tester) async {
     // Crear datos mock
     final mockMovies = [
       MockMovie(posterPath: '/sgTAWJFaB2kBvdQxRGabYFiQqEK.jpg'),
@@ -49,15 +50,19 @@ void main() {
       MockMovie(posterPath: '/sgTAWJFaB2kBvdQxRGabYFiQqEK.jpg'),
     ];
 
-    // Crear un snapshot mock con datos
-    final mockSnapshot = MockSnapshot();
-    when(mockSnapshot.data).thenReturn(mockMovies);
+    // Configurar los mock de las películas, por ejemplo, el posterPath
+    when(mockMovies[0].posterPath)
+        .thenReturn('/sgTAWJFaB2kBvdQxRGabYFiQqEK.jpg');
+    when(mockMovies[1].posterPath)
+        .thenReturn('/sgTAWJFaB2kBvdQxRGabYFiQqEK.jpg');
+    when(mockMovies[2].posterPath)
+        .thenReturn('/sgTAWJFaB2kBvdQxRGabYFiQqEK.jpg');
 
     // Construir el widget
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: MovieSlider(snapshot: mockSnapshot),
+          body: MovieSlider(movies: mockMovies),
         ),
       ),
     );
@@ -73,7 +78,8 @@ void main() {
     expect(find.byType(FilmInfo), findsOneWidget);
   });
 
-  testWidgets('Valida que las imágenes se renderizan correctamente', (WidgetTester tester) async {
+  testWidgets('Valida que las imágenes se renderizan correctamente',
+      (WidgetTester tester) async {
     // Crear datos mock
     final mockMovies = [
       MockMovie(posterPath: '/sgTAWJFaB2kBvdQxRGabYFiQqEK.jpg'),
@@ -81,15 +87,21 @@ void main() {
       MockMovie(posterPath: '/sgTAWJFaB2kBvdQxRGabYFiQqEK.jpg'),
     ];
 
-    // Crear un snapshot mock con datos
-    final mockSnapshot = MockSnapshot();
-    when(mockSnapshot.data).thenReturn(mockMovies);
+    // Configurar los mock de las películas, por ejemplo, el posterPath
+    when(mockMovies[0].posterPath)
+        .thenReturn('/sgTAWJFaB2kBvdQxRGabYFiQqEK.jpg');
+    when(mockMovies[1].posterPath)
+        .thenReturn('/sgTAWJFaB2kBvdQxRGabYFiQqEK.jpg');
+    when(mockMovies[2].posterPath)
+        .thenReturn('/sgTAWJFaB2kBvdQxRGabYFiQqEK.jpg');
 
     // Construir el widget
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: MovieSlider(snapshot: mockSnapshot),
+          body: MovieSlider(
+            movies: mockMovies,
+          ),
         ),
       ),
     );

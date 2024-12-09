@@ -12,126 +12,110 @@ class ExploreScreen extends StatefulWidget {
 }
 
 class _ExploreScreenState extends State<ExploreScreen> {
-  late Future<List<Movie>> trendingmovies;
-  late Future<List<Movie>> topratedmovies;
-  late Future<List<Movie>> upcomingmovies;
-  bool moviesLoaded = false;
+  late Future<List<List<Movie>>> allMovies;
 
   @override
   void initState() {
     super.initState();
-    if (!moviesLoaded) {
-      trendingmovies = Api().getTrendingMovies();
-      topratedmovies = Api().getTopRatedMovies();
-      upcomingmovies = Api().getUpcomingMovies();
-      moviesLoaded = true;
-    }
+    allMovies = Future.wait([
+      Api().getTrendingMovies(),
+      Api().getTopRatedMovies(),
+      Api().getUpcomingMovies(),
+    ]);
   }
 
   @override
   Widget build(BuildContext context) {
+    // Obtener la altura de la barra de estado
+    double statusBarHeight = MediaQuery.of(context).padding.top;
+
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
-        elevation: 0,
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        title: const Text(
-          'EXPLORAR',
-          style: TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-      ),
       backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Tendencias',
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
+      body: FutureBuilder<List<List<Movie>>>(
+        future: allMovies,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                'Error: ${snapshot.error}',
+                style: const TextStyle(color: Colors.white),
               ),
-              const SizedBox(height: 20),
-              SizedBox(
-                child: FutureBuilder(
-                  future: trendingmovies,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Center(
-                        child: Text(snapshot.error.toString()),
-                      );
-                    } else if (snapshot.hasData) {
-                      return TrendingSlider(snapshot: snapshot);
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  },
+            );
+          } else if (snapshot.hasData) {
+            final trendingMovies = snapshot.data![0];
+            final topRatedMovies = snapshot.data![1];
+            final upcomingMovies = snapshot.data![2];
+
+            return SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: statusBarHeight + 17),
+                    Center(
+                      child: Image.asset(
+                        'assets/images/titulo.png',
+                        width: 325,
+                        height: 75,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Tendencias',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    const Divider(
+                      color: Color.fromRGBO(190, 49, 68, 1),
+                      thickness: 1,
+                    ),
+                    const SizedBox(height: 20),
+                    TrendingSlider(movies: trendingMovies),
+                    const SizedBox(height: 30),
+                    const Text(
+                      'Mejor Valoradas',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    const Divider(
+                      color: Color.fromRGBO(190, 49, 68, 1),
+                      thickness: 1,
+                    ),
+                    const SizedBox(height: 20),
+                    MovieSlider(movies: topRatedMovies),
+                    const SizedBox(height: 30),
+                    const Text(
+                      'Próximos Estrenos',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    const Divider(
+                      color: Color.fromRGBO(190, 49, 68, 1),
+                      thickness: 1,
+                    ),
+                    const SizedBox(height: 20),
+                    MovieSlider(movies: upcomingMovies),
+                  ],
                 ),
               ),
-              const SizedBox(height: 30),
-              const Text(
-                'Mejor Valoradas',
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
-              const SizedBox(height: 20),
-              SizedBox(
-                child: FutureBuilder(
-                  future: topratedmovies,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Center(
-                        child: Text(snapshot.error.toString()),
-                      );
-                    } else if (snapshot.hasData) {
-                      return MovieSlider(
-                        snapshot: snapshot,
-                      );
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  },
-                ),
-              ),
-              const SizedBox(height: 30),
-              const Text(
-                'Próximos Estrenos',
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
-              const SizedBox(height: 20),
-              SizedBox(
-                child: FutureBuilder(
-                  future: upcomingmovies,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Center(
-                        child: Text(snapshot.error.toString()),
-                      );
-                    } else if (snapshot.hasData) {
-                      return MovieSlider(snapshot: snapshot);
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
+            );
+          } else {
+            return const Center(
+              child: Text('No se encontraron datos',
+                  style: TextStyle(color: Colors.white)),
+            );
+          }
+        },
       ),
     );
   }
