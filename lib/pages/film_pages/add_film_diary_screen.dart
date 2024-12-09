@@ -57,9 +57,13 @@ class _DiaryFilmState extends State<DiaryFilm> {
 
   late bool isFavourite = false;
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   @override
   void initState() {
     super.initState();
+    _checkIfFavorite();
 
     if (widget.isEditing) {
       reviewController = TextEditingController(text: widget.editReview);
@@ -291,6 +295,85 @@ class _DiaryFilmState extends State<DiaryFilm> {
           backgroundColor: Color.fromRGBO(21, 4, 29, 1),
         ),
       );
+    }
+  }
+
+  Future<void> _checkIfFavorite() async {
+    try {
+      final User? user = _auth.currentUser;
+
+      if (user == null) {
+        throw Exception("El usuario no está autenticado.");
+      }
+
+      final String userId = user.uid;
+
+      final DocumentReference userFavoritesRef =
+          _firestore.collection('favorites').doc(userId);
+
+      final DocumentSnapshot snapshot = await userFavoritesRef.get();
+
+      if (snapshot.exists) {
+        final List<dynamic> favoriteMovies = snapshot['movieIds'] ?? [];
+        if (favoriteMovies.contains(widget.movieId)) {
+          setState(() {
+            isFavourite = true;
+          });
+        }
+      }
+    } catch (e) {
+      print('Error al verificar favoritos: $e');
+    }
+  }
+
+  Future<void> _updateFavorite(bool shouldAdd) async {
+    try {
+      final User? user = _auth.currentUser;
+
+      if (user == null) {
+        throw Exception("El usuario no está autenticado.");
+      }
+
+      final String userId = user.uid;
+
+      final DocumentReference userFavoritesRef =
+          _firestore.collection('favorites').doc(userId);
+
+      final DocumentSnapshot snapshot = await userFavoritesRef.get();
+
+      if (snapshot.exists) {
+        List<dynamic> favoriteMovies = snapshot['movieIds'] ?? [];
+
+        if (shouldAdd) {
+          if (!favoriteMovies.contains(widget.movieId)) {
+            favoriteMovies.add(widget.movieId);
+            setState(() {
+              isFavourite = true;
+            });
+            print('Película añadida a favoritos.');
+          }
+        } else {
+          if (favoriteMovies.contains(widget.movieId)) {
+            favoriteMovies.remove(widget.movieId);
+            setState(() {
+              isFavourite = false;
+            });
+            print('Película eliminada de favoritos.');
+          }
+        }
+
+        await userFavoritesRef.update({'movieIds': favoriteMovies});
+      } else if (shouldAdd) {
+        await userFavoritesRef.set({
+          'movieIds': [widget.movieId],
+        });
+        setState(() {
+          isFavourite = true;
+        });
+        print('Película añadida a favoritos.');
+      }
+    } catch (e) {
+      print('Error al manejar favoritos: $e');
     }
   }
 
@@ -599,6 +682,7 @@ class _DiaryFilmState extends State<DiaryFilm> {
                         }
 
                         await _saveToDiary();
+                        await _updateFavorite(isFavourite);
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
@@ -649,6 +733,7 @@ class _DiaryFilmState extends State<DiaryFilm> {
                         }
 
                         _updateDiaryEntry(widget.documentId);
+                        await _updateFavorite(isFavourite);
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
