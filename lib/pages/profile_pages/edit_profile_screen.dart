@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 // ignore: depend_on_referenced_packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 // ignore: depend_on_referenced_packages
-import 'package:image_picker/image_picker.dart';
+//import 'package:image_picker/image_picker.dart';
 
 import '../../widgets/profile_widgets/change_password_widget.dart';
 import '../../widgets/profile_widgets/delete_account_widget.dart';
@@ -48,7 +48,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Future<void> _onProfilePictureClicked() async {
-    final picker = ImagePicker();
+    //DEMOMOENTO NO SE HACE NADA YA QUE NO PODEMOS GUARDAR FOTOS
+
+    /*final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
@@ -57,7 +59,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       setState(() {
         imagePath = pickedFile.path;
       });
-    }
+    }*/
   }
 
   Future<void> _updateUserProfile() async {
