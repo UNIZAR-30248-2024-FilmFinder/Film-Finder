@@ -60,6 +60,10 @@ class _FiltersState extends State<Filters> {
           child: RoomPopup(
             code: code,
             isAdmin: isAdmin,
+            filterGenres: filterGenres,
+            filterProviders: filterProviders,
+            arrayGenres: arrayGenres,
+            arrayProviders: arrayProviders,
           ),
         );
       },
@@ -1165,7 +1169,16 @@ class _FiltersState extends State<Filters> {
 
                 setState(() {
                   isRoomLoading = true;
+                  filterGenres = [];
+                  filterProviders = [];
+                  arrayGenres = List.filled(19, 0);
+                  arrayProviders = List.filled(5, 0);
                 });
+
+                print('filterGenres: $filterGenres');
+                print('arrayGenres: $arrayGenres');
+                print('filterProviders: $filterProviders');
+                print('arrayProviders: $arrayProviders');
 
                 showLoadingDialog(context, false);
 

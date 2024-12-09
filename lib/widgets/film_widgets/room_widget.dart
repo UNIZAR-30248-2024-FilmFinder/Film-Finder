@@ -187,10 +187,21 @@ void showExitConfirmation(BuildContext context, bool isAdmin, String code) {
 }
 
 class RoomPopup extends StatefulWidget {
-  const RoomPopup({super.key, required this.code, required this.isAdmin});
+  const RoomPopup({super.key, 
+                    required this.code,
+                    required this.isAdmin,
+                    required this.filterGenres,
+                    required this.filterProviders,
+                    required this.arrayGenres,
+                    required this.arrayProviders});
 
   final String code;
   final bool isAdmin;
+  final List<String> filterGenres;
+  final List<String> filterProviders;
+  final List<int> arrayGenres;
+  final List<int> arrayProviders;
+
 
   @override
   // ignore: library_private_types_in_public_api
@@ -199,15 +210,17 @@ class RoomPopup extends StatefulWidget {
 
 class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
   List<Movie> movies = [];
-  List<String> filterGenres = [];
-  List<String> filterProviders = [];
-  List<int> arrayGenres = List.filled(19, 0);
-  List<int> arrayProviders = List.filled(5, 0);
-
+  late List<String> localFilterGenres;
+  late List<String> localFilterProviders;
+  late List<int> localArrayGenres;
+  late List<int> localArrayProviders;
   @override
   void initState() {
     super.initState();
-
+    localFilterGenres = List<String>.from(widget.filterGenres);
+    localFilterProviders = List<String>.from(widget.filterProviders);
+    localArrayGenres = List<int>.from(widget.arrayGenres);
+    localArrayProviders = List<int>.from(widget.arrayProviders);
     // Configurar el listener usando la función modular
     listenToRoomDeletionByCode(widget.code, () {
       if (mounted) {
@@ -392,6 +405,7 @@ class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
                           } else {
                             print('Se encontraron ${movies.length} películas.');
                           }
+                          await deleteRoomByCode(widget.code);
                           Navigator.of(context).pop();
                           Navigator.push(
                             context,
@@ -450,23 +464,23 @@ class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
 
   Future<void> fetchTopRatedMovies() async {
     movies = [];
-    print('filterGenres: $filterGenres');
-    print('arrayGenres: $arrayGenres');
-    print('filterProviders: $filterProviders');
-    print('arrayProviders: $arrayProviders');
+    print('filterGenres: $localFilterGenres');
+    print('arrayGenres: $localArrayGenres');
+    print('filterProviders: $localFilterProviders');
+    print('arrayProviders: $localArrayProviders');
 
     String url;
-    if (filterGenres.isNotEmpty && filterProviders.isNotEmpty) {
-      String genreString = filterGenres.join('%2C');
-      String providerString = filterProviders.join('%7C');
+    if (localFilterGenres.isNotEmpty && localFilterProviders.isNotEmpty) {
+      String genreString = localFilterGenres.join('%2C');
+      String providerString = localFilterProviders.join('%7C');
       url =
           'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_genres=$genreString&with_watch_providers=$providerString';
-    } else if (filterGenres.isNotEmpty && filterProviders.isEmpty) {
-      String genreString = filterGenres.join('%2C');
+    } else if (localFilterGenres.isNotEmpty && localFilterProviders.isEmpty) {
+      String genreString = localFilterGenres.join('%2C');
       url =
           'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_genres=$genreString';
-    } else if (filterGenres.isEmpty && filterProviders.isNotEmpty) {
-      String providerString = filterProviders.join('%7C');
+    } else if (localFilterGenres.isEmpty && localFilterProviders.isNotEmpty) {
+      String providerString = localFilterProviders.join('%7C');
       url =
           'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_watch_providers=$providerString';
     } else {
@@ -535,10 +549,10 @@ class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
           }
           movies.add(movie);
         }));
-        filterGenres = [];
-        filterProviders = [];
-        arrayGenres.fillRange(0, arrayGenres.length, 0);
-        arrayProviders.fillRange(0, arrayProviders.length, 0);
+        localFilterGenres.clear();
+        localFilterProviders.clear();
+        localArrayGenres.fillRange(0, localArrayGenres.length, 0);
+        localArrayProviders.fillRange(0, localArrayProviders.length, 0);
       }
     } else {
       throw Exception('Something went wrong.');
