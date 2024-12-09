@@ -35,6 +35,7 @@ class TrendingSlider extends StatelessWidget {
                   builder: (context) => FilmInfo(
                     movie: snapshot.data[itemIndex],
                     pop: true,
+                    favorite: false,
                   ),
                 ),
               );

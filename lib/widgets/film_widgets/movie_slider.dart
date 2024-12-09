@@ -30,6 +30,7 @@ class MovieSlider extends StatelessWidget {
                         builder: (context) => FilmInfo(
                           movie: snapshot.data[index],
                           pop: true,
+                          favorite: false,
                         ),
                       ),
                     );

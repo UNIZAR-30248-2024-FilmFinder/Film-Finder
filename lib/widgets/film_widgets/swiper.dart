@@ -179,6 +179,7 @@ class _SwiperState extends State<Swiper> {
                             builder: (context) => FilmInfo(
                               movie: widget.movies[previous],
                               pop: false,
+                              favorite: false,
                             ),
                           ),
                         );

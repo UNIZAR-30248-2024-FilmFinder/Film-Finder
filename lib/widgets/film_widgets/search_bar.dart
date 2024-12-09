@@ -283,6 +283,7 @@ class _SearchingBarState extends State<SearchingBar> {
                                     builder: (context) => FilmInfo(
                                       movie: movies[index],
                                       pop: true,
+                                      favorite: false,
                                     ),
                                   ),
                                 );

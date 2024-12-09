@@ -1,5 +1,6 @@
 import 'package:film_finder/pages/film_pages/add_film_diary_screen.dart';
 import 'package:film_finder/pages/menu_pages/principal_screen.dart';
+import 'package:film_finder/pages/profile_pages/favorites_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:film_finder/methods/movie.dart';
 // ignore: depend_on_referenced_packages
@@ -14,7 +15,13 @@ class FilmInfo extends StatefulWidget {
 
   final bool pop;
 
-  const FilmInfo({super.key, required this.movie, required this.pop});
+  final bool favorite;
+
+  const FilmInfo(
+      {super.key,
+      required this.movie,
+      required this.pop,
+      required this.favorite});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -125,8 +132,43 @@ class _FilmInfoState extends State<FilmInfo> {
             slivers: [
               SliverAppBar.large(
                 leading: IconButton(
-                  onPressed: () {
-                    if (widget.pop == false) {
+                  onPressed: () async {
+                    if (widget.favorite == true) {
+                      List<int> favoriteMovieIds = [];
+
+                      try {
+                        final userId = FirebaseAuth.instance.currentUser?.uid;
+
+                        if (userId != null) {
+                          final docSnapshot = await FirebaseFirestore.instance
+                              .collection('favorites')
+                              .doc(userId)
+                              .get();
+
+                          if (docSnapshot.exists) {
+                            final data = docSnapshot.data();
+                            favoriteMovieIds =
+                                List<int>.from(data?['movieIds'] ?? []);
+                          }
+                        }
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FavoritesScreen(
+                              movieIds: favoriteMovieIds,
+                            ),
+                          ),
+                        );
+                      } catch (e) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const PrincipalScreen(),
+                          ),
+                        );
+                      }
+                    } else if (widget.pop == false) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(

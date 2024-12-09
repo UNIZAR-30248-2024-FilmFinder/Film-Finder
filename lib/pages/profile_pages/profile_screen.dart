@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:film_finder/methods/movie.dart';
 import 'package:film_finder/pages/profile_pages/diary_screen.dart';
+import 'package:film_finder/pages/profile_pages/favorites_screen.dart';
 // ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -231,7 +232,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
           _ProfileOptionTile(
             icon: Icons.star,
             label: 'Ver lista de favoritos',
-            onTap: () {},
+            onTap: () async {
+              List<int> favoriteMovieIds = [];
+
+              try {
+                final userId = FirebaseAuth.instance.currentUser?.uid;
+
+                if (userId != null) {
+                  final docSnapshot = await FirebaseFirestore.instance
+                      .collection('favorites')
+                      .doc(userId)
+                      .get();
+
+                  if (docSnapshot.exists) {
+                    final data = docSnapshot.data();
+                    favoriteMovieIds = List<int>.from(data?['movieIds'] ?? []);
+                  }
+                }
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FavoritesScreen(
+                      movieIds: favoriteMovieIds,
+                    ),
+                  ),
+                );
+              } catch (e) {
+                // Manejo de errores
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Error al cargar las favoritas: $e'),
+                  ),
+                );
+              }
+            },
           ),
           const Divider(
             height: 35,

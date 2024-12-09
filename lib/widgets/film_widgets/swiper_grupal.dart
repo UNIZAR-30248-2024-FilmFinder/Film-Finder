@@ -143,6 +143,7 @@ class _SwiperGrupalState extends State<SwiperGrupal> {
                             builder: (context) => FilmInfo(
                               movie: widget.movies[previous],
                               pop: false,
+                              favorite: false,
                             ),
                           ),
                         );
