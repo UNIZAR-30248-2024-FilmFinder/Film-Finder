@@ -51,6 +51,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  Future<Map<String, int>> fetchMovieStatistics() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) throw Exception("User not authenticated");
+
+      final diarySnapshot = await FirebaseFirestore.instance
+          .collection('diary')
+          .where('userId', isEqualTo: user.uid)
+          .get();
+
+      final totalViews = diarySnapshot.docs.length;
+      final rating10Count = diarySnapshot.docs.where((doc) {
+        final data = doc.data() as Map<String, dynamic>?;
+        return data != null && data['rating'] == 10;
+      }).length;
+
+      final favoritesSnapshot = await FirebaseFirestore.instance
+          .collection('favorites')
+          .doc(user.uid)
+          .get();
+
+      final favoriteMoviesCount = (favoritesSnapshot.exists
+              ? (favoritesSnapshot.data()?['movieIds'] as List<dynamic>)
+              : [])
+          .length;
+
+      return {
+        'totalViews': totalViews,
+        'rating10Count': rating10Count,
+        'favoriteCount': favoriteMoviesCount,
+      };
+    } catch (e) {
+      print("Error fetching movie stats: $e");
+      return {'totalViews': 0, 'rating10Count': 0, 'favoriteCount': 0};
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (userData == null) {
@@ -145,18 +182,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 width: 2,
               ),
             ),
-            child: const IntrinsicHeight(
+            child: IntrinsicHeight(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _MovieStatColumn(label: 'Vistas', count: 'XXXX'),
-                    _MovieDivider(),
-                    _MovieStatColumn(label: 'Favoritas', count: 'XXXX'),
-                    _MovieDivider(),
-                    _MovieStatColumn(label: '10 Estrellas', count: 'XXXX'),
-                  ],
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: FutureBuilder<Map<String, int>>(
+                  future: fetchMovieStatistics(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    }
+
+                    final stats = snapshot.data ??
+                        {
+                          'totalViews': 0,
+                          'rating10Count': 0,
+                          'favoriteCount': 0
+                        };
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _MovieStatColumn(
+                            label: 'Vistas',
+                            count: stats['totalViews'].toString()),
+                        const _MovieDivider(),
+                        _MovieStatColumn(
+                            label: 'Favoritas',
+                            count: stats['favoriteCount'].toString()),
+                        const _MovieDivider(),
+                        _MovieStatColumn(
+                            label: '10 Estrellas',
+                            count: stats['rating10Count'].toString()),
+                      ],
+                    );
+                  },
                 ),
               ),
             ),
