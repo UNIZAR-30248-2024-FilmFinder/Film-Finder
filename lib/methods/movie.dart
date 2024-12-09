@@ -50,6 +50,22 @@ class Movie {
       trailerUrl: '',
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'duration': duration,
+      'director': director,
+      'genres': genres,
+      'overview': overview,
+      'trailerUrl': trailerUrl,
+      'backDropPath': backDropPath,
+      'vote_average': voteAverage,
+      'release_date': releaseDay,
+      'poster_path': posterPath
+    };
+  }
 }
 
 class MovieDiaryEntry {

@@ -61,7 +61,9 @@ Future<String> createRoom() async {
     'code': code,
     'createdAt': FieldValue.serverTimestamp(),
     'members': [user.uid],
-    'matrix': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    'matrix': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    'movies': [], // Inicialmente vacío
+    'moviesReady': false, // Marcador de estado
   });
 
   print('Sala creada con éxito con código: $code');
