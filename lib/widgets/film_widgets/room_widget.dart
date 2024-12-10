@@ -447,12 +447,12 @@ class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
                     : ElevatedButton(
                   onPressed: () async {
                     // Obtén el valor actual de "moviesReady"
-                    final doc = await FirebaseFirestore.instance
+                    DocumentSnapshot<Map<String, dynamic>> doc = await FirebaseFirestore.instance
                         .collection('rooms')
                         .doc(widget.code)
                         .get();
 
-                    final moviesReady = true;
+                    bool moviesReady = doc.data()?['moviesReady'];
 
                     if (moviesReady) {
                       // Redirigir si "moviesReady" es true
