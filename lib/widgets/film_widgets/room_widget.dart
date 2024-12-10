@@ -400,49 +400,101 @@ class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
                 ),
                 widget.isAdmin
                     ? ElevatedButton(
-                        onPressed: () async {
-                          showLoadingListDialog(context);
-                          await fetchTopRatedMovies(widget.code);
-                          if (movies.isEmpty) {
-                            print('No se encontraron películas.');
-                          } else {
-                            print('Se encontraron ${movies.length} películas.');
-                          }
-                          //await deleteRoomByCode(widget.code);
-                          Navigator.of(context).pop();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => FilterGrupalScreen(
-                                movies: movies,
-                              ),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            side: const BorderSide(
-                              color: Color.fromRGBO(190, 49, 68, 1),
-                              width: 1.0,
-                            ),
-                          ),
-                          fixedSize: const Size(115, 42),
+                  onPressed: () async {
+                    showLoadingListDialog(context);
+                    await fetchTopRatedMovies(widget.code);
+                    if (movies.isEmpty) {
+                      print('No se encontraron películas.');
+                    } else {
+                      print('Se encontraron ${movies.length} películas.');
+                    }
+                    // Actualiza el estado en Firebase
+                    await FirebaseFirestore.instance
+                        .collection('rooms')
+                        .doc(widget.code)
+                        .update({'moviesReady': true});
+
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FilterGrupalScreen(
+                          movies: movies,
                         ),
-                        child: const Text(
-                          'Comenzar',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      )
-                    : const SizedBox(
-                        width: 115,
-                        height: 42,
                       ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      side: const BorderSide(
+                        color: Color.fromRGBO(190, 49, 68, 1),
+                        width: 1.0,
+                      ),
+                    ),
+                    fixedSize: const Size(115, 42),
+                  ),
+                  child: const Text(
+                    'Comenzar',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
+                    : ElevatedButton(
+                  onPressed: () async {
+                    // Obtén el valor actual de "moviesReady"
+                    final doc = await FirebaseFirestore.instance
+                        .collection('rooms')
+                        .doc(widget.code)
+                        .get();
+
+                    final moviesReady = true;
+
+                    if (moviesReady) {
+                      // Redirigir si "moviesReady" es true
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FilterGrupalScreen(
+                            movies: movies, // Ajustar si necesitas pasar películas
+                          ),
+                        ),
+                      );
+                    } else {
+                      // Opcional: muestra un mensaje indicando que no está listo
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Aún no están listas las películas. Por favor, espera.',
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: const Color.fromRGBO(34, 9, 44, 1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      side: const BorderSide(
+                        color: Color.fromRGBO(190, 49, 68, 1),
+                        width: 1.0,
+                      ),
+                    ),
+                    fixedSize: const Size(115, 42),
+                  ),
+                  child: const Text(
+                    'Verificar',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
                 IconButton(
                   onPressed: () {
                     showExitConfirmation(context, widget.isAdmin, widget.code);
