@@ -230,40 +230,11 @@ class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
         Navigator.of(context).popUntil((route) => route.isFirst);
       }
     });
-    if (!widget.isAdmin) {
-        listenForMoviesReady();
-    }
     // Añadir el observer para detectar el ciclo de vida de la app
     WidgetsBinding.instance.addObserver(this);
   }
 
-  // Función para escuchar cambios en Firestore
-  void listenForMoviesReady() {
-    FirebaseFirestore.instance
-        .collection('rooms')
-        .doc(widget.code)
-        .snapshots()
-        .listen((snapshot) {
-        if (snapshot.exists) {
-          final roomData = snapshot.data() as Map<String, dynamic>;
-          if (roomData['moviesReady'] == true) {
-            final moviesData = roomData['movies'] as List;
-            final List<Movie> movies = moviesData.map((movieJson) {
-            return Movie.fromFirebase(movieJson as Map<String, dynamic>);
-          }).toList();
-          // Redirigir a la pantalla de selección
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => FilterGrupalScreen(movies: movies),
-              ),
-            );
-          });
-        }
-      }
-    });
-  }
+
 
   @override
   void dispose() {
@@ -623,7 +594,7 @@ class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
 }
 
 
-  void showLoadingListDialog(BuildContext context) {
+void showLoadingListDialog(BuildContext context) {
     showDialog(
       context: context,
       barrierDismissible: false,
