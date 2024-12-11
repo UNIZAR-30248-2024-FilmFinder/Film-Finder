@@ -6,6 +6,7 @@ import 'package:flip_card/flip_card.dart';
 import 'package:film_finder/methods/movie.dart';
 import 'dart:math';
 import 'package:film_finder/pages/film_pages/film_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SwiperGrupal extends StatefulWidget {
   final List<Movie> movies;
@@ -59,10 +60,12 @@ class _SwiperGrupalState extends State<SwiperGrupal> {
                         left: true, right: true),
                     numberOfCardsDisplayed: 4,
                     backCardOffset: const Offset(0, 0),
-                    onSwipe: (previous, current, direction) {
+                    onSwipe: (previous, current, direction) async {
                       currentindex++;
+
                       // Manejo de dirección del swipe
                       if (direction == CardSwiperDirection.right) {
+                        await actualizaVector(widget.roomCode, widget.user, 2, currentindex-1);
                         Fluttertoast.showToast(
                             msg: 'Te ha gustado',
                             backgroundColor: Colors.black,
@@ -70,7 +73,11 @@ class _SwiperGrupalState extends State<SwiperGrupal> {
                         Future.delayed(const Duration(milliseconds: 750), () {
                           Fluttertoast.cancel();
                         });
+                        if(currentindex == 20){
+                          currentindex = 0;
+                        }
                       } else if (direction == CardSwiperDirection.left) {
+                        await actualizaVector(widget.roomCode, widget.user, 1, currentindex-1);
                         Fluttertoast.showToast(
                             msg: 'No te ha gustado',
                             backgroundColor: Colors.black,
@@ -78,6 +85,9 @@ class _SwiperGrupalState extends State<SwiperGrupal> {
                         Future.delayed(const Duration(milliseconds: 750), () {
                           Fluttertoast.cancel();
                         });
+                        if(currentindex == 20){
+                          currentindex = 0;
+                        }
                       }
                       return true;
                     },
@@ -150,6 +160,31 @@ class _SwiperGrupalState extends State<SwiperGrupal> {
         ),
       );
     }
+  }
+
+  Future<void> actualizaVector(String roomcode, int user, int valor, int index) async{
+    // Cálculo del índice en 'matrix'
+    int matrixIndex = user * 20 + index; // 20 películas por usuario
+
+    // Actualizar Firestore con las películas
+    final roomSnapshot = await FirebaseFirestore.instance
+        .collection('rooms')
+        .where('code', isEqualTo: roomcode)
+        .get();
+
+    if (roomSnapshot.docs.isEmpty) {
+      throw Exception('No se encontró la sala.');
+    }
+
+    final roomDoc = roomSnapshot.docs.first;
+    // Verifica el número de miembros
+    List<dynamic> vector = roomDoc['matrix'] ?? [];
+    vector[matrixIndex] = valor; // Actualiza el valor en el índice correspondiente
+    print('Número de 0s en matrix: ${vector.length}');
+
+    await roomDoc.reference.update({
+      'matrix': vector,
+    });
   }
 }
 
