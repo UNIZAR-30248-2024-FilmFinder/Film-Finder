@@ -1,5 +1,6 @@
 import 'package:film_finder/pages/profile_pages/profile_screen.dart';
 import 'package:film_finder/pages/auth_pages/register_screen.dart';
+import 'package:film_finder/widgets/profile_widgets/profile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -91,9 +92,9 @@ void main() {
     expect(find.byType(ElevatedButton), findsOneWidget);
 
     // Introduce texto en los campos correspodnientes
-    await tester.enterText(find.byType(TextField).at(0), 'test123456');
+    await tester.enterText(find.byType(TextField).at(0), 'testDelete');
     await tester.enterText(
-        find.byType(TextField).at(1), 'test123456@example.com');
+        find.byType(TextField).at(1), 'testDelete@example.com');
     await tester.enterText(find.byType(TextField).at(2), 'test123');
     await tester.enterText(find.byType(TextField).at(3), 'test123');
 
@@ -111,8 +112,18 @@ void main() {
     // Simula un toque en el botón "Perfil"
     await tester.tap(profileButtonFinder);
     await tester.pumpAndSettle(); 
-    expect(find.textContaining('test12345'), findsAtLeast(1));
-    await tester.tap(find.text('Cerrar sesión'));
+    expect(find.textContaining('testDelete'), findsAtLeast(1));
+      expect(find.byType(ProfileWidget), findsOneWidget);
+
+    // Simula el toque en ProfileWidget
+    await tester.tap(find.byType(ProfileWidget));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Borrar cuenta'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Borrar Cuenta'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField).at(0), 'test123');
+    await tester.tap(find.text('Confirmar'));
     await tester.pumpAndSettle();
     await tester.pump();
   });
