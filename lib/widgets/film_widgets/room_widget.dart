@@ -401,24 +401,45 @@ class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
                 widget.isAdmin
                     ? ElevatedButton(
                   onPressed: () async {
-                    showLoadingListDialog(context);
-                    await fetchTopRatedMovies(widget.code);
-                    if (movies.isEmpty) {
-                      print('No se encontraron películas.');
-                    } else {
-                      print('Se encontraron ${movies.length} películas.');
-                    }
+                    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+                        .collection('rooms')
+                        .where('code', isEqualTo: widget.code) // Filtra por el campo "code"
+                        .get();
 
+                    // Obtén el primer documento de la consulta
+                    DocumentSnapshot doc = querySnapshot.docs.first;
+                    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
-                    Navigator.of(context).pop();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => FilterGrupalScreen(
-                          movies: movies,
+                    // Verifica el número de miembros
+                    List<dynamic> members = data['members'] ?? [];
+                    print('Número de miembros en la sala: ${members.length}');
+
+                    if (members.length >= 2) {
+                      showLoadingListDialog(context);
+                      await fetchTopRatedMovies(widget.code);
+                      if (movies.isEmpty) {
+                        print('No se encontraron películas.');
+                      } else {
+                        print('Se encontraron ${movies.length} películas.');
+                      }
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              FilterGrupalScreen(
+                                movies: movies,
+                              ),
                         ),
-                      ),
-                    );
+                      );
+                    }
+                    else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Espera a que haya más personas en la sala'),
+                        ),
+                      );
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -474,6 +495,14 @@ class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
                     print('Estado de moviesReady: $moviesReady');
 
                     if (moviesReady) {
+                      // Extrae el campo "movies" y convierte a objetos Movie
+                      List<dynamic> moviesRaw = data['movies'] ?? [];
+
+                      List<Movie> movies = moviesRaw.map((movieJson) {
+                        return Movie.fromFirebase(movieJson as Map<String, dynamic>);
+                      }).toList();
+
+                      print('Películas cargadas: ${movies.length}');
                       // Redirigir si "moviesReady" es true
                       Navigator.push(
                         context,
