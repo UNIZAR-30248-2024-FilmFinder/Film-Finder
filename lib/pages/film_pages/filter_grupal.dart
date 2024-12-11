@@ -4,10 +4,14 @@ import 'package:film_finder/methods/movie.dart';
 
 class FilterGrupalScreen extends StatefulWidget {
   final List<Movie> movies;
+  final int user;
+  final String roomCode;
 
   const FilterGrupalScreen({
     super.key,
     required this.movies,
+    required this.user,
+    required this.roomCode,
   });
 
   @override
@@ -41,7 +45,10 @@ class _FilterGrupalScreenState extends State<FilterGrupalScreen> {
       body: SafeArea(
         child: SwiperGrupal(
           movies: widget.movies,
+          user: widget.user,
+          roomCode: widget.roomCode,
         ),
+
       ),
     );
   }

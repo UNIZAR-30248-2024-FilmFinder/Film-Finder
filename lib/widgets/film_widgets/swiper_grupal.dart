@@ -9,10 +9,14 @@ import 'package:film_finder/pages/film_pages/film_screen.dart';
 
 class SwiperGrupal extends StatefulWidget {
   final List<Movie> movies;
+  final int user;
+  final String roomCode;
 
   const SwiperGrupal({
     super.key,
     required this.movies,
+    required this.user,
+    required this.roomCode,
   });
 
   @override

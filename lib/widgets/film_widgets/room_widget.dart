@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:film_finder/pages/film_pages/filter_grupal.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void showLoadingDialog(BuildContext context, bool isCreatingRoom) {
   showDialog(
@@ -414,7 +415,15 @@ class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
                     List<dynamic> members = data['members'] ?? [];
                     print('Número de miembros en la sala: ${members.length}');
 
-                    if (members.length >= 2) {
+                    final user = FirebaseAuth.instance.currentUser;
+                    if (user != null) {
+                      print('El UID del usuario es: ${user.uid}');
+                    } else {
+                      print('No hay usuario autenticado.');
+                    }
+
+
+                    if (members.length >= 1) {
                       showLoadingListDialog(context);
                       await fetchTopRatedMovies(widget.code);
                       if (movies.isEmpty) {
@@ -422,6 +431,7 @@ class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
                       } else {
                         print('Se encontraron ${movies.length} películas.');
                       }
+
                       Navigator.of(context).pop();
                       Navigator.push(
                         context,
@@ -429,6 +439,8 @@ class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
                           builder: (context) =>
                               FilterGrupalScreen(
                                 movies: movies,
+                                user: 0,
+                                roomCode: widget.code
                               ),
                         ),
                       );
@@ -494,33 +506,50 @@ class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
 
                     print('Estado de moviesReady: $moviesReady');
 
-                    if (moviesReady) {
-                      // Extrae el campo "movies" y convierte a objetos Movie
-                      List<dynamic> moviesRaw = data['movies'] ?? [];
+                    final user = FirebaseAuth.instance.currentUser;
+                    if (user != null) {
+                      print('El UID del usuario es: ${user.uid}');
+                      List<dynamic> members = data['members'] ?? [];
 
-                      List<Movie> movies = moviesRaw.map((movieJson) {
-                        return Movie.fromFirebase(movieJson as Map<String, dynamic>);
-                      }).toList();
+                      // Busca el índice del UID del usuario en el array
+                      int userIndex = members.indexOf(user.uid);
+                      print(userIndex);
 
-                      print('Películas cargadas: ${movies.length}');
-                      // Redirigir si "moviesReady" es true
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => FilterGrupalScreen(
-                            movies: movies, // Ajustar si necesitas pasar películas
+
+                      if (moviesReady) {
+                        // Extrae el campo "movies" y convierte a objetos Movie
+                        List<dynamic> moviesRaw = data['movies'] ?? [];
+
+                        List<Movie> movies = moviesRaw.map((movieJson) {
+                          return Movie.fromFirebase(movieJson as Map<String, dynamic>);
+                        }).toList();
+
+                        print('Películas cargadas: ${movies.length}');
+                        // Redirigir si "moviesReady" es true
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FilterGrupalScreen(
+                                movies: movies, // Ajustar si necesitas pasar películas
+                                user: userIndex,
+                                roomCode: widget.code
+
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      } else {
+                        // Opcional: muestra un mensaje indicando que no está listo
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Aún no están listas las películas. Por favor, espera.',
+                            ),
+                          ),
+                        );
+                      }
+
                     } else {
-                      // Opcional: muestra un mensaje indicando que no está listo
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            'Aún no están listas las películas. Por favor, espera.',
-                          ),
-                        ),
-                      );
+                      print('No hay usuario autenticado.');
                     }
                   },
                   style: ElevatedButton.styleFrom(
