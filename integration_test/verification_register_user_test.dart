@@ -47,14 +47,6 @@ void main() {
   initializeDateFormatting('es', null);
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky,
       overlays: [SystemUiOverlay.top]);
-
-  /*SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-  ]).then((_) {
-    runApp(
-      const MyApp(),
-    );
-  });*/
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('Test de integración de la pantalla de Registro',
@@ -91,9 +83,9 @@ void main() {
     expect(find.byType(ElevatedButton), findsOneWidget);
 
     // Introduce texto en los campos correspodnientes
-    await tester.enterText(find.byType(TextField).at(0), 'test123456');
+    await tester.enterText(find.byType(TextField).at(0), 'testR');
     await tester.enterText(
-        find.byType(TextField).at(1), 'test123456@example.com');
+        find.byType(TextField).at(1), 'testR@example.com');
     await tester.enterText(find.byType(TextField).at(2), 'test123');
     await tester.enterText(find.byType(TextField).at(3), 'test123');
 
@@ -111,7 +103,7 @@ void main() {
     // Simula un toque en el botón "Perfil"
     await tester.tap(profileButtonFinder);
     await tester.pumpAndSettle(); 
-    expect(find.textContaining('test12345'), findsAtLeast(1));
+    expect(find.textContaining('testR'), findsAtLeast(1));
     await tester.tap(find.text('Cerrar sesión'));
     await tester.pumpAndSettle();
     await tester.pump();

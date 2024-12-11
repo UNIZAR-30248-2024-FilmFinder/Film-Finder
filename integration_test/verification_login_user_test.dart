@@ -47,14 +47,6 @@ void main() {
   initializeDateFormatting('es', null);
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky,
       overlays: [SystemUiOverlay.top]);
-
-  /*SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-  ]).then((_) {
-    runApp(
-      const MyApp(),
-    );
-  });*/
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('Test de integración de la pantalla de Login',

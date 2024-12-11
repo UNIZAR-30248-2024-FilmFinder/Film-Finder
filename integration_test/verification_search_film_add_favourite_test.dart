@@ -1,7 +1,10 @@
 import 'package:film_finder/pages/profile_pages/profile_screen.dart';
 import 'package:film_finder/pages/auth_pages/register_screen.dart';
+import 'package:film_finder/widgets/filters_widgets/card_filter_widget.dart';
 import 'package:film_finder/widgets/profile_widgets/profile_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_card_swiper/flutter_card_swiper.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -50,7 +53,7 @@ void main() {
       overlays: [SystemUiOverlay.top]);
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Test de integración de la pantalla de Registro',
+  testWidgets('Test de integración de busqueda por filtros',
       (WidgetTester tester) async {
     // Inicializa la aplicación en la pantalla de inicio de sesión
     await tester.pumpWidget(const MaterialApp(
@@ -58,45 +61,35 @@ void main() {
     ));
     await tester.pumpAndSettle();
     await tester.allElements;
-    final registerTextButtonFinder = find.byWidgetPredicate(
-    (widget) =>
-      widget is TextButton &&
-      widget.child is RichText &&
-      (widget.child as RichText).text.toPlainText().contains('Regístrate aquí'),
-    );
-    expect(registerTextButtonFinder, findsOneWidget);
-    await tester.tap(registerTextButtonFinder);
-    await tester.pumpAndSettle();
-    await tester.allElements;
     // Verifica que los elementos de la pantalla de login estén presentes
-    expect(find.text('CREAR UNA CUENTA'), findsOneWidget);
+    expect(find.text('INICIAR SESIÓN'), findsOneWidget);
+   
     expect(
         find.byType(TextField),
         findsNWidgets(
-            4)); // Asume que hay cuatro campos de texto (user, email y dos password)
-    final CuentaTextButtonFinder = find.byWidgetPredicate(
-    (widget) =>
-      widget is TextButton &&
-      widget.child is RichText &&
-      (widget.child as RichText).text.toPlainText().contains('¿Ya tienes cuenta? '),
-    );
-    expect(CuentaTextButtonFinder, findsOneWidget);
+            2)); // Asume que hay dos campos de texto (email y password)
     expect(find.byType(ElevatedButton), findsOneWidget);
 
-    // Introduce texto en los campos correspodnientes
-    await tester.enterText(find.byType(TextField).at(0), 'testDelete');
-    await tester.enterText(
-        find.byType(TextField).at(1), 'testDelete@example.com');
-    await tester.enterText(find.byType(TextField).at(2), 'test123');
-    await tester.enterText(find.byType(TextField).at(3), 'test123');
-
-    // Simula un tap en el botón de "Registrarse"
-    await tester.tap(find.text('Registrarse'));
+    // Introduce texto en los campos de email y contraseña
+    await tester.enterText(find.byType(TextField).at(0), 'test123@gmail.com');
+    await tester.enterText(find.byType(TextField).at(1), 'test123');
+    await tester.tap(find.text('Iniciar sesión'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField).at(0), 'el club de la lucha');
+    await tester.pumpAndSettle();
+    await tester.allElements;
+    await tester.pump(const Duration(seconds: 4));
+    await tester.tap(find.byType(GestureDetector).at(2));
+    await tester.pumpAndSettle();
+    await tester.allElements;
+    await tester.pump(const Duration(seconds: 4));
+    await tester.tap(find.byType(Positioned));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(Icon).at(0));
     await tester.pumpAndSettle();
 
 
-
-        final profileButtonFinder = find.byKey(const Key('profile_button'));
+    final profileButtonFinder = find.byKey(const Key('profile_button'));
 
     // Verifica que el botón "Perfil" está presente
     expect(profileButtonFinder, findsOneWidget);
@@ -104,20 +97,12 @@ void main() {
     // Simula un toque en el botón "Perfil"
     await tester.tap(profileButtonFinder);
     await tester.pumpAndSettle(); 
-    expect(find.textContaining('testDelete'), findsAtLeast(1));
-      expect(find.byType(ProfileWidget), findsOneWidget);
-
-    // Simula el toque en ProfileWidget
-    await tester.tap(find.byType(ProfileWidget));
+    await tester.tap(find.text('Ver lista de favoritos'));
+    await tester.pumpAndSettle(); 
+    await tester.tap(find.byType(IconButton));
+    await tester.pumpAndSettle(); 
+    await tester.tap(find.text('Cerrar sesión'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Borrar cuenta'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Borrar Cuenta'));
-    await tester.pumpAndSettle();
-    await tester.enterText(find.byType(TextField), 'test123');
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Confirmar'));
-    await tester.pumpAndSettle();
-    await tester.allElements;
+    tester.allElements;
   });
 }
