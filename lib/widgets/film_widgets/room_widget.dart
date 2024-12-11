@@ -408,11 +408,7 @@ class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
                     } else {
                       print('Se encontraron ${movies.length} películas.');
                     }
-                    // Actualiza el estado en Firebase
-                    await FirebaseFirestore.instance
-                        .collection('rooms')
-                        .doc(widget.code)
-                        .update({'moviesReady': true});
+
 
                     Navigator.of(context).pop();
                     Navigator.push(
@@ -446,13 +442,36 @@ class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
                 )
                     : ElevatedButton(
                   onPressed: () async {
+                    print('Buscando el documento con ID: ${widget.code}');
+
                     // Obtén el valor actual de "moviesReady"
-                    DocumentSnapshot<Map<String, dynamic>> doc = await FirebaseFirestore.instance
+                    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
                         .collection('rooms')
-                        .doc(widget.code)
+                        .where('code', isEqualTo: widget.code) // Filtra por el campo "code"
                         .get();
 
-                    bool moviesReady = doc.data()?['moviesReady'];
+                    // Verifica si se encontró al menos un documento
+                    if (querySnapshot.docs.isEmpty) {
+                      print('No se encontró ninguna sala con el código proporcionado.');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Error: La sala no existe.'),
+                        ),
+                      );
+                      return; // Salir si no se encuentra ningún documento
+                    }
+
+                    // Obtén el primer documento de la consulta
+                    DocumentSnapshot doc = querySnapshot.docs.first;
+
+                    // Imprime los datos del documento para depuración
+                    print('Datos del documento encontrado: ${doc.data()}');
+
+                    // Obtén el valor de "moviesReady"
+                    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+                    bool moviesReady = data['moviesReady'] ?? false;
+
+                    print('Estado de moviesReady: $moviesReady');
 
                     if (moviesReady) {
                       // Redirigir si "moviesReady" es true

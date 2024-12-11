@@ -63,7 +63,7 @@ Future<String> createRoom() async {
     'members': [user.uid],
     'matrix': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     'movies': [], // Inicialmente vacío
-    'moviesReady': false, // Marcador de estado
+    'moviesReady': false, // Marcador de estad
   });
 
   print('Sala creada con éxito con código: $code');
