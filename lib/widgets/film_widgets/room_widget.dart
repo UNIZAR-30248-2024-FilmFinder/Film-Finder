@@ -423,7 +423,7 @@ class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
                     }
 
 
-                    if (members.length >= 1) {
+                    if (members.length >= 2) {
                       showLoadingListDialog(context);
                       await fetchTopRatedMovies(widget.code);
                       if (movies.isEmpty) {
@@ -565,7 +565,7 @@ class _RoomPopupState extends State<RoomPopup> with WidgetsBindingObserver {
                     fixedSize: const Size(115, 42),
                   ),
                   child: const Text(
-                    'Verificar',
+                    'Comenzar',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,

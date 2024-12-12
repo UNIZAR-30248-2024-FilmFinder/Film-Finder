@@ -89,6 +89,54 @@ class _SwiperGrupalState extends State<SwiperGrupal> {
                           currentindex = 0;
                         }
                       }
+
+                      // Comprobar si todos los usuarios han deslizado hacia la derecha para la película actual
+                      final roomSnapshot = await FirebaseFirestore.instance
+                          .collection('rooms')
+                          .where('code', isEqualTo: widget.roomCode)
+                          .get();
+
+                      if (roomSnapshot.docs.isEmpty) {
+                        print('No se encontró la sala.');
+                      }
+
+                      final roomDoc = roomSnapshot.docs.first;
+                      Map<String, dynamic> roomData = roomDoc.data() as Map<String, dynamic>;
+                      List<dynamic> matrix = roomData['matrix'] ?? [];
+                      List<dynamic> members = roomData['members'] ?? [];
+
+                      int selectedMovieIndex = -1; // Variable para almacenar el índice de la película seleccionada
+
+                      for (int movieIndex = 0; movieIndex < 20; movieIndex++) {
+                        bool allLiked = true;
+
+                        for (int i = 0; i < members.length; i++) {
+                          int indexToCheck = 20 * i + movieIndex; // Índice en la matriz para la película actual
+
+                          if (matrix[indexToCheck] != 2) {
+                            allLiked = false;
+                            break; // Si un usuario no ha deslizado hacia la derecha, salimos del bucle
+                          }
+                        }
+                        if (allLiked) {
+                          selectedMovieIndex = movieIndex; // Guardamos el índice de la película seleccionada
+                          break; // Salimos del bucle una vez que encontramos una película válida
+                        }
+                      }
+
+                      if (selectedMovieIndex != -1) {
+                        // Redirigir a la pantalla de información de la película
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FilmInfo(
+                              movie: widget.movies[selectedMovieIndex],
+                              pop: false,
+                              favorite: false,
+                            ),
+                          ),
+                        );
+                      }
                       return true;
                     },
                   ),
