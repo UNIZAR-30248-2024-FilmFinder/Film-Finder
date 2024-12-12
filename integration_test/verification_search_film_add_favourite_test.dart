@@ -77,18 +77,9 @@ void main() {
     await tester.pumpAndSettle();
     await tester.enterText(find.byType(TextField).at(0), 'el club de la lucha');
     await tester.pumpAndSettle();
-    await tester.allElements;
     await tester.pump(const Duration(seconds: 4));
-    await tester.tap(find.byType(GestureDetector).at(2));
+    await tester.tap(find.byType(GestureDetector).at(1));
     await tester.pumpAndSettle();
-    await tester.allElements;
-    await tester.pump(const Duration(seconds: 4));
-    await tester.tap(find.byType(Positioned));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byType(Icon).at(0));
-    await tester.pumpAndSettle();
-
-
     final profileButtonFinder = find.byKey(const Key('profile_button'));
 
     // Verifica que el botón "Perfil" está presente

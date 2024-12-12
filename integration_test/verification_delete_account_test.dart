@@ -50,7 +50,7 @@ void main() {
       overlays: [SystemUiOverlay.top]);
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Test de integración de la pantalla de Registro',
+  testWidgets('Test de integración de borrar usuario',
       (WidgetTester tester) async {
     // Inicializa la aplicación en la pantalla de inicio de sesión
     await tester.pumpWidget(const MaterialApp(
@@ -96,7 +96,7 @@ void main() {
 
 
 
-        final profileButtonFinder = find.byKey(const Key('profile_button'));
+    final profileButtonFinder = find.byKey(const Key('profile_button'));
 
     // Verifica que el botón "Perfil" está presente
     expect(profileButtonFinder, findsOneWidget);
@@ -105,7 +105,7 @@ void main() {
     await tester.tap(profileButtonFinder);
     await tester.pumpAndSettle(); 
     expect(find.textContaining('testDelete'), findsAtLeast(1));
-      expect(find.byType(ProfileWidget), findsOneWidget);
+    expect(find.byType(ProfileWidget), findsOneWidget);
 
     // Simula el toque en ProfileWidget
     await tester.tap(find.byType(ProfileWidget));
@@ -114,10 +114,13 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Borrar Cuenta'));
     await tester.pumpAndSettle();
-    await tester.enterText(find.byType(TextField), 'test123');
+    await tester.enterText(find.byType(TextField).at(3), 'test123');
     await tester.pumpAndSettle();
+    await tester.allElements;
+    await tester.pump(const Duration(seconds: 4));
     await tester.tap(find.text('Confirmar'));
     await tester.pumpAndSettle();
     await tester.allElements;
+    await tester.pump(const Duration(seconds: 4));
   });
 }

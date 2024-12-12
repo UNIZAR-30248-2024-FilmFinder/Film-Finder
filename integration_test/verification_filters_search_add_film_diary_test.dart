@@ -101,7 +101,7 @@ void main() {
     await tester.pump(const Duration(seconds: 4));
     await tester.tap(find.text('ELIGE UNA PELICULA'));
     expect(find.byType(CardSwiper), findsWidgets);
-    for (int i = 0; i < 7; i++) { // peliculas a rechazar
+    for (int i = 0; i < 5; i++) { // peliculas a rechazar
       await tester.tap(find.byType(ElevatedButton).at(0));
       await tester.pumpAndSettle(); 
       await tester.allElements;
@@ -112,6 +112,11 @@ void main() {
     await tester.pump(const Duration(seconds: 4));
     //final scrollable2 = find.byType(SingleChildScrollView).at(0);
     //await tester.drag(scrollable2, const Offset(0, 100));  // Desliza 300 píxeles hacia la izquierda (es decir, hacia la derecha)
+    await tester.pumpAndSettle();
+    final scrollable2 = find.byType(CustomScrollView).at(0);
+    await tester.drag(scrollable2, const Offset(0, -100));  
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(Positioned).at(1));
     await tester.pumpAndSettle();
     // Introduce texto en los campos correspodnientes
     await tester.tap(find.text('Añadir película al diario'));
