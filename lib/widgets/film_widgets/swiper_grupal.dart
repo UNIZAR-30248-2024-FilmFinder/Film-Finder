@@ -1,4 +1,3 @@
-import 'package:film_finder/pages/menu_pages/principal_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -6,6 +5,7 @@ import 'package:flip_card/flip_card.dart';
 import 'package:film_finder/methods/movie.dart';
 import 'dart:math';
 import 'package:film_finder/pages/film_pages/film_screen.dart';
+// ignore: depend_on_referenced_packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SwiperGrupal extends StatefulWidget {
@@ -65,7 +65,8 @@ class _SwiperGrupalState extends State<SwiperGrupal> {
 
                       // Manejo de dirección del swipe
                       if (direction == CardSwiperDirection.right) {
-                        await actualizaVector(widget.roomCode, widget.user, 2, currentindex-1);
+                        await actualizaVector(
+                            widget.roomCode, widget.user, 2, currentindex - 1);
                         Fluttertoast.showToast(
                             msg: 'Te ha gustado',
                             backgroundColor: Colors.black,
@@ -73,11 +74,12 @@ class _SwiperGrupalState extends State<SwiperGrupal> {
                         Future.delayed(const Duration(milliseconds: 750), () {
                           Fluttertoast.cancel();
                         });
-                        if(currentindex == 20){
+                        if (currentindex == 20) {
                           currentindex = 0;
                         }
                       } else if (direction == CardSwiperDirection.left) {
-                        await actualizaVector(widget.roomCode, widget.user, 1, currentindex-1);
+                        await actualizaVector(
+                            widget.roomCode, widget.user, 1, currentindex - 1);
                         Fluttertoast.showToast(
                             msg: 'No te ha gustado',
                             backgroundColor: Colors.black,
@@ -85,7 +87,7 @@ class _SwiperGrupalState extends State<SwiperGrupal> {
                         Future.delayed(const Duration(milliseconds: 750), () {
                           Fluttertoast.cancel();
                         });
-                        if(currentindex == 20){
+                        if (currentindex == 20) {
                           currentindex = 0;
                         }
                       }
@@ -101,17 +103,20 @@ class _SwiperGrupalState extends State<SwiperGrupal> {
                       }
 
                       final roomDoc = roomSnapshot.docs.first;
-                      Map<String, dynamic> roomData = roomDoc.data() as Map<String, dynamic>;
+                      Map<String, dynamic> roomData =
+                          roomDoc.data() as Map<String, dynamic>;
                       List<dynamic> matrix = roomData['matrix'] ?? [];
                       List<dynamic> members = roomData['members'] ?? [];
 
-                      int selectedMovieIndex = -1; // Variable para almacenar el índice de la película seleccionada
+                      int selectedMovieIndex =
+                          -1; // Variable para almacenar el índice de la película seleccionada
 
                       for (int movieIndex = 0; movieIndex < 20; movieIndex++) {
                         bool allLiked = true;
 
                         for (int i = 0; i < members.length; i++) {
-                          int indexToCheck = 20 * i + movieIndex; // Índice en la matriz para la película actual
+                          int indexToCheck = 20 * i +
+                              movieIndex; // Índice en la matriz para la película actual
 
                           if (matrix[indexToCheck] != 2) {
                             allLiked = false;
@@ -119,7 +124,8 @@ class _SwiperGrupalState extends State<SwiperGrupal> {
                           }
                         }
                         if (allLiked) {
-                          selectedMovieIndex = movieIndex; // Guardamos el índice de la película seleccionada
+                          selectedMovieIndex =
+                              movieIndex; // Guardamos el índice de la película seleccionada
                           break; // Salimos del bucle una vez que encontramos una película válida
                         }
                       }
@@ -210,7 +216,8 @@ class _SwiperGrupalState extends State<SwiperGrupal> {
     }
   }
 
-  Future<void> actualizaVector(String roomcode, int user, int valor, int index) async{
+  Future<void> actualizaVector(
+      String roomcode, int user, int valor, int index) async {
     // Cálculo del índice en 'matrix'
     int matrixIndex = user * 20 + index; // 20 películas por usuario
 
@@ -227,7 +234,8 @@ class _SwiperGrupalState extends State<SwiperGrupal> {
     final roomDoc = roomSnapshot.docs.first;
     // Verifica el número de miembros
     List<dynamic> vector = roomDoc['matrix'] ?? [];
-    vector[matrixIndex] = valor; // Actualiza el valor en el índice correspondiente
+    vector[matrixIndex] =
+        valor; // Actualiza el valor en el índice correspondiente
     print('Número de 0s en matrix: ${vector.length}');
 
     await roomDoc.reference.update({
