@@ -1,5 +1,8 @@
 // ignore: depend_on_referenced_packages
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:film_finder/methods/movie.dart';
+import 'package:film_finder/pages/profile_pages/diary_screen.dart';
+import 'package:film_finder/pages/profile_pages/favorites_screen.dart';
 // ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +48,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
     } catch (e) {
       print("Error al cargar los datos del usuario: $e");
+    }
+  }
+
+  Future<Map<String, int>> fetchMovieStatistics() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) throw Exception("User not authenticated");
+
+      final diarySnapshot = await FirebaseFirestore.instance
+          .collection('diary')
+          .where('userId', isEqualTo: user.uid)
+          .get();
+
+      final totalViews = diarySnapshot.docs.length;
+      final rating10Count = diarySnapshot.docs.where((doc) {
+        final data = doc.data() as Map<String, dynamic>?;
+        return data != null && data['rating'] == 10;
+      }).length;
+
+      final favoritesSnapshot = await FirebaseFirestore.instance
+          .collection('favorites')
+          .doc(user.uid)
+          .get();
+
+      final favoriteMoviesCount = (favoritesSnapshot.exists
+              ? (favoritesSnapshot.data()?['movieIds'] as List<dynamic>)
+              : [])
+          .length;
+
+      return {
+        'totalViews': totalViews,
+        'rating10Count': rating10Count,
+        'favoriteCount': favoriteMoviesCount,
+      };
+    } catch (e) {
+      print("Error fetching movie stats: $e");
+      return {'totalViews': 0, 'rating10Count': 0, 'favoriteCount': 0};
     }
   }
 
@@ -142,18 +182,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 width: 2,
               ),
             ),
-            child: const IntrinsicHeight(
+            child: IntrinsicHeight(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _MovieStatColumn(label: 'Vistas', count: 'XXXX'),
-                    _MovieDivider(),
-                    _MovieStatColumn(label: 'Favoritas', count: 'XXXX'),
-                    _MovieDivider(),
-                    _MovieStatColumn(label: '10 Estrellas', count: 'XXXX'),
-                  ],
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: FutureBuilder<Map<String, int>>(
+                  future: fetchMovieStatistics(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    }
+
+                    final stats = snapshot.data ??
+                        {
+                          'totalViews': 0,
+                          'rating10Count': 0,
+                          'favoriteCount': 0
+                        };
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _MovieStatColumn(
+                            label: 'Vistas',
+                            count: stats['totalViews'].toString()),
+                        const _MovieDivider(),
+                        _MovieStatColumn(
+                            label: 'Favoritas',
+                            count: stats['favoriteCount'].toString()),
+                        const _MovieDivider(),
+                        _MovieStatColumn(
+                            label: '10 Estrellas',
+                            count: stats['rating10Count'].toString()),
+                      ],
+                    );
+                  },
                 ),
               ),
             ),
@@ -184,12 +247,86 @@ class _ProfileScreenState extends State<ProfileScreen> {
           _ProfileOptionTile(
             icon: Icons.book_outlined,
             label: 'Ver diario',
-            onTap: () {},
+            onTap: () async {
+              List<MovieDiaryEntry> movieDiary = [];
+
+              try {
+                final userId = FirebaseAuth.instance.currentUser?.uid;
+
+                if (userId != null) {
+                  final diarySnapshot = await FirebaseFirestore.instance
+                      .collection('diary')
+                      .where('userId', isEqualTo: userId)
+                      .get();
+
+                  movieDiary = diarySnapshot.docs.map((doc) {
+                    final data = doc.data();
+                    return MovieDiaryEntry(
+                      documentId: doc.id,
+                      movieId: data['movieId'] ?? 0,
+                      viewingDate: data['viewingDate'] ?? '',
+                      personalRating: (data['rating'] ?? 0).toDouble(),
+                      review: data['review'] ?? '',
+                    );
+                  }).toList();
+                }
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Diary(
+                      movies: movieDiary,
+                    ),
+                  ),
+                );
+              } catch (e) {
+                // Manejo de errores
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Error al cargar el diario: $e'),
+                  ),
+                );
+              }
+            },
           ),
           _ProfileOptionTile(
             icon: Icons.star,
             label: 'Ver lista de favoritos',
-            onTap: () {},
+            onTap: () async {
+              List<int> favoriteMovieIds = [];
+
+              try {
+                final userId = FirebaseAuth.instance.currentUser?.uid;
+
+                if (userId != null) {
+                  final docSnapshot = await FirebaseFirestore.instance
+                      .collection('favorites')
+                      .doc(userId)
+                      .get();
+
+                  if (docSnapshot.exists) {
+                    final data = docSnapshot.data();
+                    favoriteMovieIds = List<int>.from(data?['movieIds'] ?? []);
+                  }
+                }
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FavoritesScreen(
+                      movieIds: favoriteMovieIds,
+                    ),
+                  ),
+                );
+              } catch (e) {
+                // Manejo de errores
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Error al cargar las favoritas: $e'),
+                  ),
+                );
+              }
+            },
           ),
           const Divider(
             height: 35,
@@ -295,7 +432,7 @@ class _ProfileOptionTile extends StatelessWidget {
       ),
       title: Text(
         label,
-        style: TextStyle(
+        style: const TextStyle(
             fontWeight: FontWeight.w500, color: Colors.white, fontSize: 16),
       ),
       trailing: Container(

@@ -39,6 +39,12 @@ class _FilterFilmScreenState extends State<FilterFilmScreen> {
                 ),
               ),
             ),
+            const Divider(
+              color: Color.fromRGBO(190, 49, 68, 1),
+              thickness: 1,
+              endIndent: 50,
+              indent: 50,
+            ),
             Expanded(
               child: Swiper(
                 movies: widget.movies,

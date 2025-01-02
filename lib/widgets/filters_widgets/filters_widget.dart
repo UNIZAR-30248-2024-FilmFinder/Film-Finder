@@ -60,6 +60,10 @@ class _FiltersState extends State<Filters> {
           child: RoomPopup(
             code: code,
             isAdmin: isAdmin,
+            filterGenres: filterGenres,
+            filterProviders: filterProviders,
+            arrayGenres: arrayGenres,
+            arrayProviders: arrayProviders,
           ),
         );
       },
@@ -820,8 +824,6 @@ class _FiltersState extends State<Filters> {
                   onTap: () {
                     setState(() {
                       pasoDeFiltro++;
-                      filterProviders = [];
-                      arrayProviders = List.filled(5, 0);
                     });
                   },
                   child: Container(
@@ -1167,7 +1169,16 @@ class _FiltersState extends State<Filters> {
 
                 setState(() {
                   isRoomLoading = true;
+                  filterGenres = [];
+                  filterProviders = [];
+                  arrayGenres = List.filled(19, 0);
+                  arrayProviders = List.filled(5, 0);
                 });
+
+                print('filterGenres: $filterGenres');
+                print('arrayGenres: $arrayGenres');
+                print('filterProviders: $filterProviders');
+                print('arrayProviders: $arrayProviders');
 
                 showLoadingDialog(context, false);
 
@@ -1237,18 +1248,18 @@ class _FiltersState extends State<Filters> {
       String genreString = filterGenres.join('%2C');
       String providerString = filterProviders.join('%7C');
       url =
-          'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&include_adult=false&include_video=false&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_genres=$genreString&with_watch_providers=$providerString';
+          'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_genres=$genreString&with_watch_providers=$providerString';
     } else if (filterGenres.isNotEmpty && filterProviders.isEmpty) {
       String genreString = filterGenres.join('%2C');
       url =
-          'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&include_adult=false&include_video=false&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_genres=$genreString';
+          'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_genres=$genreString';
     } else if (filterGenres.isEmpty && filterProviders.isNotEmpty) {
       String providerString = filterProviders.join('%7C');
       url =
-          'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&include_adult=false&include_video=false&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_watch_providers=$providerString';
+          'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&language=es-ES&page=1&region=ES&sort_by=popularity.desc&with_watch_providers=$providerString';
     } else {
       url =
-          'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&include_adult=false&include_video=false&language=es-ES&page=1&region=ES&sort_by=popularity.desc';
+          'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&language=es-ES&page=1&region=ES&sort_by=popularity.desc';
     }
 
     final response = await http.get(Uri.parse(url));

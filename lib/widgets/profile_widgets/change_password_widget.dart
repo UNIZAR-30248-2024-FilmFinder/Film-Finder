@@ -166,6 +166,8 @@ class ChangePasswordDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () {
+            ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
             Navigator.of(context).pop();
           },
           child: const Text(
@@ -197,35 +199,54 @@ class ChangePasswordDialog extends StatelessWidget {
 
                     Navigator.of(context).pop(); // Cerrar el cuadro de diálo
 
+                    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
                     // Mostrar mensaje de éxito
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                          content:
-                              Text('Contraseña actualizada correctamente.')),
+                        content: Text('Contraseña actualizada correctamente.'),
+                        backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+                      ),
                     );
                     Navigator.of(context).pop();
                   }
                 } catch (e) {
                   Navigator.of(context).pop(); // Cerrar el cuadro de diálo
 
+                  ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
                   // Manejar errores, como credenciales incorrectas
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                        content: Text('Error al cambiar la contraseña')),
+                      content: Text('Error al cambiar la contraseña'),
+                      duration: Duration(days: 1),
+                      backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+                    ),
                   );
                 }
               } else {
                 Navigator.of(context).pop(); // Cerrar el cuadro de diálo
 
+                ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                      content: Text(
-                          'La contraseña debe tener al menos seis caracteres')),
+                    content: Text(
+                        'La contraseña debe tener al menos seis caracteres'),
+                    duration: Duration(days: 1),
+                    backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+                  ),
                 );
               }
             } else {
+              ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Las contraseñas no coinciden.')),
+                const SnackBar(
+                  content: Text('Las contraseñas no coinciden.'),
+                  duration: Duration(days: 1),
+                  backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+                ),
               );
             }
           },

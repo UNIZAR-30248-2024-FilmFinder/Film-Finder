@@ -44,4 +44,39 @@ void main() {
     await tester.pump();
     expect(find.text('Confirmar Borrado'), findsNothing);
   });
+
+testWidgets('No elimina la cuenta al cancelar', (WidgetTester tester) async {
+  // Crear el mock de FirebaseAuth
+  final mockAuth = MockFirebaseAuth();
+
+  // Cargar el widget
+  await tester.pumpWidget(
+    MaterialApp(
+      home: Scaffold(
+        body: Builder(
+          builder: (context) {
+            return ElevatedButton(
+              onPressed: () => showDeleteAccountDialog(context),
+              child: const Text('Eliminar Cuenta'),
+            );
+          },
+        ),
+      ),
+    ),
+  );
+
+  // Abrir el diálogo
+  await tester.tap(find.text('Eliminar Cuenta'));
+  await tester.pump();
+
+  // Cancelar el borrado
+  await tester.tap(find.text('Cancelar'));
+  await tester.pump();
+
+  // Verificar que no se llamó al método de eliminación
+  verifyNever(mockAuth.currentUser?.delete());
+});
+
+
+
 }

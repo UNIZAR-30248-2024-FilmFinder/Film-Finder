@@ -72,6 +72,7 @@ void showDeleteAccountDialog(BuildContext context) {
         actions: [
           TextButton(
             onPressed: () {
+              ScaffoldMessenger.of(context).removeCurrentSnackBar();
               Navigator.of(context).pop();
             },
             child: const Text(
@@ -162,19 +163,28 @@ void showDeleteAccountDialog(BuildContext context) {
 
                       if (googleUser == null) {
                         // El usuario canceló el inicio de sesión.
+                        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                              content: Text('Reautenticación cancelada.')),
+                            content: Text('Reautenticación cancelada.'),
+                            duration: Duration(days: 1),
+                            backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+                          ),
                         );
                         return;
                       }
 
                       // Verifica que el correo de Google coincida con el del usuario actual
                       if (googleUser.email != user.email) {
+                        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text(
                                 'Por favor, usa la misma cuenta de Google.'),
+                            duration: Duration(days: 1),
+                            backgroundColor: Color.fromRGBO(21, 4, 29, 1),
                           ),
                         );
                         return;
@@ -191,9 +201,14 @@ void showDeleteAccountDialog(BuildContext context) {
                       await user.reauthenticateWithCredential(credential);
                     } catch (e) {
                       print('Error reautenticando con Google: $e');
+                      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                            content: Text('Error reautenticando con Google')),
+                          content: Text('Error reautenticando con Google'),
+                          duration: Duration(days: 1),
+                          backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+                        ),
                       );
                       return;
                     }
@@ -212,13 +227,20 @@ void showDeleteAccountDialog(BuildContext context) {
                     Navigator.of(context).pop();
                     print(
                         'Error al eliminar el documento del usuario en Firestore: $e');
+                    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                          content: Text(
-                              'Error al eliminar la información del usuario.')),
+                        content: Text(
+                            'Error al eliminar la información del usuario.'),
+                        duration: Duration(days: 1),
+                        backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+                      ),
                     );
                     return;
                   }
+
+                  ScaffoldMessenger.of(context).removeCurrentSnackBar();
 
                   // Eliminar la cuenta después de reautenticarse
                   await user.delete();
@@ -230,8 +252,14 @@ void showDeleteAccountDialog(BuildContext context) {
                 }
               } catch (e) {
                 print('Error al borrar la cuenta: $e');
+                ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Error al borrar la cuenta')),
+                  const SnackBar(
+                    content: Text('Error al borrar la cuenta'),
+                    duration: Duration(days: 1),
+                    backgroundColor: Color.fromRGBO(21, 4, 29, 1),
+                  ),
                 );
               }
             },

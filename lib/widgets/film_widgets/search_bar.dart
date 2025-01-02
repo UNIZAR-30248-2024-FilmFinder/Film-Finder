@@ -282,6 +282,8 @@ class _SearchingBarState extends State<SearchingBar> {
                                   MaterialPageRoute(
                                     builder: (context) => FilmInfo(
                                       movie: movies[index],
+                                      pop: true,
+                                      favorite: false,
                                     ),
                                   ),
                                 );
